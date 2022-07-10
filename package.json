@@ -1,0 +1,32 @@
+{
+  "name": "vue3d",
+  "version": "1.0.0",
+  "description": "基于Vue3的Three.js组件化项目",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vue3D/Vue3D.git"
+  },
+  "keywords": [
+    "vue",
+    "three"
+  ],
+  "author": "lc7457",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vue3D/Vue3D/issues"
+  },
+  "homepage": "https://github.com/Vue3D/Vue3D#readme",
+  "dependencies": {
+    "aggregation": "^1.2.7",
+    "mitt": "^3.0.0",
+    "nanoid": "^4.0.0",
+    "three": "^0.142.0"
+  },
+  "devDependencies": {
+    "vue": "^3.2.37"
+  }
+}
