@@ -19,4 +19,14 @@ class Vue3D extends aggregation(event) {
         this.activatedSceneUUID = null
     }
 
+    /**
+     * Get 场景集合
+     * @returns {*[]}
+     */
+    get scenes() {
+        return _scenes
+    }
+
 }
+
+export default Vue3D

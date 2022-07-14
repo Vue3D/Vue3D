@@ -3,7 +3,7 @@ import Vue3D from "./core"
 import {InstallComponents} from "./components";
 
 const defaultOptions = {
-    componentsPrefix: 'V', // 组件前缀
+    componentsPrefix: 'V3d', // 组件前缀
 }
 
 export default {
@@ -16,7 +16,7 @@ export default {
         // 组件注入
         app.provide('vue3d', vue3d)
         // 全局注册组件
-        InstallComponents(app, 'V3d')
+        InstallComponents(app, options.componentsPrefix)
     }
 }
 
