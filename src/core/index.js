@@ -1,32 +1,66 @@
 import aggregation from 'aggregation/es6' // 模拟多重继承
-import * as Three from 'three'
 
-import event, {ev} from './event' // 事件类
+import event from './event' // 事件类
 
 // 配置文件
-const _defaultOptions = {
-    aligningGuidelines: true,
-    centeringGuidelines: true,
-}
+const _defaultOptions = {}
 
-let _scenes = {} // 所有场景集合
+const _store = {}
 
-class Vue3D extends aggregation(event) {
+export default class extends aggregation(event) {
 
     constructor(options = {}) {
         super()
         this.options = Object.assign({}, _defaultOptions, options)
-        this.activatedSceneUUID = null
+        this.activatedUUID = null // 当前激活的ID
     }
 
     /**
-     * Get 场景集合
-     * @returns {*[]}
+     * 获取数据
+     * @param id
+     * @returns {{}|null|*}
      */
-    get scenes() {
-        return _scenes
+    get(id = null) {
+        if (!id) {
+            id = this.activatedUUID
+        }
+        if (_store.hasOwnProperty(id)) {
+            return _store[id]
+        }
+        return null
+    }
+
+    /**
+     * 获取全部数据
+     * @returns {{}}
+     */
+    all() {
+        return _store
+    }
+
+    /**
+     * 添加数据
+     * @param uuid
+     * @param data
+     */
+    add(uuid, data) {
+        _store[uuid] = data
+    }
+
+    /**
+     * 激活挂载数据对象
+     * @param uuid
+     */
+    setActive(uuid = null) {
+        if (uuid === null) {
+            this.activatedUUID = null
+            return true
+        } else if (_store.hasOwnProperty(uuid)) {
+            this.activatedUUID = uuid
+            return true
+        } else {
+            return false
+        }
     }
 
 }
-
-export default Vue3D
