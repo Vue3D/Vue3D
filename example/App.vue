@@ -1,14 +1,19 @@
 <template>
-  <Vue3D :width="width" :height="height">
-    <v3d-scene></v3d-scene>
-  </Vue3D>
+  <vue3d :width="width" :height="height">
+    <cube :x="1" :y="1" :z="1" name="ge">
+      <cube :x="1" :y="1" :z="1" name="ge">
+
+      </cube>
+    </cube>
+  </vue3d>
 </template>
 
 <script>
-import {onMounted} from "vue";
+import {Cube} from "../src/components/Geom";
 
 export default {
   name: "Example",
+  components: {Cube},
   data() {
     return {
       ready: false,

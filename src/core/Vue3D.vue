@@ -1,6 +1,6 @@
 <template>
   <canvas :id="id" ref="canvas" :width="width" :height="height">
-    <slot></slot>
+    <slot v-if="process.mounted"></slot>
     Sorry, your web browser does not support {{ mode }}
   </canvas>
 </template>
@@ -15,7 +15,7 @@ import {ev} from "../const/event";
 import ScenesManager from "../library/ScenesManager";
 
 export default {
-  name: "Vue3D",
+  name: "Vue3d",
   props: {
     id: { // 唯一ID
       type: String,
@@ -111,14 +111,14 @@ export default {
 
       emit(ev.renderer.created.handler)
       on(ev.renderer.render.handler, render)
-      setTimeout(() => {
-        console.log(handler)
-      }, 1000)
+
       render()
     })
 
-    provide('canvas', canvas)
-    provide('handler', handler)
+    provide('canvas', canvas) // Canvas DOM
+    provide('handler', handler) // Base Component Handler
+    provide('scenesManager', scenesManager) // Scenes Manager
+    provide('parent', scenesManager.root) // Current Node
     provide('width', computed(() => {
       return props.width
     }))
