@@ -48,8 +48,7 @@ class ScenesManager {
     init(name) {
         let scene = new THREE.Scene();
         scene.name = name ? name : scene.uuid;
-        scene.cameras = [];
-        scene.arrayCamera = new THREE.ArrayCamera(scene.cameras);
+        scene.arrayCamera = new THREE.ArrayCamera([]);
         return scene;
     }
 

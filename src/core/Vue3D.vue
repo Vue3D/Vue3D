@@ -13,6 +13,7 @@ import {useEventHandler} from "./event";
 import {useDelegation} from '../composition/delegation'
 import {ev} from "../const/event";
 import ScenesManager from "../library/ScenesManager";
+import {PerspectiveCamera} from "three";
 
 export default {
   name: "Vue3d",
@@ -23,14 +24,6 @@ export default {
         return nanoid(8)
       }
     },
-    mode: {type: String, default: 'webgl'}, // 渲染模式
-    width: {type: Number, required: true}, // 显示宽度
-    height: {type: Number, required: true}, // 显示高度
-    ratio: {type: Number, default: 1}, // 像素比例
-    auto: {type: Boolean, default: false}, // 开启自动渲染
-    pause: {type: Boolean, default: false}, // 暂停渲染
-    clearColor: {type: String, default: 'rgb(0,0,0)'}, // 背景颜色
-    clearAlpha: {type: Number, default: 1}, // 背景透明度
     conf: { // render 配置文件
       type: Object,
       default() {
@@ -40,7 +33,15 @@ export default {
           preserveDrawingBuffer: true, // 是否保留渲染缓存
         }
       }
-    }
+    },
+    mode: {type: String, default: 'webgl'}, // 渲染模式
+    width: {type: Number, required: true}, // 显示宽度
+    height: {type: Number, required: true}, // 显示高度
+    ratio: {type: Number, default: 1}, // 像素比例
+    auto: {type: Boolean, default: false}, // 开启自动渲染
+    pause: {type: Boolean, default: false}, // 暂停渲染
+    clearColor: {type: String, default: 'rgb(0,0,0)'}, // 背景颜色
+    clearAlpha: {type: Number, default: 1}, // 背景透明度
   },
   setup(props, context) {
     const vue3d = inject('vue3d')
@@ -49,6 +50,7 @@ export default {
       mounted: false, // 挂载完成
       loaded: false, // 加载完成
     })
+
     const scenesManager = new ScenesManager(props.id)
 
     const handler = markRaw({
@@ -62,7 +64,8 @@ export default {
     const {on, off, emit, all} = useEventHandler(props.id) // 事件器
 
     let rendering = null // 渲染进程
-
+    const camera = new PerspectiveCamera(50, props.width / props.height, .5, 4000)
+    camera.position.set(0, 0, 20)
     // 监听尺寸变化
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
@@ -77,10 +80,8 @@ export default {
     const render = () => {
       if (rendering || props.pause) return;
       if (!handler.scene || !handler.cameras) return;
-
       rendering = requestAnimationFrame(() => {
         delegation.call(this); // 调用委托中的方法
-
 
         handler.renderer.render(handler.scene, handler.cameras);
         rendering = null; // 当前帧渲染完成，释放
@@ -114,8 +115,10 @@ export default {
 
       render()
     })
-
-    provide('canvas', canvas) // Canvas DOM
+    // Canvas DOM
+    provide('canvas', computed(() => {
+      return canvas.value
+    }))
     provide('handler', handler) // Base Component Handler
     provide('scenesManager', scenesManager) // Scenes Manager
     provide('parent', scenesManager.root) // Current Node

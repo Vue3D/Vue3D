@@ -1,19 +1,20 @@
 <template>
   <vue3d :width="width" :height="height">
-    <cube :x="1" :y="1" :z="1" name="ge">
-      <cube :x="1" :y="1" :z="1" name="ge">
-
-      </cube>
-    </cube>
+    <perspective-camera :position="{x:0,y:0,z:20}"></perspective-camera>
+    <directional-light :position="{x:0,y:0,z:10}"></directional-light>
+    <ambient-light></ambient-light>
+    <cube :x="1" :y="1" :z="1"></cube>
   </vue3d>
 </template>
 
 <script>
 import {Cube} from "../src/components/Geom";
+import {PerspectiveCamera} from "../src/components/Camera";
+import {AmbientLight, DirectionalLight} from "../src/components/Light";
 
 export default {
   name: "Example",
-  components: {Cube},
+  components: {AmbientLight, PerspectiveCamera, Cube, DirectionalLight},
   data() {
     return {
       ready: false,

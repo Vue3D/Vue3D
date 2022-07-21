@@ -5,7 +5,8 @@
 <script>
 import * as THREE from 'three'
 import {onBeforeMount, onMounted, provide, watch} from "vue";
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import {ceramic} from "../../const/materials";
 
 export default {
   name: "Cube",
@@ -17,12 +18,16 @@ export default {
     xSegments: {type: Number, default: 1},
     ySegments: {type: Number, default: 1},
     zSegments: {type: Number, default: 1},
-    material: {type: Object},
+    material: {
+      type: Object, default() {
+        return ceramic
+      }
+    },
+    withHelper: {type: Boolean, default: false}
   },
-  setup(props) {
+  setup(props, ctx) {
     const geometry = new THREE.BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
-    const object3d = new THREE.Mesh(geometry);
-
+    const object3d = new THREE.Mesh(geometry, props.material);
     let {
       vue3d,
       handler,
@@ -52,12 +57,13 @@ export default {
     })
 
     onMounted(() => {
-      setPosition()
-      setRotation()
-      setScale()
+      setPosition(props.position)
+      setRotation(props.rotation)
+      setScale(props.scale)
       setTarget(props.target)
       addObject3d(object3d)
       process.mounted = true
+      console.log(handler.scene)
     })
 
     provide('parent', object3d)

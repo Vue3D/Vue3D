@@ -21,7 +21,7 @@ export const object3dProps = {
     scale: {
         type: Object,
         default() {
-            return new Vector3()
+            return new Vector3(1, 1, 1)
         }
     },
     target: {
@@ -92,7 +92,7 @@ export function useObject3d(object3d) {
     }
 
     onBeforeUnmount(() => {
-        removeObject3d(this.object3d);
+        removeObject3d(object3d);
         object3d = null
         process.mounted = false;
         // this.$emit('remove', this.object3d);

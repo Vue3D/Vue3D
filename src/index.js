@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import Vue3DHandler from "./core"
 import Vue3DComponent from './core/Vue3D.vue'
-import {InstallComponents} from "./components";
 import {componentsPrefix} from "./const/config";
 
 const defaultOptions = {
@@ -19,7 +18,6 @@ export default {
         app.provide('vue3d', vue3d)
         // 全局注册组件
         app.component(Vue3DComponent.name, Vue3DComponent)
-        InstallComponents(app)
     }
 }
 
