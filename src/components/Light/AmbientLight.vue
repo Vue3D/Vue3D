@@ -37,7 +37,6 @@ export default {
       setTarget(props.target)
       addObject3d(light)
       process.mounted = true
-      console.log(handler.scene)
     })
 
     provide('parent', light)

@@ -31,15 +31,6 @@ class ScenesManager {
         return this._scenes;
     }
 
-    get cameras() {
-        let scene = this.getActive();
-        if (scene && scene.hasOwnProperty('arrayCamera')) {
-            return scene.arrayCamera;
-        }
-        console.error('Error Scene: ' + this._index);
-        return null;
-    }
-
     /**
      * 初始化场景
      * @param name
@@ -48,7 +39,6 @@ class ScenesManager {
     init(name) {
         let scene = new THREE.Scene();
         scene.name = name ? name : scene.uuid;
-        scene.arrayCamera = new THREE.ArrayCamera([]);
         return scene;
     }
 

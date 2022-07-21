@@ -63,7 +63,6 @@ export default {
       setTarget(props.target)
       addObject3d(object3d)
       process.mounted = true
-      console.log(handler.scene)
     })
 
     provide('parent', object3d)

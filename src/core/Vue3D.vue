@@ -57,15 +57,14 @@ export default {
       id: props.id,
       renderer: null, // 渲染器
       scene: scenesManager.root, // 场景
-      cameras: scenesManager.cameras, // 摄像机组
+      camera: null, // 摄像机组
     })
 
     const delegation = useDelegation() // 委托
     const {on, off, emit, all} = useEventHandler(props.id) // 事件器
 
     let rendering = null // 渲染进程
-    const camera = new PerspectiveCamera(50, props.width / props.height, .5, 4000)
-    camera.position.set(0, 0, 20)
+
     // 监听尺寸变化
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
@@ -79,11 +78,10 @@ export default {
     /** 渲染一帧 **/
     const render = () => {
       if (rendering || props.pause) return;
-      if (!handler.scene || !handler.cameras) return;
+      if (!handler.scene || !handler.camera) return;
       rendering = requestAnimationFrame(() => {
         delegation.call(this); // 调用委托中的方法
-
-        handler.renderer.render(handler.scene, handler.cameras);
+        handler.renderer.render(handler.scene, handler.camera);
         rendering = null; // 当前帧渲染完成，释放
 
         on(ev.renderer.rendered.handler) // 渲染完成后触发

@@ -36,7 +36,7 @@ export default {
       return props.height ? props.height : vHeight.value
     })
 
-    const camera = new PerspectiveCamera(props.fov, width / height, props.near, props.far);
+    const camera = new PerspectiveCamera(props.fov, width.value / height.value, props.near, props.far);
     const {
       vue3d,
       handler,
@@ -51,14 +51,12 @@ export default {
       render
     } = useObject3d(camera)
 
-    camera.viewport = new Vector4(props.x, props.y, width.value, height.value);
-    handler.cameras.cameras.push(camera)
-    handler.cameras.add(camera)
+    handler.camera = camera
 
     const updateCamera = () => {
       camera.fov = props.fov;
       camera.aspect = width.value / height.value;
-      camera.viewport.set(props.x, props.y, width.value, height.value);
+      // camera.viewport.set(props.x, props.y, width.value, height.value);
       camera.updateProjectionMatrix();
     }
 
