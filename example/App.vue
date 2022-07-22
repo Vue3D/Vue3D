@@ -3,7 +3,8 @@
     <perspective-camera :position="{x:0,y:0,z:20}"></perspective-camera>
     <directional-light :position="{x:0,y:0,z:10}" :intensity="0.6"></directional-light>
     <ambient-light :intensity="0.1"></ambient-light>
-    <cube :x="1" :y="1" :z="1"></cube>
+    <obj-loader path="/example/cup.obj"></obj-loader>
+    <!--    <cube></cube>-->
   </vue3d>
 </template>
 
@@ -11,10 +12,11 @@
 import {Cube} from "../src/components/Geom";
 import {PerspectiveCamera} from "../src/components/Camera";
 import {AmbientLight, DirectionalLight} from "../src/components/Light";
+import {ObjLoader} from "../src/components/Loader";
 
 export default {
   name: "Example",
-  components: {AmbientLight, PerspectiveCamera, Cube, DirectionalLight},
+  components: {ObjLoader, AmbientLight, PerspectiveCamera, Cube, DirectionalLight},
   data() {
     return {
       ready: false,

@@ -4,7 +4,7 @@
 
 <script>
 import {AmbientLight} from 'three'
-import {provide, onMounted} from "vue";
+import {provide, onBeforeUnmount, onBeforeMount} from "vue";
 import {object3dProps, useObject3d} from "../../composition/objectd3d";
 
 export default {
@@ -17,32 +17,23 @@ export default {
   setup(props, ctx) {
     const light = new AmbientLight(props.color, props.intensity);
     const {
-      vue3d,
-      handler,
-      parent,
       process,
+      data,
+      init,
+      mount,
+      unmount,
       setPosition,
       setRotation,
       setScale,
       setTarget,
-      addObject3d,
-      removeObject3d,
       render
-    } = useObject3d(light)
+    } = useObject3d()
 
-    onMounted(() => {
-      setPosition(props.position)
-      setRotation(props.rotation)
-      setScale(props.scale)
-      setTarget(props.target)
-      addObject3d(light)
-      process.mounted = true
-    })
-
-    provide('parent', light)
+    init(light, props)
+    provide('parent', data)
 
     return {
-      process
+      process, data
     }
   }
 }

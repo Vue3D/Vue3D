@@ -119,7 +119,7 @@ export default {
     }))
     provide('handler', handler) // Base Component Handler
     provide('scenesManager', scenesManager) // Scenes Manager
-    provide('parent', scenesManager.root) // Current Node
+    provide('parent', {node: scenesManager.root}) // Current Node
     provide('width', computed(() => {
       return props.width
     }))

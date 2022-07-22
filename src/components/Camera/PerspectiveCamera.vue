@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import {PerspectiveCamera, Vector4, CameraHelper} from 'three'
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
-import {computed, inject, provide, onBeforeMount, onMounted, toRef} from "vue";
+import {PerspectiveCamera, CameraHelper} from 'three'
+import {computed, inject, provide, onBeforeMount, onBeforeUnmount} from "vue";
 import Orbit from "../../library/Orbit";
+import {object3dProps, useObject3d} from "../../composition/objectd3d";
 
 export default {
   name: "PerspectiveCamera",
@@ -37,26 +37,22 @@ export default {
     })
 
     const camera = new PerspectiveCamera(props.fov, width.value / height.value, props.near, props.far);
+
     const {
-      vue3d,
       handler,
-      parent,
       process,
+      data,
+      init,
+      render,
       setPosition,
       setRotation,
       setScale,
-      setTarget,
-      addObject3d,
-      removeObject3d,
-      render
-    } = useObject3d(camera)
-
-    handler.camera = camera
+      setTarget
+    } = useObject3d()
 
     const updateCamera = () => {
       camera.fov = props.fov;
       camera.aspect = width.value / height.value;
-      // camera.viewport.set(props.x, props.y, width.value, height.value);
       camera.updateProjectionMatrix();
     }
 
@@ -69,24 +65,16 @@ export default {
 
     if (props.withOrbit) {
       const orbit = new Orbit(camera, canvas.value)
-
       orbit.control.addEventListener('change', render, false);
     }
 
-    onMounted(() => {
-      setPosition(props.position)
-      setRotation(props.rotation)
-      setScale(props.scale)
-      setTarget(props.target)
-      process.mounted = true
-    })
+    handler.camera = camera
 
-    provide('parent', camera)
+    init(camera, props)
+    provide('parent', data)
 
     return {
-      process,
-      width,
-      height
+      process, width, height, data
     }
   }
 }

@@ -1,8 +1,8 @@
-import {inject, markRaw, onBeforeUnmount, onMounted, provide, reactive, toRef} from "vue";
-import {Vector3, Euler} from "three";
-import {angle2euler} from "../utils";
+import {inject, markRaw, provide, reactive, onBeforeMount, onBeforeUnmount} from "vue";
+import {Euler, Vector3} from "three";
 
 import {ev} from "../const/event";
+import {angle2euler} from "../utils";
 
 export const object3dProps = {
     name: {type: String, default: ''},
@@ -33,9 +33,7 @@ export const object3dProps = {
     visible: {type: Boolean, default: true}
 }
 
-export const object3dEmits = ['update', 'remove']
-
-export function useObject3d(object3d) {
+export function useObject3d() {
     const vue3d = inject('vue3d')
     const handler = inject('handler')
     const parent = inject('parent')
@@ -45,62 +43,129 @@ export function useObject3d(object3d) {
         loaded: false, // 加载完成
     })
 
-    const setPosition = (val) => {
-        if (val && val.hasOwnProperty('x') && val.hasOwnProperty('y') && val.hasOwnProperty('z')) {
-            object3d.position.set(val.x, val.y, val.z)
-        }
-        // emit("update:position", object3d.position);
-        render();
-    }
-    const setRotation = (val) => {
-        if (val && val.hasOwnProperty('x') && val.hasOwnProperty('y') && val.hasOwnProperty('z')) {
-            const x = angle2euler(val.x);
-            const y = angle2euler(val.y);
-            const z = angle2euler(val.z);
-            let euler = new Euler(x, y, z);
-            object3d.setRotationFromEuler(euler);
-        }
-        // this.$emit("update:rotation", object3d.rotation);
-        render();
-    }
-    const setScale = (val) => {
-        if (val && val.hasOwnProperty('x') && val.hasOwnProperty('y') && val.hasOwnProperty('z')) {
-            object3d.scale.set(val.x, val.y, val.z)
-        }
-        // this.$emit("update:scale", object3d.scale);
-        render();
-    }
-    const setTarget = (target) => {
-        object3d.lookAt(target.x, target.y, target.z);
-        render();
-    }
-
-    const addObject3d = (object3d) => {
-        if (parent) {
-            parent.add(object3d);
-        }
-    }
-    const removeObject3d = (object3d) => {
-        if (parent) {
-            parent.remove(object3d);
-        }
-    }
-    // 渲染
-    const render = () => {
-        vue3d.fire(ev.renderer.render.handler)
-        // this.$emit('update', object3d);
-    }
-
-    onBeforeUnmount(() => {
-        removeObject3d(object3d);
-        object3d = null
-        process.mounted = false;
-        // this.$emit('remove', this.object3d);
+    // 数据节点
+    const data = markRaw({
+        node: null
     })
 
+    /**
+     * 初始化对象节点设置
+     * @param object3d
+     * @param props
+     */
+    const init = (object3d, props) => {
+        data.node = object3d
+        setPosition(props.position)
+        setRotation(props.rotation)
+        setScale(props.scale)
+        setTarget(props.target)
+    }
+
+    /**
+     * 在父节点上挂载
+     * @param object3d
+     */
+    const mount = (object3d) => {
+        if (parent.node) {
+            parent.node?.add(object3d);
+        }
+    }
+    /**
+     * 在父节点上卸载
+     * @param object3d
+     */
+    const unmount = (object3d) => {
+        if (parent.node) {
+            parent.node?.remove(object3d);
+        }
+    }
+    /**
+     * Set Position
+     * @param vec3
+     * @param callback
+     */
+    const setPosition = (vec3, callback = null) => {
+        if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            data.node.position.set(vec3.x, vec3.y, vec3.z)
+            render();
+        }
+        if (callback && typeof callback === 'function')
+            callback()
+    }
+    /**
+     * Set Rotation
+     * @param vec3
+     * @param callback
+     */
+    const setRotation = (vec3, callback = null) => {
+        if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            const x = angle2euler(vec3.x);
+            const y = angle2euler(vec3.y);
+            const z = angle2euler(vec3.z);
+            let euler = new Euler(x, y, z);
+            data.node.setRotationFromEuler(euler);
+            render();
+        }
+        if (callback && typeof callback === 'function')
+            callback()
+    }
+    /**
+     * Set Scale
+     * @param vec3
+     * @param callback
+     */
+    const setScale = (vec3, callback = null) => {
+        if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            data.node.scale.set(vec3.x, vec3.y, vec3.z)
+            render();
+        }
+        if (callback && typeof callback === 'function')
+            callback()
+    }
+    /**
+     * Set Target
+     * @param vec3
+     * @param callback
+     */
+    const setTarget = (vec3, callback = null) => {
+        if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            data.node.lookAt(vec3.x, vec3.y, vec3.z);
+            render();
+        }
+        if (callback && typeof callback === 'function')
+            callback()
+    }
+    /**
+     * 渲染一帧
+     * @param callback
+     */
+    const render = (callback = null) => {
+        vue3d.fire(ev.renderer.render.handler)
+        if (callback && typeof callback === 'function') {
+            callback()
+        }
+    }
+
+    onBeforeMount(() => {
+        if (!data.node) return
+        mount(data.node)
+        process.mounted = true
+        render()
+    })
+
+    onBeforeUnmount(() => {
+        if (!data.node) return
+        unmount(data.node);
+        process.mounted = false;
+        render()
+    })
+
+    provide('parent', data)
+
     return {
-        vue3d, handler, parent,
-        object3d, process,
-        setPosition, setRotation, setScale, setTarget, addObject3d, removeObject3d, render
+        vue3d, handler, parent, process, data,
+        init, mount, unmount,
+        setPosition, setRotation, setScale, setTarget,
+        render
     }
 }

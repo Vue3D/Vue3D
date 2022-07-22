@@ -4,8 +4,8 @@
 
 <script>
 import * as THREE from 'three'
-import {onBeforeMount, onMounted, provide, watch} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import {onBeforeMount, onMounted, onBeforeUnmount, provide, watch} from "vue";
+import {object3dProps, useObject3d} from "../../composition/objectd3d";
 import {ceramic} from "../../const/materials";
 
 export default {
@@ -28,19 +28,18 @@ export default {
   setup(props, ctx) {
     const geometry = new THREE.BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
     const object3d = new THREE.Mesh(geometry, props.material);
-    let {
-      vue3d,
-      handler,
-      parent,
+
+    const {
       process,
+      data,
+      mount,
+      unmount,
       setPosition,
       setRotation,
       setScale,
       setTarget,
-      addObject3d,
-      removeObject3d,
       render
-    } = useObject3d(object3d)
+    } = useObject3d()
 
     watch(() => props.material, (val) => {
       setMaterial(val)
@@ -52,22 +51,11 @@ export default {
       }
     }
 
-    onBeforeMount(() => {
-      setMaterial(props.material)
-    })
+    setMaterial(props.material)
+    init(object3d, props)
+    provide('parent', data)
 
-    onMounted(() => {
-      setPosition(props.position)
-      setRotation(props.rotation)
-      setScale(props.scale)
-      setTarget(props.target)
-      addObject3d(object3d)
-      process.mounted = true
-    })
-
-    provide('parent', object3d)
-
-    return {process, object3d}
+    return {process, data}
   },
 
 }
