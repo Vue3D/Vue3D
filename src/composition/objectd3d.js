@@ -25,10 +25,7 @@ export const object3dProps = {
         }
     },
     target: {
-        type: Object,
-        default() {
-            return new Vector3()
-        }
+        type: Object
     },
     visible: {type: Boolean, default: true}
 }
@@ -85,6 +82,7 @@ export function useObject3d() {
      * @param callback
      */
     const setPosition = (vec3, callback = null) => {
+
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
             data.node.position.set(vec3.x, vec3.y, vec3.z)
             render();
@@ -129,7 +127,7 @@ export function useObject3d() {
      */
     const setTarget = (vec3, callback = null) => {
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
-            data.node.lookAt(vec3.x, vec3.y, vec3.z);
+            // data.node.lookAt(vec3.x, vec3.y, vec3.z);
             render();
         }
         if (callback && typeof callback === 'function')

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {LoadingManager} from 'three'
+import {LoadingManager, Texture} from 'three'
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
 import {object3dProps, useObject3d} from "../../composition/objectd3d";
 import {computed, onBeforeMount, onMounted, provide} from "vue";
@@ -21,6 +21,7 @@ export default {
         return ceramic
       }
     },
+    map: {type: [Object, String]}
   },
   setup(props, ctx) {
     const manager = new LoadingManager()
@@ -49,6 +50,14 @@ export default {
     }, err => {
       ctx.emit('error', err);
     });
+
+    if (props.map) {
+      if (typeof props.map === 'object') {
+        props.material.map = this.props.map
+      } else if (typeof props.map === 'string') {
+        const map = new Texture()
+      }
+    }
 
     const setMaterial = (mtl) => {
       if (data.node && mtl) {
