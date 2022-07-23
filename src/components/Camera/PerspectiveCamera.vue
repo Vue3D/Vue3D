@@ -4,7 +4,7 @@
 
 <script>
 import {PerspectiveCamera, CameraHelper} from 'three'
-import {computed, inject, provide, onBeforeMount, onBeforeUnmount} from "vue";
+import {computed, inject, provide, reactive, watch} from "vue";
 import Orbit from "../../library/Orbit";
 import {object3dProps, useObject3d} from "../../composition/objectd3d";
 
@@ -12,8 +12,8 @@ export default {
   name: "PerspectiveCamera",
   props: {
     ...object3dProps,
-    x: {type: Number, default: 0}, // viewport x 零点：左
-    y: {type: Number, default: 0}, // viewport y 零点：下
+    x: {type: Number, default: 0}, // viewport x 原点（x=0）：左
+    y: {type: Number, default: 0}, // viewport y 原点（y=0）：下
     width: {type: Number}, // viewport width
     height: {type: Number}, // viewport height
     near: {type: Number, default: 0.1},
@@ -29,14 +29,11 @@ export default {
     const vHeight = inject('height')
     const canvas = inject('canvas')
 
-    const width = computed(() => {
-      return props.width ? props.width : vWidth.value
+    const viewport = reactive({
+      width: props.width ? props.width : vWidth.value,
+      height: props.height ? props.height : vHeight.value
     })
-    const height = computed(() => {
-      return props.height ? props.height : vHeight.value
-    })
-
-    const camera = new PerspectiveCamera(props.fov, width.value / height.value, props.near, props.far);
+    const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
 
     const {
       handler,
@@ -52,8 +49,9 @@ export default {
 
     const updateCamera = () => {
       camera.fov = props.fov;
-      camera.aspect = width.value / height.value;
+      camera.aspect = viewport.width / viewport.height
       camera.updateProjectionMatrix();
+      render()
     }
 
     if (props.withHelper) {
@@ -70,11 +68,33 @@ export default {
 
     handler.camera = camera
 
+    watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.value, () => props.fov], () => {
+      viewport.width = props.width ? props.width : vWidth.value
+      viewport.height = props.height ? props.height : vHeight.value
+      updateCamera()
+    })
+
+    watch(() => props.position, () => {
+      setPosition(props.position)
+    }, {deep: true})
+
+    watch(() => props.rotation, () => {
+      setRotation(props.rotation)
+    }, {deep: true})
+
+    watch(() => props.scale, () => {
+      setScale(props.scale)
+    }, {deep: true})
+
+    watch(() => props.target, () => {
+      setTarget(props.target)
+    }, {deep: true})
+
     init(camera, props)
     provide('parent', data)
 
     return {
-      process, width, height, data
+      process, viewport, data
     }
   }
 }

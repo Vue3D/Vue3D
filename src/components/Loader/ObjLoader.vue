@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {LoadingManager, Texture} from 'three'
+import {LoadingManager, TextureLoader} from 'three'
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
 import {object3dProps, useObject3d} from "../../composition/objectd3d";
 import {computed, onBeforeMount, onMounted, provide} from "vue";
@@ -38,7 +38,6 @@ export default {
     loader.load(props.path, object => {
       object.name = props.name;
       data.node = object;
-
       setMaterial(props.material);
       init(object, props)
       mount(object)
@@ -53,9 +52,9 @@ export default {
 
     if (props.map) {
       if (typeof props.map === 'object') {
-        props.material.map = this.props.map
+        props.material.map = props.map
       } else if (typeof props.map === 'string') {
-        const map = new Texture()
+        props.material.map = new TextureLoader().load(props.map);
       }
     }
 
