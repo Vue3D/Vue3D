@@ -74,22 +74,6 @@ export default {
       updateCamera()
     })
 
-    watch(() => props.position, () => {
-      setPosition(props.position)
-    }, {deep: true})
-
-    watch(() => props.rotation, () => {
-      setRotation(props.rotation)
-    }, {deep: true})
-
-    watch(() => props.scale, () => {
-      setScale(props.scale)
-    }, {deep: true})
-
-    watch(() => props.target, () => {
-      setTarget(props.target)
-    }, {deep: true})
-
     init(camera, props)
     provide('parent', data)
 

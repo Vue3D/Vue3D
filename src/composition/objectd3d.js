@@ -1,4 +1,4 @@
-import {inject, markRaw, provide, reactive, onBeforeMount, onBeforeUnmount} from "vue";
+import {inject, markRaw, provide, reactive, onBeforeMount, onBeforeUnmount, watch} from "vue";
 import {Euler, Vector3} from "three";
 
 import {ev} from "../const/event";
@@ -56,6 +56,27 @@ export function useObject3d() {
         setRotation(props.rotation)
         setScale(props.scale)
         setTarget(props.target)
+        setVisible(props.visible)
+
+        watch(() => props.position, () => {
+            setPosition(props.position)
+        }, {deep: true})
+
+        watch(() => props.rotation, () => {
+            setRotation(props.rotation)
+        }, {deep: true})
+
+        watch(() => props.scale, () => {
+            setScale(props.scale)
+        }, {deep: true})
+
+        watch(() => props.target, () => {
+            setTarget(props.target)
+        }, {deep: true})
+
+        watch(() => props.visible, () => {
+            setVisible(props.visible)
+        })
     }
 
     /**
@@ -82,7 +103,6 @@ export function useObject3d() {
      * @param callback
      */
     const setPosition = (vec3, callback = null) => {
-
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
             data.node.position.set(vec3.x, vec3.y, vec3.z)
             render();
@@ -127,9 +147,21 @@ export function useObject3d() {
      */
     const setTarget = (vec3, callback = null) => {
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
-            // data.node.lookAt(vec3.x, vec3.y, vec3.z);
+            data.node.lookAt(vec3.x, vec3.y, vec3.z);
             render();
         }
+        if (callback && typeof callback === 'function')
+            callback()
+    }
+    /**
+     * 设置是否可见
+     * @param visible
+     * @param callback
+     */
+    const setVisible = (visible, callback = null) => {
+        visible = !!visible
+        data.node.visible = visible
+        render()
         if (callback && typeof callback === 'function')
             callback()
     }
@@ -163,7 +195,7 @@ export function useObject3d() {
     return {
         vue3d, handler, parent, process, data,
         init, mount, unmount,
-        setPosition, setRotation, setScale, setTarget,
+        setPosition, setRotation, setScale, setTarget, setVisible,
         render
     }
 }
