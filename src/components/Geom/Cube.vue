@@ -32,13 +32,6 @@ export default {
     const {
       process,
       data,
-      mount,
-      unmount,
-      setPosition,
-      setRotation,
-      setScale,
-      setTarget,
-      render
     } = useObject3d()
 
     watch(() => props.material, (val) => {

@@ -4,8 +4,8 @@
       <directional-light :position="position" :intensity="0.9"></directional-light>
     </perspective-camera>
     <ambient-light :intensity="0.1"></ambient-light>
-    <obj-loader path="/example/cup.obj" :scale="{x:0.1,y:0.1,z:0.1}" :position="{x:0,y:-5,z:0}"
-                map="/example/cup_map.jpg"></obj-loader>
+    <obj-loader :path="path.obj" :scale="{x:0.1,y:0.1,z:0.1}" :position="{x:0,y:-5,z:0}"
+                :map="path.uv"></obj-loader>
     <!--    <cube></cube>-->
   </vue3d>
 </template>
@@ -24,7 +24,13 @@ export default {
       ready: false,
       width: document.body.clientWidth,
       height: document.body.clientHeight,
-      position: {x: 0, y: 0, z: 20}
+      position: {x: 0, y: 0, z: 20},
+      path: {
+        // obj:'/example/cup.obj',
+        // uv:'/example/cup_map.jpg',
+        obj: 'https://s3.cifuwu.com/storage/model/2ce7855396fad3381298d9aaab5b466d0804fe24.obj',
+        uv: 'https://s3.cifuwu.com/image/show/1080/6350c200f09097ad6bf8653daf421efc2019f026.png'
+      }
     }
   },
   mounted() {
