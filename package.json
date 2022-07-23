@@ -1,6 +1,6 @@
 {
   "name": "vue3d",
-  "version": "1.0.0",
+  "version": "0.13.0",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "src/index.js",
   "files": [
@@ -37,5 +37,8 @@
     "less-loader": "^10.2.0",
     "vue": "^3.2.37",
     "vite": "^2.9.10"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
   }
 }
