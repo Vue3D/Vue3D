@@ -35,6 +35,7 @@ export default {
       data,
       init,
       mount,
+      unmount,
       setScale,
       render
     } = useObject3d(ctx)
@@ -68,11 +69,14 @@ export default {
     watch(() => props.path, () => {
       loadObject(props.path).then(obj => {
         obj.name = props.name;
+        if (data.node) {
+          unmount(data.node)
+        }
         data.node = obj;
         setMaterial(props.material);
         init(obj, props)
         mount(obj)
-        const box3 = new Box3(obj)
+        let box3 = new Box3(obj)
         if (props.contain) {
           let scale = box3.getContainedScale()
           setScale(scale)
