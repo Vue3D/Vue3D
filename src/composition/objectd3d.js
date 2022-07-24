@@ -19,7 +19,7 @@ export const object3dProps = {
         }
     },
     scale: {
-        type: Object,
+        type: [Number, Object],
         default() {
             return new Vector3(1, 1, 1)
         }
@@ -30,11 +30,12 @@ export const object3dProps = {
     visible: {type: Boolean, default: true}
 }
 
-export function useObject3d() {
+export const object3dEmits = ['update:position', 'update:scale', 'update:rotation']
+
+export function useObject3d(ctx) {
     const vue3d = inject('vue3d')
     const handler = inject('handler')
     const parent = inject('parent')
-
     const process = reactive({
         mounted: false, // 挂载完成
         loaded: false, // 加载完成
@@ -104,8 +105,10 @@ export function useObject3d() {
      */
     const setPosition = (vec3, callback = null) => {
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            vec3 = new Vector3(vec3.x, vec3.y, vec3.z)
             data.node.position.set(vec3.x, vec3.y, vec3.z)
             render();
+            ctx.emit('update:position', vec3)
         }
         if (callback && typeof callback === 'function')
             callback()
@@ -117,12 +120,14 @@ export function useObject3d() {
      */
     const setRotation = (vec3, callback = null) => {
         if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            vec3 = new Vector3(vec3.x, vec3.y, vec3.z)
             const x = angle2euler(vec3.x);
             const y = angle2euler(vec3.y);
             const z = angle2euler(vec3.z);
             let euler = new Euler(x, y, z);
             data.node.setRotationFromEuler(euler);
             render();
+            ctx.emit('update:rotation', vec3)
         }
         if (callback && typeof callback === 'function')
             callback()
@@ -133,9 +138,15 @@ export function useObject3d() {
      * @param callback
      */
     const setScale = (vec3, callback = null) => {
-        if (vec3 && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+        if (typeof vec3 === 'object' && vec3.hasOwnProperty('x') && vec3.hasOwnProperty('y') && vec3.hasOwnProperty('z')) {
+            vec3 = new Vector3(vec3.x, vec3.y, vec3.z)
             data.node.scale.set(vec3.x, vec3.y, vec3.z)
             render();
+        } else if (typeof vec3 === 'number' && vec3 !== 0) {
+            vec3 = new Vector3(vec3, vec3, vec3)
+            data.node.scale.set(vec3.x, vec3.y, vec3.z)
+            render();
+            ctx.emit('update:scale', vec3)
         }
         if (callback && typeof callback === 'function')
             callback()

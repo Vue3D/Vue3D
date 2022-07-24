@@ -13,7 +13,6 @@ import {useEventHandler} from "./event";
 import {useDelegation} from '../composition/delegation'
 import {ev} from "../const/event";
 import ScenesManager from "../library/ScenesManager";
-import {PerspectiveCamera} from "three";
 
 export default {
   name: "Vue3d",
@@ -55,7 +54,6 @@ export default {
 
     const handler = markRaw({
       id: props.id,
-      renderer: null, // 渲染器
       scene: scenesManager.root, // 场景
       camera: null, // 摄像机组
     })
@@ -82,9 +80,9 @@ export default {
       rendering = requestAnimationFrame(() => {
         delegation.call(this); // 调用委托中的方法
         handler.renderer.render(handler.scene, handler.camera);
+        handler.camera.updateProjectionMatrix()
         rendering = null; // 当前帧渲染完成，释放
-
-        on(ev.renderer.rendered.handler) // 渲染完成后触发
+        emit(ev.renderer.rendered.handler) // 渲染完成后触发
 
         if (props.auto) {
           this.render();
@@ -118,6 +116,7 @@ export default {
       return canvas.value
     }))
     provide('handler', handler) // Base Component Handler
+    provide('render', render)
     provide('scenesManager', scenesManager) // Scenes Manager
     provide('parent', {node: scenesManager.root}) // Current Node
     provide('width', computed(() => {

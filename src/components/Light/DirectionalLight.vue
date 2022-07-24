@@ -5,7 +5,7 @@
 <script>
 import {DirectionalLight, DirectionalLightHelper} from 'three'
 import {provide, onBeforeMount, onBeforeUnmount} from "vue";
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
 
 export default {
   name: "DirectionalLight",
@@ -16,6 +16,7 @@ export default {
     withHelper: {type: Boolean, default: true},
     visibleHelper: {type: Boolean, default: false},
   },
+  emits: [...object3dEmits],
   setup(props, ctx) {
     const light = new DirectionalLight(props.color, props.intensity);
 
@@ -23,7 +24,7 @@ export default {
       process,
       data,
       init,
-    } = useObject3d()
+    } = useObject3d(ctx)
 
     if (props.withHelper) {
       const helper = new DirectionalLightHelper(light);

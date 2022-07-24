@@ -5,13 +5,14 @@
 <script>
 import {LoadingManager, TextureLoader} from 'three'
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
-import {computed, onBeforeMount, onMounted, provide} from "vue";
+import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import {inject, markRaw, provide, watch} from "vue";
 import {ceramic} from "../../const/materials";
+import Box3 from "../../library/Box3";
 
 export default {
   name: "ObjLoader",
-  emits: ['loaded', 'progress', 'error'],
+  emits: [...object3dEmits, 'loaded', 'progress', 'error'],
   props: {
     ...object3dProps,
     name: {type: String, default: 'Object3D'},
@@ -21,7 +22,9 @@ export default {
         return ceramic
       }
     },
-    map: {type: [Object, String]}
+    map: {type: [Object, String]},
+    centered: {type: Boolean, default: false},
+    contain: {type: Boolean, default: false},
   },
   setup(props, ctx) {
     const manager = new LoadingManager()
@@ -32,30 +35,23 @@ export default {
       data,
       init,
       mount,
+      setScale,
       render
-    } = useObject3d()
+    } = useObject3d(ctx)
 
-    loader.load(props.path, object => {
-      object.name = props.name;
-      data.node = object;
-      setMaterial(props.material);
-      init(object, props)
-      mount(object)
-
-      ctx.emit('loaded', object);
-      process.mounted = true
-    }, xhr => {
-      ctx.emit('progress', xhr);
-    }, err => {
-      ctx.emit('error', err);
-    });
-
-    if (props.map) {
-      if (typeof props.map === 'object') {
-        props.material.map = props.map
-      } else if (typeof props.map === 'string') {
-        props.material.map = new TextureLoader().load(props.map);
-      }
+    const loadObject = (path) => {
+      return new Promise((resolve, reject) => {
+        loader.load(path, object => {
+          ctx.emit('loaded', object);
+          process.mounted = true
+          resolve(object)
+        }, xhr => {
+          ctx.emit('progress', xhr);
+        }, err => {
+          ctx.emit('error', err);
+          reject(err)
+        });
+      })
     }
 
     const setMaterial = (mtl) => {
@@ -68,6 +64,31 @@ export default {
         render();
       }
     }
+
+    watch(() => props.path, () => {
+      loadObject(props.path).then(obj => {
+        obj.name = props.name;
+        data.node = obj;
+        setMaterial(props.material);
+        init(obj, props)
+        mount(obj)
+        const box3 = new Box3(obj)
+        if (props.contain) {
+          let scale = box3.getContainedScale()
+          setScale(scale)
+        }
+      })
+    }, {immediate: true})
+
+    watch(() => props.map, () => {
+      if (props.map) {
+        if (typeof props.map === 'object') {
+          props.material.map = props.map
+        } else if (typeof props.map === 'string') {
+          props.material.map = new TextureLoader().load(props.map);
+        }
+      }
+    }, {immediate: true})
 
     provide('parent', data)
     return {

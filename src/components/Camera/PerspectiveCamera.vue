@@ -6,7 +6,7 @@
 import {PerspectiveCamera, CameraHelper} from 'three'
 import {computed, inject, provide, reactive, watch} from "vue";
 import Orbit from "../../library/Orbit";
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
 
 export default {
   name: "PerspectiveCamera",
@@ -24,6 +24,7 @@ export default {
     visibleHelper: {type: Boolean, default: false},
     withOrbit: {type: Boolean, default: true},
   },
+  emits: [...object3dEmits],
   setup(props, ctx) {
     const vWidth = inject('width')
     const vHeight = inject('height')
@@ -41,11 +42,7 @@ export default {
       data,
       init,
       render,
-      setPosition,
-      setRotation,
-      setScale,
-      setTarget
-    } = useObject3d()
+    } = useObject3d(ctx)
 
     const updateCamera = () => {
       camera.fov = props.fov;

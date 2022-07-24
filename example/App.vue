@@ -1,11 +1,11 @@
 <template>
   <vue3d :width="width" :height="height" clearColor="rgb(255,255,255)">
-    <perspective-camera :position="{x:0,y:0,z:20}">
+    <perspective-camera :position="{x:0,y:0,z:20}" :target="{x:0,y:20,z:0}">
       <directional-light :position="position" :intensity="0.9"></directional-light>
     </perspective-camera>
     <ambient-light :intensity="0.1"></ambient-light>
-    <obj-loader :path="path.obj" :scale="{x:0.1,y:0.1,z:0.1}" :position="{x:0,y:-5,z:0}"
-                :map="path.uv"></obj-loader>
+    <obj-loader :path="path.obj" :position="{x:0,y:-5,z:0}"
+                :map="path.uv" contain></obj-loader>
     <!--    <cube></cube>-->
   </vue3d>
 </template>
@@ -39,9 +39,9 @@ export default {
       this.width = document.body.clientWidth
       this.height = document.body.clientHeight
     })
-    setInterval(() => {
-      this.position.y += 1
-    }, 200)
+    // setInterval(() => {
+    //   this.position.y += 1
+    // }, 200)
   },
 }
 </script>

@@ -5,7 +5,7 @@
 <script>
 import * as THREE from 'three'
 import {onBeforeMount, onMounted, onBeforeUnmount, provide, watch} from "vue";
-import {object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
 import {ceramic} from "../../const/materials";
 
 export default {
@@ -25,6 +25,7 @@ export default {
     },
     withHelper: {type: Boolean, default: false}
   },
+  emits: [...object3dEmits],
   setup(props, ctx) {
     const geometry = new THREE.BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
     const object3d = new THREE.Mesh(geometry, props.material);
@@ -32,7 +33,7 @@ export default {
     const {
       process,
       data,
-    } = useObject3d()
+    } = useObject3d(ctx)
 
     watch(() => props.material, (val) => {
       setMaterial(val)
