@@ -36,8 +36,9 @@ export default {
       init,
       mount,
       unmount,
+      render,
       setScale,
-      render
+      setPosition,
     } = useObject3d(ctx)
 
     const loadObject = (path) => {
@@ -76,10 +77,27 @@ export default {
         setMaterial(props.material);
         init(obj, props)
         mount(obj)
-        let box3 = new Box3(obj)
         if (props.contain) {
+          let box3 = new Box3(obj)
           let scale = box3.getContainedScale()
-          setScale(scale)
+
+          /**
+           * 逐渐缩小到既定比例
+           * TODO: 直接缩放scale小于0.02左右会产生一个渲染的bug，
+           *        因此通过间接缩小的方式临时处理渲染的问题。
+           *        后期看看three更新或者其他渠道修复这个问题
+           * @type {number}
+           */
+          const hi = setInterval(() => {
+            if (obj.scale.x <= scale) {
+              clearInterval(hi)
+            } else {
+              let s = obj.scale.x - 0.01
+              setScale(s)
+            }
+          }, 5)
+
+          render()
         }
       })
     }, {immediate: true})
@@ -96,7 +114,7 @@ export default {
 
     provide('parent', data)
     return {
-      process, data
+      process, data, render
     }
   }
 }

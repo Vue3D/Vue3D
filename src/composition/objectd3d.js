@@ -91,6 +91,7 @@ export function useObject3d(ctx) {
         if (parent.node) {
             parent.node?.add(object3d);
         }
+        render()
     }
     /**
      * 在父节点上卸载
@@ -100,6 +101,7 @@ export function useObject3d(ctx) {
         if (parent.node) {
             parent.node?.remove(object3d);
         }
+        render()
     }
     /**
      * Set Position
@@ -113,10 +115,8 @@ export function useObject3d(ctx) {
         vec3.y = pos.hasOwnProperty('y') ? pos.y : 0
         vec3.z = pos.hasOwnProperty('z') ? pos.z : 0
         data.node.position.set(vec3.x, vec3.y, vec3.z)
-        render();
         ctx.emit('update:position', pos)
-        if (callback && typeof callback === 'function')
-            callback()
+        render(callback);
     }
     /**
      * Set Rotation
@@ -134,10 +134,8 @@ export function useObject3d(ctx) {
         const z = angle2euler(vec3.z);
         let euler = new Euler(x, y, z);
         data.node.setRotationFromEuler(euler);
-        render();
         ctx.emit('update:rotation', angle)
-        if (callback && typeof callback === 'function')
-            callback()
+        render(callback);
     }
     /**
      * Set Scale
@@ -157,10 +155,8 @@ export function useObject3d(ctx) {
             vec3.z = scale
         }
         data.node.scale.set(vec3.x, vec3.y, vec3.z)
-        render();
         ctx.emit('update:scale', scale)
-        if (callback && typeof callback === 'function')
-            callback()
+        render(callback);
     }
     /**
      * Set Target
@@ -174,9 +170,7 @@ export function useObject3d(ctx) {
         vec3.y = target.hasOwnProperty('y') ? target.y : 0
         vec3.z = target.hasOwnProperty('z') ? target.z : 0
         data.node.lookAt(vec3.x, vec3.y, vec3.z);
-        render();
-        if (callback && typeof callback === 'function')
-            callback()
+        render(callback);
     }
     /**
      * 设置是否可见
@@ -186,9 +180,7 @@ export function useObject3d(ctx) {
     const setVisible = (visible, callback = null) => {
         visible = !!visible
         data.node.visible = visible
-        render()
-        if (callback && typeof callback === 'function')
-            callback()
+        render(callback)
     }
     /**
      * 渲染一帧

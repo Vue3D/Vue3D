@@ -1,10 +1,10 @@
 <template>
   <vue3d :width="width" :height="height" clearColor="rgb(255,255,255)">
-    <perspective-camera name="camera" :position="{x:0,y:0,z:20}" :target="{x:0,y:20,z:0}">
+    <perspective-camera name="camera" :position="{x:0,y:0,z:20}">
       <directional-light name="dire" v-model:position="position" :intensity="0.9"></directional-light>
     </perspective-camera>
     <ambient-light name="light" :intensity="0.1"></ambient-light>
-    <obj-loader name="obj" :path="path.obj" :position="{x:0,y:-5,z:0}" :scale="scale"
+    <obj-loader ref="loader" name="obj" :path="path.obj" :position="{x:0,y:-5,z:0}" v-model:scale="scale"
                 :map="path.uv" contain></obj-loader>
   </vue3d>
 </template>
@@ -26,9 +26,9 @@ export default {
       position: {x: 0, y: 0, z: 20},
       scale: 1,
       path: {
-        // obj: '/example/cup.obj',
+        obj: '/example/cup.obj',
         // uv:'/example/cup_map.jpg',
-        obj: 'https://s3.cifuwu.com/storage/model/2ce7855396fad3381298d9aaab5b466d0804fe24.obj',
+        // obj: 'https://s3.cifuwu.com/storage/model/2ce7855396fad3381298d9aaab5b466d0804fe24.obj',
         uv: 'https://s3.cifuwu.com/image/show/1080/6350c200f09097ad6bf8653daf421efc2019f026.png'
       }
     }
@@ -39,12 +39,13 @@ export default {
       this.width = document.body.clientWidth
       this.height = document.body.clientHeight
     })
-    // setInterval(() => {
-    //   this.scale += .1
-    // }, 200)
+    setInterval(() => {
+      // this.$refs.loader.render()
+      // this.scale += 0.001
+    }, 20)
     setTimeout(() => {
       // this.path.obj = 'https://s3.cifuwu.com/storage/model/2ce7855396fad3381298d9aaab5b466d0804fe24.obj'
-      this.path.obj = '/example/cup.obj'
+      // this.path.obj = '/example/cup.obj'
     }, 1000)
   },
   watch: {

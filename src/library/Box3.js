@@ -24,9 +24,9 @@ export default class Box3 {
     getContainedScale(vec3 = new Vector3(10, 10, 10)) {
         let scale = 1
         if (this.size.x > this.size.y) {
-            scale = vec3.x / this.size.x
+            scale = Math.round(vec3.x / this.size.x * 100) / 100
         } else {
-            scale = vec3.y / this.size.y
+            scale = Math.round(vec3.y / this.size.y * 100) / 100
         }
         return scale
     }

@@ -85,7 +85,7 @@ export default {
         emit(ev.renderer.rendered.handler) // 渲染完成后触发
 
         if (props.auto) {
-          this.render();
+          render();
         }
       })
     }
