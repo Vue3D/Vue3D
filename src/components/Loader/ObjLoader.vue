@@ -68,6 +68,7 @@ export default {
     }
 
     watch(() => props.path, () => {
+      if (!props.path) return
       loadObject(props.path).then(obj => {
         obj.name = props.name;
         if (data.node) {

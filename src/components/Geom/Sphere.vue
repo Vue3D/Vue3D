@@ -4,20 +4,37 @@
 
 <script>
 import {provide, watch} from "vue";
-import {BoxGeometry, Mesh} from 'three'
+import {SphereGeometry, Mesh} from 'three'
 import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
 import {ceramic} from "../../const/materials";
 
 export default {
-  name: "Cube",
+  name: "Sphere",
   props: {
     ...object3dProps,
-    x: {type: Number, default: 1},
-    y: {type: Number, default: 1},
-    z: {type: Number, default: 1},
-    xSegments: {type: Number, default: 1},
-    ySegments: {type: Number, default: 1},
-    zSegments: {type: Number, default: 1},
+    radius: {type: Number, default: 1},
+    widthSegments: {
+      type: Number, default: 64, validate(value) {
+        return value >= 3 && value <= 64
+      }
+    },
+    heightSegments: {
+      type: Number, default: 32, validate(value) {
+        return value >= 2 && value <= 32
+      }
+    },
+    phiStart: {type: Number, default: 0},
+    phiLength: {
+      type: Number, default() {
+        return Math.PI * 2
+      }
+    },
+    thetaStart: {type: Number, default: 0},
+    thetaLength: {
+      type: Number, default() {
+        return Math.PI
+      }
+    },
     material: {
       type: Object, default() {
         return ceramic
@@ -27,7 +44,7 @@ export default {
   },
   emits: [...object3dEmits],
   setup(props, ctx) {
-    const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
+    const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
     const object3d = new Mesh(geometry, props.material);
 
     const {
