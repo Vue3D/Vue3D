@@ -101,7 +101,7 @@ export default {
       }
 
       vue3d.add(props.id, handler)
-      vue3d.setActive(props.id)
+      vue3d.setActivated(props.id)
 
       // 加载完成
       process.mounted = true
@@ -129,7 +129,7 @@ export default {
     return {vue3d, canvas, process}
   },
   unmounted() {
-    this.vue3d.setActive(null)
+    this.vue3d.setActivated(null)
   }
 }
 </script>

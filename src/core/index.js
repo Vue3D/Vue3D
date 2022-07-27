@@ -51,7 +51,7 @@ export default class extends aggregation(event) {
      * 激活挂载数据对象
      * @param uuid
      */
-    setActive(uuid = null) {
+    setActivated(uuid = null) {
         if (uuid === null) {
             this.activatedUUID = null
             return true
@@ -61,6 +61,17 @@ export default class extends aggregation(event) {
         } else {
             return false
         }
+    }
+
+    /**
+     * 获取激活的挂载的数据对象
+     * @returns {null|*}
+     */
+    getActivated() {
+        if (this.activatedUUID && _store.hasOwnProperty(this.activatedUUID)) {
+            return _store[this.activatedUUID]
+        }
+        return null
     }
 
 }
