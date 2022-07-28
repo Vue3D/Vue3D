@@ -1,12 +1,12 @@
 <template>
-  <vue3d :width="width" :height="height">
+  <vue3d :width="width" :height="height" ref="v3d">
     <perspective-camera name="camera" :position="{x:0,y:0,z:20}">
-      <directional-light name="dire" v-model:position="position" :intensity="0.9"></directional-light>
+      <directional-light name="dire" v-model:position="position" :intensity="0.5"></directional-light>
     </perspective-camera>
     <ambient-light name="light" :intensity="0.1"></ambient-light>
     <!--    <obj-loader ref="loader" name="obj" :path="path.obj" :position="{x:0,y:-5,z:0}"-->
     <!--                :map="path.uv" contain></obj-loader>-->
-    <sphere></sphere>
+    <cube></cube>
   </vue3d>
 </template>
 
@@ -15,10 +15,22 @@ import {Cube, Sphere} from "../src/components/Geom";
 import {PerspectiveCamera} from "../src/components/Camera";
 import {AmbientLight, DirectionalLight} from "../src/components/Light";
 import {ObjLoader} from "../src/components/Loader";
+import {inject, onMounted, ref} from "vue";
+import {ev} from "../src/const/event";
 
 export default {
   name: "Example",
   components: {ObjLoader, AmbientLight, PerspectiveCamera, Cube, DirectionalLight, Sphere},
+  setup() {
+    const vue3d = inject('vue3d')
+    const v3d = ref(null)
+
+    onMounted(() => {
+      console.log(v3d.value)
+    })
+
+    return {vue3d, v3d}
+  },
   data() {
     return {
       ready: false,
@@ -41,6 +53,7 @@ export default {
       this.width = document.body.clientWidth
       this.height = document.body.clientHeight
     })
+    this.vue3d.emit(ev.renderer.render.handler)
     setInterval(() => {
       // this.$refs.loader.render()
       // this.scale += 0.001

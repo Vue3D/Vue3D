@@ -63,16 +63,6 @@ export default {
 
     let rendering = null // 渲染进程
 
-    // 监听尺寸变化
-    watch([() => props.width, () => props.height], () => {
-      if (!process.mounted) return
-      handler.renderer.setSize(props.width, props.height);
-    })
-    // 监听背景变化
-    watch([() => props.clearColor, () => props.clearAlpha], () => {
-      if (!process.mounted) return
-      handler.renderer.setClearColor(new THREE.Color(props.clearColor).getHex(), props.clearAlpha);
-    })
     /** 渲染一帧 **/
     const render = () => {
       if (rendering || props.pause) return;
@@ -89,6 +79,17 @@ export default {
         }
       })
     }
+
+    // 监听尺寸变化
+    watch([() => props.width, () => props.height], () => {
+      if (!process.mounted) return
+      handler.renderer.setSize(props.width, props.height);
+    })
+    // 监听背景变化
+    watch([() => props.clearColor, () => props.clearAlpha], () => {
+      if (!process.mounted) return
+      handler.renderer.setClearColor(new THREE.Color(props.clearColor).getHex(), props.clearAlpha);
+    })
 
     onMounted(() => {
 
@@ -126,7 +127,7 @@ export default {
       return props.height
     }))
 
-    return {vue3d, canvas, process}
+    return {vue3d, canvas, process, render, scenesManager}
   },
   unmounted() {
     this.vue3d.setActivated(null)
