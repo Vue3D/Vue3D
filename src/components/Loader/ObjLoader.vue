@@ -110,6 +110,7 @@ export default {
         } else if (typeof props.map === 'string') {
           props.material.map = new TextureLoader().load(props.map);
         }
+        render()
       }
     }, {immediate: true})
 
