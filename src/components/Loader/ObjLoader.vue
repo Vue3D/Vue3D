@@ -107,10 +107,12 @@ export default {
       if (props.map) {
         if (typeof props.map === 'object') {
           props.material.map = props.map
+          render()
         } else if (typeof props.map === 'string') {
-          props.material.map = new TextureLoader().load(props.map);
+          props.material.map = new TextureLoader().load(props.map, () => {
+            render()
+          });
         }
-        render()
       }
     }, {immediate: true})
 
