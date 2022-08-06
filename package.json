@@ -29,7 +29,7 @@
     "aggregation": "^1.2.7",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
-    "three": "^0.142.0"
+    "three": "^0.143.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
