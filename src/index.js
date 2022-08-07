@@ -2,6 +2,8 @@ import * as THREE from "three"
 import Vue3DHandler from "./core"
 import Vue3DComponent from './core/Vue3D.vue'
 import {componentsPrefix} from "./const/config"
+import {ev} from "./const/event"
+import * as materials from "./const/materials";
 import {PerspectiveCamera} from "./components/Camera"
 import {Cube, Sphere} from './components/Geom'
 import {AmbientLight, DirectionalLight} from "./components/Light"
@@ -26,7 +28,7 @@ export default {
 }
 
 export {
-    THREE,
+    THREE, ev, materials,
     PerspectiveCamera,
     Cube, Sphere,
     AmbientLight, DirectionalLight,
