@@ -4,7 +4,7 @@
 
 <script>
 import {PerspectiveCamera, CameraHelper} from 'three'
-import {computed, inject, provide, reactive, watch} from "vue";
+import {inject, provide, reactive, watch} from "vue";
 import Orbit from "../../library/Orbit";
 import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
 
@@ -36,13 +36,7 @@ export default {
     })
     const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
 
-    const {
-      handler,
-      process,
-      data,
-      init,
-      render,
-    } = useObject3d(ctx)
+    const {handler, process, data, init, render} = useObject3d(ctx)
 
     const updateCamera = () => {
       camera.fov = props.fov;
@@ -58,8 +52,8 @@ export default {
       handler.scene.add(helper)
     }
 
+    const orbit = new Orbit(camera, canvas.value)
     if (props.withOrbit) {
-      const orbit = new Orbit(camera, canvas.value)
       orbit.control.addEventListener('change', render, false);
     }
 
@@ -75,7 +69,7 @@ export default {
     provide('parent', data)
 
     return {
-      process, viewport, data
+      process, viewport, orbit, data
     }
   }
 }

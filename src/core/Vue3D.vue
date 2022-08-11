@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import * as THREE from "three";
+import {WebGLRenderer, Color} from "three";
 import {ref, reactive, computed, inject, provide, watch, markRaw, onMounted,} from "vue";
 import {nanoid} from "nanoid";
 import {useEventHandler} from "./event";
@@ -88,7 +88,7 @@ export default {
     // 监听背景变化
     watch([() => props.clearColor, () => props.clearAlpha], () => {
       if (!process.mounted) return
-      handler.renderer.setClearColor(new THREE.Color(props.clearColor).getHex(), props.clearAlpha);
+      handler.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
     })
 
     onMounted(() => {
@@ -96,10 +96,13 @@ export default {
       switch (props.mode.toLowerCase()) {
         case 'webgl':
         default:
-          handler.renderer = new THREE.WebGLRenderer({canvas: canvas.value, ...props.conf});
-          handler.renderer.setClearColor(new THREE.Color(props.clearColor).getHex(), props.clearAlpha);
+          handler.renderer = new WebGLRenderer({canvas: canvas.value, ...props.conf});
+          handler.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
           handler.renderer.setPixelRatio(props.ratio)
       }
+
+      // TODO: 增加一个版本号设置，这里隐藏了Three版本号
+      canvas.value.removeAttribute('data-engine')
 
       vue3d.add(props.id, handler)
       vue3d.setActivated(props.id)

@@ -2,12 +2,6 @@ import * as THREE from "three"
 import Vue3DHandler from "./core"
 import Vue3DComponent from './core/Vue3D.vue'
 import {componentsPrefix} from "./const/config"
-import {ev} from "./const/event"
-import * as materials from "./const/materials";
-import {PerspectiveCamera} from "./components/Camera"
-import {Cube, Sphere} from './components/Geom'
-import {AmbientLight, DirectionalLight} from "./components/Light"
-import {ObjLoader} from "./components/Loader"
 
 const defaultOptions = {
     componentsPrefix, // 组件前缀
@@ -27,12 +21,12 @@ export default {
     }
 }
 
-export {
-    THREE, ev, materials,
-    PerspectiveCamera,
-    Cube, Sphere,
-    AmbientLight, DirectionalLight,
-    ObjLoader
-}
+export {THREE}
 
+export {ev} from "./const/event"
+export * from "./const/materials";
 
+export * from "./components/Camera"
+export * from './components/Geom'
+export * from "./components/Light"
+export * from "./components/Loader"
