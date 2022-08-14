@@ -20,7 +20,7 @@ export default {
     zSegments: {type: Number, default: 1},
     material: {
       type: Object, default() {
-        return ceramic
+        return ceramic()
       }
     },
     withHelper: {type: Boolean, default: false}
@@ -47,7 +47,9 @@ export default {
     }
 
     setMaterial(props.material)
+
     init(object3d, props)
+
     provide('parent', data)
 
     return {process, data}

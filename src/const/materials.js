@@ -1,7 +1,7 @@
 import {MeshPhongMaterial} from 'three'
 
 export const ceramic = () => {
-    new MeshPhongMaterial({
+    return new MeshPhongMaterial({
         color: 0xffffff,
         bumpScale: 1,
         // roughness: 0,

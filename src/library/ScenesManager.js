@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import {Scene} from 'three'
 
 class ScenesManager {
 
@@ -37,7 +37,7 @@ class ScenesManager {
      * @returns {Scene}
      */
     init(name) {
-        let scene = new THREE.Scene();
+        let scene = new Scene();
         scene.name = name ? name : scene.uuid;
         return scene;
     }
@@ -119,7 +119,7 @@ class ScenesManager {
 
     /**
      * Set Active Scene
-     * @param index
+     * @param {number} index
      */
     setActive(index) {
         if (this.scenes.length > index && index >= 0) {

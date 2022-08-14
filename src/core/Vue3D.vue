@@ -7,12 +7,12 @@
 
 <script>
 import {WebGLRenderer, Color} from "three";
-import {ref, reactive, computed, inject, provide, watch, markRaw, onMounted,} from "vue";
+import {ref, reactive, computed, inject, provide, watch, markRaw, onMounted, onUnmounted,} from "vue";
 import {nanoid} from "nanoid";
-import {useEventHandler} from "./event";
 import {useDelegation} from '../composition/delegation'
-import {ev} from "../const/event";
 import ScenesManager from "../library/ScenesManager";
+import {useLifecycle} from "./useLifecycle";
+import {ev} from "../const/event";
 
 export default {
   name: "Vue3d",
@@ -41,39 +41,38 @@ export default {
     pause: {type: Boolean, default: false}, // 暂停渲染
     clearColor: {type: String, default: 'rgb(0,0,0)'}, // 背景颜色
     clearAlpha: {type: Number, default: 1}, // 背景透明度
+    active: {type: Boolean, default: false}, // 默认激活
+    dataEngine: {type: String, default: null}, // Canvas Dom data-engine attribute
   },
-  setup(props, context) {
+  setup(props, ctx) {
     const vue3d = inject('vue3d')
-    const canvas = ref(null) // dom
-    const process = reactive({
-      mounted: false, // 挂载完成
-      loaded: false, // 加载完成
-    })
 
-    const scenesManager = new ScenesManager(props.id)
+    const canvas = ref(null) // 获取 Canvas DOM
 
-    const handler = markRaw({
-      id: props.id,
-      scene: scenesManager.root, // 场景
-      camera: null, // 摄像机组
-    })
-
+    const process = reactive(useLifecycle(props.id))
     const delegation = useDelegation() // 委托
-    const {on, off, emit, all} = useEventHandler(props.id) // 事件器
 
-    let rendering = null // 渲染进程
+    const data = markRaw({
+      id: props.id,
+      dom: null, // 记录 Canvas DOM
+      scenesManager: new ScenesManager(props.id), // 场景管理器
+      renderer: null, // 渲染器
+      scene: null, // 当前场景
+      camera: null, // 当前摄像机
+    })
 
-    /** 渲染一帧 **/
+    /**
+     * 渲染
+     */
     const render = () => {
-      if (rendering || props.pause) return;
-      if (!handler.scene || !handler.camera) return;
-      rendering = requestAnimationFrame(() => {
+      if (process.rendering || props.pause) return;
+      if (!data.scene || !data.camera) return;
+      process.rendering = requestAnimationFrame(() => {
         delegation.call(this); // 调用委托中的方法
-        handler.renderer.render(handler.scene, handler.camera);
-        handler.camera.updateProjectionMatrix()
-        rendering = null; // 当前帧渲染完成，释放
-        emit(ev.renderer.rendered.handler) // 渲染完成后触发
-
+        data.renderer.render(data.scene, data.camera);
+        data.camera.updateProjectionMatrix()
+        process.rendering = null; // 当前帧渲染完成，释放
+        vue3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
         if (props.auto) {
           render();
         }
@@ -83,57 +82,62 @@ export default {
     // 监听尺寸变化
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
-      handler.renderer.setSize(props.width, props.height);
+      data.renderer.setSize(props.width, props.height);
     })
     // 监听背景变化
     watch([() => props.clearColor, () => props.clearAlpha], () => {
       if (!process.mounted) return
-      handler.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+      data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
     })
 
     onMounted(() => {
+      data.dom = canvas.value // 获取Dom对象
+      data.scene = data.scenesManager.getActive()
 
       switch (props.mode.toLowerCase()) {
         case 'webgl':
         default:
-          handler.renderer = new WebGLRenderer({canvas: canvas.value, ...props.conf});
-          handler.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
-          handler.renderer.setPixelRatio(props.ratio)
+          data.renderer = new WebGLRenderer({canvas: data.dom, ...props.conf});
+          data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+          data.renderer.setPixelRatio(props.ratio)
       }
 
-      // TODO: 增加一个版本号设置，这里隐藏了Three版本号
-      canvas.value.removeAttribute('data-engine')
+      if (props.dataEngine) {
+        data.dom.setAttribute('data-engine', props.dataEngine)
+      } else {
+        data.dom.removeAttribute('data-engine')
+      }
 
-      vue3d.add(props.id, handler)
-      vue3d.setActivated(props.id)
+      /** 创建事件对象 **/
+      vue3d.createPool(props.id, data) && vue3d.emit(ev.renderer.created.handler)
+
+      props.active && vue3d.setActive(props.id, () => {
+        vue3d.emit(ev.renderer.activate.handler)
+      })
 
       // 加载完成
       process.mounted = true
 
-      emit(ev.renderer.created.handler)
-      on(ev.renderer.render.handler, render)
+      vue3d.on(ev.renderer.render.handler, render, props.id)
 
       render()
     })
-    // Canvas DOM
-    provide('canvas', computed(() => {
-      return canvas.value
-    }))
-    provide('handler', handler) // Base Component Handler
-    provide('render', render)
-    provide('scenesManager', scenesManager) // Scenes Manager
-    provide('parent', {node: scenesManager.root}) // Current Node
+
+    onUnmounted(() => {
+      vue3d.removePool(props.id) && vue3d.emit(ev.renderer.destroy.handler)
+    })
+
+    provide('root', data)
+    provide('parent', {node: data.scenesManager.getActive()}) // Current Node
     provide('width', computed(() => {
       return props.width
     }))
     provide('height', computed(() => {
       return props.height
     }))
+    provide('render', render)
 
-    return {vue3d, canvas, process, render, scenesManager}
+    return {vue3d, canvas, process, delegation, data, render}
   },
-  unmounted() {
-    this.vue3d.setActivated(null)
-  }
 }
 </script>

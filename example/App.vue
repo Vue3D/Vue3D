@@ -1,14 +1,21 @@
 <template>
-  <vue3d :width="200" :height="200"></vue3d>
+  <vue3d :width="500" :height="500" active>
+    <perspective-camera main :width="200" :height="200" :position="{x:0,y:0,z:20}">
+      <directional-light :intensity="0.8"></directional-light>
+    </perspective-camera>
+    <cube></cube>
+  </vue3d>
 </template>
 
 <script>
 
-import Vue3d from "@vue3d/core/Vue3D.vue";
+import {PerspectiveCamera} from "@vue3d";
+import {DirectionalLight} from "@vue3d";
+import {Cube} from "@vue3d"
 
 export default {
   name: "Example",
-  components: {Vue3d},
+  components: {DirectionalLight, PerspectiveCamera, Cube},
   setup() {
 
   },

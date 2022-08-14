@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {PerspectiveCamera, CameraHelper} from 'three'
+import {PerspectiveCamera, CameraHelper, Vector4} from 'three'
 import {inject, provide, reactive, watch} from "vue";
 import Orbit from "../../library/Orbit";
 import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
@@ -23,24 +23,25 @@ export default {
     withHelper: {type: Boolean, default: false},
     visibleHelper: {type: Boolean, default: false},
     withOrbit: {type: Boolean, default: true},
+    main: {type: Boolean, default: false}
   },
   emits: [...object3dEmits],
   setup(props, ctx) {
     const vWidth = inject('width')
     const vHeight = inject('height')
-    const canvas = inject('canvas')
+    const {vue3d, root, parent, process, data, init, render} = useObject3d(ctx)
 
     const viewport = reactive({
       width: props.width ? props.width : vWidth.value,
       height: props.height ? props.height : vHeight.value
     })
-    const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
 
-    const {handler, process, data, init, render} = useObject3d(ctx)
+    const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
 
     const updateCamera = () => {
       camera.fov = props.fov;
       camera.aspect = viewport.width / viewport.height
+      camera.viewport = new Vector4(Math.floor(props.x), Math.floor(props.y), Math.ceil(viewport.width), Math.ceil(viewport.height))
       camera.updateProjectionMatrix();
       render()
     }
@@ -49,15 +50,15 @@ export default {
       const helper = new CameraHelper(camera);
       helper.visible = props.visibleHelper;
       camera.helper = helper;
-      handler.scene.add(helper)
+      root.scene.add(helper)
     }
 
-    const orbit = new Orbit(camera, canvas.value)
+    const orbit = new Orbit(camera, root.dom)
     if (props.withOrbit) {
       orbit.control.addEventListener('change', render, false);
     }
 
-    handler.camera = camera
+    props.main && (root.camera = camera)
 
     watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.value, () => props.fov], () => {
       viewport.width = props.width ? props.width : vWidth.value

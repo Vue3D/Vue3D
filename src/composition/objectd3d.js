@@ -34,13 +34,12 @@ export const object3dEmits = ['update:position', 'update:scale', 'update:rotatio
 
 export function useObject3d(ctx) {
     const vue3d = inject('vue3d')
-    const handler = inject('handler')
+    const root = inject('root')
     const parent = inject('parent')
     const process = reactive({
         mounted: false, // 挂载完成
         loaded: false, // 加载完成
     })
-
     // 数据节点
     const data = markRaw({
         node: null
@@ -187,7 +186,7 @@ export function useObject3d(ctx) {
      * @param callback
      */
     const render = (callback = null) => {
-        vue3d.fire(ev.renderer.render.handler)
+        vue3d.emit(ev.renderer.render.handler, null, root.id)
         if (callback && typeof callback === 'function') {
             callback()
         }
@@ -210,7 +209,7 @@ export function useObject3d(ctx) {
     provide('parent', data)
 
     return {
-        vue3d, handler, parent, process, data,
+        vue3d, root, parent, process, data,
         init, mount, unmount,
         setPosition, setRotation, setScale, setTarget, setVisible,
         render

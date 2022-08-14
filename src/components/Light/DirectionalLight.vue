@@ -34,6 +34,7 @@ export default {
     }
 
     init(light, props)
+
     provide('parent', data)
 
     return {
