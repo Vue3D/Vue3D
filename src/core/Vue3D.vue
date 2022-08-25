@@ -62,7 +62,7 @@ export default {
     })
 
     /**
-     * 渲染
+     * 渲染一帧
      */
     const render = () => {
       if (process.rendering || props.pause) return;
@@ -83,11 +83,13 @@ export default {
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
       data.renderer.setSize(props.width, props.height);
+      render();
     })
     // 监听背景变化
     watch([() => props.clearColor, () => props.clearAlpha], () => {
       if (!process.mounted) return
       data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+      render();
     })
 
     onMounted(() => {
