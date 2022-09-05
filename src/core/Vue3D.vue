@@ -44,7 +44,7 @@ export default {
     active: {type: Boolean, default: false}, // 默认激活
     dataEngine: {type: String, default: null}, // Canvas Dom data-engine attribute
   },
-  emits: ['update'],
+  emits: ['change'],
   setup(props, ctx) {
     const vue3d = inject('vue3d')
 
@@ -84,13 +84,13 @@ export default {
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
       data.renderer.setSize(props.width, props.height);
-      ctx.emit('updated')
+      ctx.emit('change')
     })
     // 监听背景变化
     watch([() => props.clearColor, () => props.clearAlpha], () => {
       if (!process.mounted) return
       data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
-      ctx.emit('updated')
+      ctx.emit('change')
     })
 
     onMounted(() => {
