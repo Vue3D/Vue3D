@@ -9,7 +9,7 @@
 import {WebGLRenderer, Color} from "three";
 import {ref, reactive, computed, inject, provide, watch, markRaw, onMounted, onUnmounted,} from "vue";
 import {nanoid} from "nanoid";
-import {useDelegation} from '../composition/delegation'
+import {useDelegation} from '../composition/delegation';
 import ScenesManager from "../library/ScenesManager";
 import {useLifecycle} from "./useLifecycle";
 import {ev} from "../const/event";
@@ -44,6 +44,7 @@ export default {
     active: {type: Boolean, default: false}, // 默认激活
     dataEngine: {type: String, default: null}, // Canvas Dom data-engine attribute
   },
+  emits: ['update'],
   setup(props, ctx) {
     const vue3d = inject('vue3d')
 
@@ -83,11 +84,13 @@ export default {
     watch([() => props.width, () => props.height], () => {
       if (!process.mounted) return
       data.renderer.setSize(props.width, props.height);
+      ctx.emit('updated')
     })
     // 监听背景变化
     watch([() => props.clearColor, () => props.clearAlpha], () => {
       if (!process.mounted) return
       data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+      ctx.emit('updated')
     })
 
     onMounted(() => {

@@ -70,7 +70,7 @@ export default {
     provide('parent', data)
 
     return {
-      process, viewport, orbit, data
+      process, viewport, orbit, data, updateCamera
     }
   }
 }
