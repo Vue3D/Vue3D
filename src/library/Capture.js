@@ -1,4 +1,4 @@
-import *as THREE from "three"
+import {Raycaster, Vector2} from "three"
 
 class Capture {
     constructor(canvas, camera, scenes_manager, callback) {
@@ -9,8 +9,8 @@ class Capture {
         this._all = []; // target all objects
         this._captured = null; // target object3d
 
-        this._caster = new THREE.Raycaster();// ray caster
-        this._point = new THREE.Vector2();// screen point
+        this._caster = new Raycaster();// ray caster
+        this._point = new Vector2();// screen point
         this._charged = false; // charge status
 
         this._supportTouch = "ontouchend" in document;

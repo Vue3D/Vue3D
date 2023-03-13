@@ -1,5 +1,4 @@
-import {Euler, Vector3} from "three";
-import * as THREE from "three";
+import {Box3 as THREE_BOX3, Vector3} from "three";
 
 export default class Box3 {
     size = new Vector3()
@@ -7,7 +6,7 @@ export default class Box3 {
 
     constructor(object3d) {
         this.object3d = object3d
-        const box = new THREE.Box3();
+        const box = new THREE_BOX3();
         box.setFromObject(object3d);
         box.getSize(this.size);
         box.getCenter(this.center)
