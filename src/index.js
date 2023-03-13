@@ -28,4 +28,3 @@ export * from './components/Geom'
 export * from "./components/Light"
 export * from "./components/Loader"
 
-export * from "three"
