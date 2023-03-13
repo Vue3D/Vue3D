@@ -16,6 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/Vue3D/Vue3D.git"
   },
+
   "keywords": [
     "vue",
     "three"
