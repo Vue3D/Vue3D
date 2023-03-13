@@ -1,4 +1,3 @@
-import * as THREE from "three"
 import Vue3DHandler from "./core"
 import Vue3DComponent from './core/Vue3D.vue'
 import {componentsPrefix} from "./const/config"
@@ -21,8 +20,6 @@ export default {
     }
 }
 
-export {THREE}
-
 export {ev} from "./const/event"
 export * from "./const/materials";
 
@@ -30,3 +27,5 @@ export * from "./components/Camera"
 export * from './components/Geom'
 export * from "./components/Light"
 export * from "./components/Loader"
+
+export * from "three"
