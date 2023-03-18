@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Vue3D/Vue3D#readme",
   "dependencies": {
-    "@unjuanable/jokes": "^0.2.1",
+    "@unjuanable/jokes": "^0.2.7",
     "aggregation": "^1.2.7",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
