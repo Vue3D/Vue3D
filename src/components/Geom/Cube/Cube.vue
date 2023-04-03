@@ -4,9 +4,9 @@
 
 <script>
 import {provide, watch} from "vue";
-import {BoxGeometry, Mesh} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
-import {ceramic} from "../../const/materials";
+import {BoxGeometry, Mesh} from '../../../../three'
+import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
+import {ceramic} from "../../../const/materials";
 
 export default {
   name: "Cube",

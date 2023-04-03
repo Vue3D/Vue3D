@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import {LoadingManager, TextureLoader} from 'three'
+import {LoadingManager, TextureLoader} from '../../../../three'
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
-import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
 import {inject, markRaw, provide, watch} from "vue";
-import {ceramic} from "../../const/materials";
-import Box3 from "../../library/Box3";
+import {ceramic} from "../../../const/materials";
+import Box3 from "../../../library/Box3";
 
 export default {
   name: "ObjLoader",

@@ -1,6 +1,6 @@
-import {Euler, Vector3} from "three";
+import {Euler} from "three";
 
-export const setObjectRotation = (obj, angle, callback = null) => {
+export const setObjectRotation = (obj, angle, callback = ()=>{}) => {
     if (!obj) return
     if (angle && angle.hasOwnProperty('x') && angle.hasOwnProperty('y') && angle.hasOwnProperty('z')) {
         const x = angle2euler(angle.x);
@@ -9,9 +9,7 @@ export const setObjectRotation = (obj, angle, callback = null) => {
         let euler = new Euler(x, y, z);
         obj.setRotationFromEuler(euler);
     }
-    if (callback && typeof callback === 'function') {
-        callback()
-    }
+    callback && callback()
 }
 
 /**

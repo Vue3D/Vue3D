@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import {DirectionalLight, DirectionalLightHelper} from 'three'
+import {DirectionalLight, DirectionalLightHelper} from '../../../../three'
 import {provide, onBeforeMount, onBeforeUnmount} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
 
 export default {
   name: "DirectionalLight",

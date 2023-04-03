@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import {PerspectiveCamera, CameraHelper, Vector4} from 'three'
+import {PerspectiveCamera, CameraHelper, Vector4} from '../../../../three'
 import {inject, provide, reactive, watch} from "vue";
-import Orbit from "../../library/Orbit";
-import {object3dEmits, object3dProps, useObject3d} from "../../composition/objectd3d";
+import Orbit from "../../../library/Orbit";
+import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
 
 export default {
   name: "PerspectiveCamera",
