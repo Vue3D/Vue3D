@@ -9,7 +9,6 @@
         </v3d-group>
         <v3d-grid-helper :layer="31" :size="100" :divisions="100"></v3d-grid-helper>
     </vue3d>
-    <div class="scene"></div>
 </template>
 
 <script setup>
