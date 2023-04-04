@@ -1,8 +1,9 @@
-import {inject, markRaw, provide, reactive, onBeforeMount, onBeforeUnmount, watch} from "vue";
+import {inject, markRaw, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
 import {Euler, Vector3} from "three";
 
 import {ev} from "../const/event";
 import {angle2euler} from "../utils";
+import {noop} from "@unjuanable/jokes";
 
 export const object3dProps = {
     name: {type: String, default: ''},
@@ -27,7 +28,12 @@ export const object3dProps = {
     target: {
         type: Object
     },
-    visible: {type: Boolean, default: true}
+    layer: {
+        type: Number, default: 0, validator(value) {
+            return value >= 0 || value < 32
+        }
+    },
+    visible: {type: Boolean, default: true},
 }
 
 export const object3dEmits = ['update:position', 'update:scale', 'update:rotation']
@@ -56,6 +62,7 @@ export function useObject3d(ctx) {
         setRotation(props.rotation)
         setScale(props.scale)
         setTarget(props.target)
+        setLayer(props.layer)
         setVisible(props.visible)
 
         watch(() => props.position, (val, oldValue) => {
@@ -107,12 +114,9 @@ export function useObject3d(ctx) {
      * @param pos
      * @param callback
      */
-    const setPosition = (pos, callback = null) => {
+    const setPosition = (pos, callback = noop) => {
         if (!pos) return
-        let vec3 = new Vector3()
-        vec3.x = pos.hasOwnProperty('x') ? pos.x : 0
-        vec3.y = pos.hasOwnProperty('y') ? pos.y : 0
-        vec3.z = pos.hasOwnProperty('z') ? pos.z : 0
+        let vec3 = Object.assign(new Vector3(), pos)
         data.node.position.set(vec3.x, vec3.y, vec3.z)
         ctx.emit('update:position', pos)
         render(callback);
@@ -122,12 +126,9 @@ export function useObject3d(ctx) {
      * @param angle
      * @param callback
      */
-    const setRotation = (angle, callback = null) => {
+    const setRotation = (angle, callback = noop) => {
         if (!angle) return
-        let vec3 = new Vector3()
-        vec3.x = angle.hasOwnProperty('x') ? angle.x : 0
-        vec3.y = angle.hasOwnProperty('y') ? angle.y : 0
-        vec3.z = angle.hasOwnProperty('z') ? angle.z : 0
+        let vec3 = Object.assign(new Vector3(), angle)
         const x = angle2euler(vec3.x);
         const y = angle2euler(vec3.y);
         const z = angle2euler(vec3.z);
@@ -141,13 +142,13 @@ export function useObject3d(ctx) {
      * @param scale
      * @param callback
      */
-    const setScale = (scale, callback = null) => {
+    const setScale = (scale, callback = noop) => {
         if (!scale) return
         let vec3 = new Vector3()
         if (typeof scale === 'object') {
-            vec3.x = scale.hasOwnProperty('x') ? scale.x : 0
-            vec3.y = scale.hasOwnProperty('y') ? scale.y : 0
-            vec3.z = scale.hasOwnProperty('z') ? scale.z : 0
+            vec3.x = scale.hasOwnProperty('x') ? scale.x : 1
+            vec3.y = scale.hasOwnProperty('y') ? scale.y : 1
+            vec3.z = scale.hasOwnProperty('z') ? scale.z : 1
         } else if (typeof scale === 'number') {
             vec3.x = scale
             vec3.y = scale
@@ -158,11 +159,21 @@ export function useObject3d(ctx) {
         render(callback);
     }
     /**
+     *
+     * @param layer
+     * @param callback
+     */
+    const setLayer = (layer, callback = noop) => {
+        if (!layer) return
+        data.node.layers.toggle(layer)
+        render(callback);
+    }
+    /**
      * Set Target
      * @param target
      * @param callback
      */
-    const setTarget = (target, callback = null) => {
+    const setTarget = (target, callback = noop) => {
         if (!target) return
         let vec3 = new Vector3()
         vec3.x = target.hasOwnProperty('x') ? target.x : 0
@@ -176,7 +187,7 @@ export function useObject3d(ctx) {
      * @param visible
      * @param callback
      */
-    const setVisible = (visible, callback = null) => {
+    const setVisible = (visible, callback = noop) => {
         visible = !!visible
         data.node.visible = visible
         render(callback)
@@ -185,7 +196,7 @@ export function useObject3d(ctx) {
      * 渲染一帧
      * @param callback
      */
-    const render = (callback = null) => {
+    const render = (callback = noop) => {
         vue3d.emit(ev.renderer.render.handler, null, root.id)
         if (callback && typeof callback === 'function') {
             callback()

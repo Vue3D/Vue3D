@@ -5,7 +5,7 @@
 <script>
 import {object3dEmits, object3dProps, useObject3d} from "@vue3d/composition/objectd3d";
 import {provide} from "vue";
-import {GridHelper} from '../../../../three'
+import {GridHelper} from 'three'
 
 export default {
     name: "GridHelper",

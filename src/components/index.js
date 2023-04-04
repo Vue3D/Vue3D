@@ -3,6 +3,7 @@ export {default as V3dScene} from './Scene'
 // Camera
 export {default as V3dPerspectiveCamera} from './Camera/PerspectiveCamera'
 // Geom
+export {default as V3dGroup} from './Geom/Group'
 export {default as V3dCube} from './Geom/Cube'
 export {default as V3dSphere} from './Geom/Sphere'
 // Helper
