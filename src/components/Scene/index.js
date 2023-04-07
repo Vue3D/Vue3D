@@ -1,9 +1,10 @@
-import Scene from "./Scene.vue"
-import {componentsPrefix} from "../../const/config";
+import _Scene from "./Scene.vue"
+import {getPrefixComponent} from "../../const/config";
 
-Scene.install = function (app) {
-    const prefix = app.config.globalProperties?.$vue3d?.componentsPrefix ?? componentsPrefix
-    app.component(`${prefix}${Scene.name}`, Scene);
-};
+const Scene = Object.assign(_Scene, {
+    install: function (app) {
+        app.component(getPrefixComponent(_Scene.name), _Scene);
+    }
+})
 
 export default Scene
