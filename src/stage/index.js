@@ -1,6 +1,7 @@
 import aggregation from 'aggregation/es6' // 模拟多重继承
 import {EventBus} from '@unjuanable/jokes/classes'
 import {ev} from "../const/event";
+import {noop} from "@unjuanable/jokes";
 
 // 默认配置文件
 const _defaultOptions = {
@@ -20,8 +21,11 @@ class Vue3d extends aggregation(EventBus) {
         this.options = options
     }
 
-    render() {
-        this.emit(ev.renderer.render.handler)
+    render(callback = noop, uuid = null) {
+        this.emit(ev.renderer.render.handler, null, uuid)
+        if (callback && typeof callback === 'function') {
+            callback()
+        }
     }
 }
 

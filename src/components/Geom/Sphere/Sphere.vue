@@ -5,7 +5,7 @@
 <script>
 import {provide, watch} from "vue";
 import {Mesh, SphereGeometry} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
 import {ceramic} from "../../../const/materials";
 
 export default {

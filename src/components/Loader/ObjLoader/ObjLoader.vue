@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import {LoadingManager, TextureLoader} from 'three'
-import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
-import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
+import {LoadingManager, TextureLoader, Object3D} from 'three'
+import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
+import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
 import {provide, watch} from "vue";
-import {ceramic} from "../../../const/materials";
+import {ceramic} from '../../../const/materials';
 import Box3 from "../../../library/Box3";
 
 export default {
@@ -18,9 +18,7 @@ export default {
         name: {type: String, default: 'Object3D'},
         path: {type: String},
         material: {
-            type: Object, default() {
-                return ceramic
-            }
+            type: Object, default: ceramic()
         },
         map: {type: [Object, String]},
         centered: {type: Boolean, default: false},
@@ -70,16 +68,22 @@ export default {
         watch(() => props.path, () => {
             if (!props.path) return
             loadObject(props.path).then(obj => {
-                obj.name = props.name;
+                const node = new Object3D();
+                node.name = props.name;
+
+                obj.traverse((child) => {
+                    node.add(child)
+                });
+
                 if (data.node) {
                     unmount(data.node)
                 }
-                data.node = obj;
+
                 setMaterial(props.material);
-                init(obj, props)
-                mount(obj)
+                init(node, props)
+                mount(node)
                 if (props.contain) {
-                    let box3 = new Box3(obj)
+                    let box3 = new Box3(node)
                     let scale = box3.getContainedScale()
 
                     /**
@@ -90,10 +94,10 @@ export default {
                      * @type {number}
                      */
                     const hi = setInterval(() => {
-                        if (obj.scale.x <= scale) {
+                        if (node.scale.x <= scale) {
                             clearInterval(hi)
                         } else {
-                            let s = obj.scale.x - 0.01
+                            let s = node.scale.x - 0.01
                             setScale(s)
                         }
                     }, 5)

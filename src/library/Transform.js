@@ -1,8 +1,8 @@
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {TransformControls} from 'three/addons/controls/TransformControls.js';
 
-class Orbit {
+class Transform {
     constructor(camera, canvas) {
-        this.control = new OrbitControls(camera, canvas);
+        this.control = new TransformControls(camera, canvas);
         // camera.position.set(0, 0, 10); // 给摄像机一个初始位置
         return this;
     }
@@ -20,4 +20,4 @@ class Orbit {
     }
 }
 
-export default Orbit
+export default Transform

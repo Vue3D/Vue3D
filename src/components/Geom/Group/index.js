@@ -1,5 +1,5 @@
 import _Group from "./Group.vue"
-import {getPrefixComponent} from "@vue3d/const/config";
+import {getPrefixComponent} from "../../../const/config";
 
 const Group = Object.assign(_Group, {
     install(app) {

@@ -6,7 +6,8 @@
 import {CameraHelper, PerspectiveCamera, Raycaster, Vector2, Vector4} from 'three'
 import {inject, provide, reactive, watch} from "vue";
 import Orbit from "../../../library/Orbit";
-import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
+import useRaycaster from "../useRaycaster";
 
 export default {
     name: "PerspectiveCamera",
@@ -24,14 +25,14 @@ export default {
         visibleHelper: {type: Boolean, default: false},
         withOrbit: {type: Boolean, default: true},
         withRay: {type: Boolean, default: true},
-        rayTarget: {type: Object}, // 传入V3d Component Ref
+        rayLayer: {type: Array},
         main: {type: Boolean, default: false}
     },
     emits: [...object3dEmits, 'cast'],
     setup(props, ctx) {
         const vWidth = inject('width')
         const vHeight = inject('height')
-        const {vue3d, root, parent, process, data, init, render} = useObject3d(ctx)
+        const {vue3d, stage, parent, process, data, init, render} = useObject3d(ctx)
 
         const viewport = reactive({
             width: props.width ? props.width : vWidth.value,
@@ -48,36 +49,33 @@ export default {
             render()
         }
 
+        updateCamera()
+
         if (props.withHelper) {
             const helper = new CameraHelper(camera);
             helper.visible = props.visibleHelper;
             camera.helper = helper;
-            root.scene.add(helper)
+            stage.scene.add(helper)
         }
 
         if (props.withRay) {
-            const pointer = new Vector2();
-            const raycaster = new Raycaster()
-
-            root.dom.addEventListener("pointermove", function (event) {
-                event.preventDefault();
-                pointer.x = ((event.clientX - props.x) / viewport.width) * 2 - 1;
-                pointer.y = -((event.clientY - props.y) / viewport.height) * 2 + 1;
-            })
-            root.dom.addEventListener("click", function (event) {
-                raycaster.setFromCamera(pointer, camera);
-                const target = props.rayTarget.data.node.children ?? root.scene.children
-                const intersection = raycaster.intersectObjects(target)
-                ctx.emit("cast", intersection)
+            const {raycaster} = useRaycaster(camera, stage, props.rayLayer, (targets) => {
+                ctx.emit("cast", targets)
             })
         }
 
-        const orbit = new Orbit(camera, root.dom)
+        let orbit = null
         if (props.withOrbit) {
-            orbit.control.addEventListener('change', render, false);
+            orbit = new Orbit(camera, stage.dom)
+            orbit.control.addEventListener('change', render, true);
         }
 
-        props.main && (root.camera = camera)
+        let transform = null
+        if (props.transform) {
+            transform = new Transform()
+        }
+
+        props.main && (stage.camera = camera)
 
         watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.value, () => props.fov], () => {
             viewport.width = props.width ? props.width : vWidth.value

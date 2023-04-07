@@ -1,5 +1,5 @@
-import Vue3DHandler from "./core"
-import Vue3DComponent from './core/Vue3D.vue'
+import Vue3DHandler from "./stage"
+import Vue3DComponent from '@vue3d/stage/Vue3D.vue'
 import {classHandler, componentsPrefix, mainComponentName} from "./const/config"
 
 const defaultOptions = {

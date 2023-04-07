@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {object3dEmits, object3dProps, useObject3d} from "../../../composition/objectd3d";
+import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
 import {Group} from "three";
 import {provide} from "vue";
 

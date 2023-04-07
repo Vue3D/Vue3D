@@ -1,12 +1,14 @@
 import {inject, markRaw, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
-import {Euler, Vector3} from "three";
+import {Euler, Vector3} from "../../three";
 
-import {ev} from "../const/event";
 import {angle2euler} from "../utils";
 import {noop} from "@unjuanable/jokes";
+import useLifecycle from "./useLifecycle"
+import useLayers, {layersProps} from "./useLayers"
 
 export const object3dProps = {
     name: {type: String, default: ''},
+    visible: {type: Boolean, default: true},
     position: {
         type: Object,
         default() {
@@ -28,28 +30,21 @@ export const object3dProps = {
     target: {
         type: Object
     },
-    layer: {
-        type: Number, default: 0, validator(value) {
-            return value >= 0 || value < 32
-        }
-    },
-    visible: {type: Boolean, default: true},
+    ...layersProps
 }
 
 export const object3dEmits = ['update:position', 'update:scale', 'update:rotation']
 
 export function useObject3d(ctx) {
     const vue3d = inject('vue3d')
-    const root = inject('root')
+    const stage = inject('stage')
     const parent = inject('parent')
-    const process = reactive({
-        mounted: false, // 挂载完成
-        loaded: false, // 加载完成
-    })
     // 数据节点
     const data = markRaw({
         node: null
     })
+
+    const {process, vLoaded, vMounted, vUnmount} = useLifecycle()
 
     /**
      * 初始化对象节点设置
@@ -57,36 +52,38 @@ export function useObject3d(ctx) {
      * @param props
      */
     const init = (object3d, props) => {
-        data.node = object3d
-        setPosition(props.position)
-        setRotation(props.rotation)
-        setScale(props.scale)
-        setTarget(props.target)
-        setLayer(props.layer)
-        setVisible(props.visible)
+        object3d.isVue3d = true
+        object3d.name = props.name
 
+        useLayers(object3d, props.layer)
+
+        // 监听
+        watch(() => props.visible, (val, oldValue) => {
+            setVisible(props.visible)
+        })
         watch(() => props.position, (val, oldValue) => {
             if (val === oldValue) return
             setPosition(props.position)
         }, {deep: true})
-
         watch(() => props.rotation, (val, oldValue) => {
             if (val === oldValue) return
             setRotation(props.rotation)
         }, {deep: true})
-
         watch(() => props.scale, (val, oldValue) => {
             if (val === oldValue) return
             setScale(props.scale)
         }, {deep: true})
-
         watch(() => props.target, (val, oldValue) => {
             setTarget(props.target)
         }, {deep: true})
 
-        watch(() => props.visible, (val, oldValue) => {
-            setVisible(props.visible)
-        })
+        // 初始化
+        data.node = object3d
+        setVisible(props.visible)
+        setPosition(props.position)
+        setRotation(props.rotation)
+        setScale(props.scale)
+        setTarget(props.target)
     }
 
     /**
@@ -159,16 +156,6 @@ export function useObject3d(ctx) {
         render(callback);
     }
     /**
-     *
-     * @param layer
-     * @param callback
-     */
-    const setLayer = (layer, callback = noop) => {
-        if (!layer) return
-        data.node.layers.toggle(layer)
-        render(callback);
-    }
-    /**
      * Set Target
      * @param target
      * @param callback
@@ -197,31 +184,31 @@ export function useObject3d(ctx) {
      * @param callback
      */
     const render = (callback = noop) => {
-        vue3d.emit(ev.renderer.render.handler, null, root.id)
-        if (callback && typeof callback === 'function') {
-            callback()
-        }
+        vue3d.render(callback, stage.id)
     }
 
     onBeforeMount(() => {
         if (!data.node) return
-        mount(data.node)
-        process.mounted = true
-        render()
+        vMounted(() => {
+            mount(data.node)
+            render()
+        })
     })
 
     onBeforeUnmount(() => {
         if (!data.node) return
-        unmount(data.node);
-        process.mounted = false;
-        render()
+        vUnmount(() => {
+            unmount(data.node);
+            render()
+        })
     })
 
     provide('parent', data)
 
     return {
-        vue3d, root, parent, process, data,
+        vue3d, stage, parent, process, data,
         init, mount, unmount,
+        vMounted, vUnmount, vLoaded,
         setPosition, setRotation, setScale, setTarget, setVisible,
         render
     }

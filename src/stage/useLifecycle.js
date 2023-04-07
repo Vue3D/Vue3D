@@ -18,6 +18,7 @@ export function useLifecycle(uuid) {
     vue3d.on(ev.renderer.loading.handler, () => {
         process.loading = true
     }, uuid)
+
     // 加载完成
     vue3d.on(ev.renderer.loaded.handler, () => {
         process.loading = false
