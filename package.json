@@ -1,6 +1,6 @@
 {
   "name": "vue3d",
-  "version": "0.22.3",
+  "version": "0.23.0",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "src/index.js",
   "files": [
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/Vue3D/Vue3D#readme",
   "dependencies": {
-    "@unjuanable/jokes": "^0.3.0",
+    "@unjuanable/jokes": "^0.2.8",
     "aggregation": "^1.2.7",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
