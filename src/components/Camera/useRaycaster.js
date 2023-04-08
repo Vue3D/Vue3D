@@ -1,5 +1,6 @@
 import {Raycaster, Vector2} from "three";
 import {inject, watch} from "vue";
+import {noop} from "@unjuanable/jokes";
 
 export function useRaycaster(camera, props, ctx) {
     if (!props.withRay) return
@@ -22,6 +23,21 @@ export function useRaycaster(camera, props, ctx) {
     const setNear = (near) => {
         raycaster.near = near
     }
+    /**
+     * 从捕获对象中选择最近对象
+     * @param target
+     * @returns {{isVue3d}|*|null}
+     */
+    const getTarget = (target) => {
+        if (!target) {
+            return null
+        }
+        if (target && target.hasOwnProperty("isVue3d") && target.isVue3d) {
+            return target
+        } else {
+            return getTarget(target.parent)
+        }
+    }
 
     stage.dom.addEventListener("pointerdown", function (event) {
         if (event.button === 0) {
@@ -42,6 +58,13 @@ export function useRaycaster(camera, props, ctx) {
             // 射线检测对象。参数二 recursive: 遍历检测子物体
             const targets = raycaster.intersectObjects(stage.scene.children, true)
             ctx.emit("raycast", targets)
+            // 提取最优解
+            if (targets.length > 0) {
+                const target = getTarget(targets[0].object)
+                ctx.emit("pick", target)
+            } else {
+                ctx.emit("pick", null)
+            }
         }
         charging = false
     }, false)
@@ -55,7 +78,7 @@ export function useRaycaster(camera, props, ctx) {
     return {raycaster}
 }
 
-export const raycasterEmits = ["raycast"]
+export const raycasterEmits = ["raycast", "pick"]
 export const raycasterProps = {
     withRay: {type: Boolean, default: true},
     rayLayer: {type: Array},

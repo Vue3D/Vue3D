@@ -11,6 +11,7 @@ import {object3dProps, useObject3d} from "../../useObjectd3d";
 export default {
     name: "BoxHelper",
     props: {
+        ...object3dProps,
         target: {
             type: [Object, null], validator(value) {
                 if (!value) return true
@@ -18,9 +19,9 @@ export default {
             },
         },
         color: {type: String, default: 'rgb(255,255,0)'},
-        ...object3dProps
+
     },
-    setup(props) {
+    setup(props, ctx) {
         const stage = inject('stage')
 
         const box = new BoxHelper();
@@ -28,9 +29,6 @@ export default {
         const {process} = useObject3d(box, props)
 
         const color = new Color(props.color).getHex()
-
-        stage.scene.add(box)
-
         const setTarget = (target, callback = noop) => {
             if (!target) {
                 box.visible = false
@@ -48,7 +46,10 @@ export default {
         watch(() => props.target, (val) => {
             setTarget(toRaw(val))
             stage.render();
-        }, {deep: false})
+        }, {deep: true})
+
+        stage.scene.add(box)
+
         return {process, box}
     }
 }

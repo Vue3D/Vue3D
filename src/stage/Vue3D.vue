@@ -75,7 +75,7 @@ export default {
                 data.renderer.render(data.scene, data.camera);
                 data.camera.updateProjectionMatrix()
                 process.rendering = null; // 当前帧渲染完成，释放
-                callback && callback()
+                if (typeof callback === "function") callback()
                 v3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
                 if (props.auto) {
                     render();

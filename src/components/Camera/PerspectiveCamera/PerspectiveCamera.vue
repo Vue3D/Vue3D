@@ -8,7 +8,7 @@ import {inject, reactive, watch} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from '../../useTransform'
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
-import {orbitControlsProps, useOrbitControls} from "../useOrbitControls";
+import {controlsProps, useControls} from "../useControls";
 
 export default {
     name: "PerspectiveCamera",
@@ -16,7 +16,7 @@ export default {
         ...object3dProps,
         ...transformProps,
         ...raycasterProps,
-        ...orbitControlsProps,
+        ...controlsProps,
         x: {type: Number, default: 0}, // viewport x 原点（x=0）：左
         y: {type: Number, default: 0}, // viewport y 原点（y=0）：下
         width: {type: Number}, // viewport width
@@ -68,7 +68,7 @@ export default {
         const {process, data} = useObject3d(camera, props, ctx)
         useTransform(camera, props, ctx)
         useRaycaster(camera, props, ctx)
-        useOrbitControls(camera, props, ctx)
+        useControls(camera, props, ctx)
         props.main && (stage.camera = camera)
 
         return {
