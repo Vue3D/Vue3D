@@ -1,6 +1,6 @@
 <template>
     <vue3d ref="scene" :width="800" :height="800" active>
-        <v3d-perspective-camera main withRay withOrbit autoOrbit :rayLayer="[0,1]" :position="{x:0,y:0,z:20}"
+        <v3d-perspective-camera main withRay withOrbit autoOrbit :rayLayer="[0]" :position="{x:0,y:0,z:20}"
                                 @raycast="onCast">
             <v3d-directional-light :intensity="0.8"></v3d-directional-light>
         </v3d-perspective-camera>
@@ -9,21 +9,14 @@
 
 
         <v3d-cube :position="{y:1}"></v3d-cube>
-        <v3d-obj-loader path="/example/cup.obj" contain :layer="[0,1]"></v3d-obj-loader>
+        <v3d-obj-loader path="/example/cup.obj" contain></v3d-obj-loader>
     </vue3d>
     <div class="scene"></div>
 </template>
 
 <script setup>
-import {
-    V3dCube,
-    V3dDirectionalLight,
-    V3dGridHelper,
-    V3dPerspectiveCamera,
-    V3dObjLoader,
-    V3dBoxHelper
-} from "../src";
-import {inject, markRaw, reactive, ref} from "vue";
+import {V3dBoxHelper, V3dCube, V3dDirectionalLight, V3dGridHelper, V3dObjLoader, V3dPerspectiveCamera} from "../src";
+import {inject, reactive, ref} from "vue";
 
 const v3d = inject('v3d')
 const scene = ref(null)
@@ -38,6 +31,7 @@ const onCast = (targets) => {
     } else {
         data.target = null
     }
+    console.log(targets)
 }
 </script>
 

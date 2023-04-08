@@ -30,12 +30,30 @@ export function useObject3d(object3d, props, ctx) {
         }
         if (Array.isArray(layer)) {
             for (let i of layer) {
-                console.log(i)
                 object3d.layers.enable(i)
             }
         } else {
             object3d.layers.enable(layer)
         }
+    }
+    /**
+     * 设置子对象图层
+     */
+    const setChildLayer = () => {
+        object3d.children.forEach(child => {
+            child.layers.disableAll()
+            if (!props.layer) {
+                child.layers.enableAll()
+                return
+            }
+            if (Array.isArray(props.layer)) {
+                for (let i of props.layer) {
+                    child.layers.enable(i)
+                }
+            } else {
+                child.layers.enable(props.layer)
+            }
+        })
     }
     /**
      * 设置是否可见
@@ -98,7 +116,8 @@ export function useObject3d(object3d, props, ctx) {
         process, data,
         mount, unmount,
         setVisible,
-        setLayer
+        setLayer,
+        setChildLayer
     }
 }
 

@@ -1,6 +1,5 @@
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {inject} from "vue";
-import {or} from "three/nodes";
 
 export function useOrbitControls(camera, props, ctx) {
     if (!props.withOrbit) return

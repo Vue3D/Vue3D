@@ -6,9 +6,9 @@
 import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
 import {inject, reactive, watch} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from '../../useTransform'
-import {useRaycaster, raycasterProps, raycasterEmits} from "../useRaycaster";
-import {useOrbitControls, orbitControlsProps} from "../useOrbitControls";
+import {transformEmits, transformProps, useTransform} from '../../useTransform'
+import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
+import {orbitControlsProps, useOrbitControls} from "../useOrbitControls";
 
 export default {
     name: "PerspectiveCamera",

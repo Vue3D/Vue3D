@@ -6,7 +6,7 @@
 import {AmbientLight} from 'three'
 import {provide} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
 export default {
     name: "AmbientLight",

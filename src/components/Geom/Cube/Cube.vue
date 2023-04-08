@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import {provide, watch} from "vue";
+import {provide} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useMaterial, materialProps} from "../../useMaterial";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {materialProps, useMaterial} from "../../useMaterial";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
 export default {
     name: "Cube",

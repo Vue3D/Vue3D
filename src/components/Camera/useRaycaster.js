@@ -1,5 +1,4 @@
 import {Raycaster, Vector2} from "three";
-import {noop} from "@unjuanable/jokes";
 import {inject, watch} from "vue";
 
 export function useRaycaster(camera, props, ctx) {
@@ -40,14 +39,18 @@ export function useRaycaster(camera, props, ctx) {
             pointer.x = ((event.clientX - camera.viewport.x) / camera.viewport.w) * 2 - 1;
             pointer.y = -((event.clientY - camera.viewport.y) / camera.viewport.z) * 2 + 1;
             raycaster.setFromCamera(pointer, camera);
-            for (let layer of props.rayLayer) {
-                raycaster.layers.enable(layer)
-            }
-            const targets = raycaster.intersectObjects(stage.scene.children, false)
+            // 射线检测对象。参数二 recursive: 遍历检测子物体
+            const targets = raycaster.intersectObjects(stage.scene.children, true)
             ctx.emit("raycast", targets)
         }
         charging = false
     }, false)
+
+    if (props.rayLayer) {
+        for (let layer of props.rayLayer) {
+            raycaster.layers.enable(layer)
+        }
+    }
 
     return {raycaster}
 }

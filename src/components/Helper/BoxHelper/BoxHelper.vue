@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import {inject, provide, toRaw, watch} from "vue";
-import {BoxHelper, Color, Object3D} from 'three'
+import {inject, toRaw, watch} from "vue";
+import {BoxHelper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
-import {useObject3d, object3dProps} from "../../useObjectd3d";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
 
 export default {
     name: "BoxHelper",

@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import {useObject3d, object3dProps,} from "../../useObjectd3d";
-import {useTransform, transformEmits, transformProps} from "../../useTransform";
+import {object3dProps, useObject3d,} from "../../useObjectd3d";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {Group} from "three";
-import {provide} from "vue";
 
 export default {
     name: "Group",

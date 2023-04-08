@@ -4,9 +4,9 @@
 
 <script>
 import {DirectionalLight, DirectionalLightHelper} from 'three'
-import {inject, provide} from "vue";
+import {inject} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
 export default {
     name: "DirectionalLight",

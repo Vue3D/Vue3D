@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import {WebGLRenderer, Color} from "three";
-import {ref, reactive, computed, inject, provide, watch, markRaw, onMounted, onUnmounted,} from "vue";
+import {Color, WebGLRenderer} from "three";
+import {computed, inject, markRaw, onMounted, onUnmounted, provide, reactive, ref, watch,} from "vue";
 import {nanoid} from "nanoid";
 import {useDelegation} from './useDelegation';
 import ScenesManager from "./ScenesManager";

@@ -4,7 +4,7 @@
 
 <script>
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {provide} from "vue";
 import {GridHelper} from 'three'
 

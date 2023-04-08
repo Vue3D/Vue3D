@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import {LoadingManager, TextureLoader, Object3D} from 'three'
+import {LoadingManager, Object3D, TextureLoader} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
-import {useMaterial, materialProps} from "../../useMaterial";
-import {provide, watch, inject} from "vue";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {materialProps, useMaterial} from "../../useMaterial";
+import {inject, watch} from "vue";
 import Box3 from "../../../library/Box3";
 
 export default {
@@ -25,14 +25,14 @@ export default {
         contain: {type: Boolean, default: false},
     },
     setup(props, ctx) {
-        const render = inject("render")
+        const stage = inject("stage")
         const manager = new LoadingManager()
         const loader = new OBJLoader(manager)
         const object3d = new Object3D();
 
-        const {process, data} = useObject3d(object3d, props, ctx)
+        const {process, data, unmount, mount, setChildLayer} = useObject3d(object3d, props, ctx)
         const {setScale} = useTransform(object3d, props, ctx)
-        const {setMaterial} = useMaterial(object3d, props.material)
+        useMaterial(object3d, props.material)
 
         const loadObject = (path) => {
             return new Promise((resolve, reject) => {
@@ -49,53 +49,37 @@ export default {
             })
         }
 
-        const setMtl = (mtl) => {
+        const setMaterial = (mtl) => {
             if (data.node && mtl) {
                 data.node.traverse((child) => {
                     if (child.type === 'Mesh') {
                         child.material = mtl;
                     }
                 });
-                render();
+                stage.render();
             }
         }
 
         watch(() => props.path, () => {
             if (!props.path) return
             loadObject(props.path).then(obj => {
-                node.name = props.name;
+                obj.name = props.name;
                 obj.traverse((child) => {
-                    node.add(child)
+                    setChildLayer(child, props.layer)
+                    object3d.add(child)
                 });
 
-                if (data.node) {
-                    unmount(data.node)
+                if (object3d) {
+                    unmount(object3d)
                 }
 
                 setMaterial(props.material);
-                init(node, props)
-                mount(node)
+                mount(object3d)
                 if (props.contain) {
-                    let box3 = new Box3(node)
+                    let box3 = new Box3(object3d)
                     let scale = box3.getContainedScale()
-
-                    /**
-                     * 逐渐缩小到既定比例
-                     * TODO: 直接缩放scale小于0.02左右会产生一个渲染的bug，
-                     *        因此通过间接缩小的方式临时处理渲染的问题。
-                     *        后期看看three更新或者其他渠道修复这个问题
-                     * @type {number}
-                     */
-                    const hi = setInterval(() => {
-                        if (node.scale.x <= scale) {
-                            clearInterval(hi)
-                        } else {
-                            let s = node.scale.x - 0.01
-                            setScale(s)
-                        }
-                    }, 5)
-
-                    render()
+                    setScale(scale)
+                    stage.render()
                 }
             })
         }, {immediate: true})
@@ -104,18 +88,17 @@ export default {
             if (props.map) {
                 if (typeof props.map === 'object') {
                     props.material.map = props.map
-                    render()
+                    stage.render()
                 } else if (typeof props.map === 'string') {
                     props.material.map = new TextureLoader().load(props.map, () => {
-                        render()
+                        stage.render()
                     });
                 }
             }
         }, {immediate: true})
 
-        provide('parent', data)
         return {
-            process, data, render
+            process, data
         }
     }
 }

@@ -3,11 +3,10 @@
 </template>
 
 <script>
-import {provide} from "vue";
 import {Mesh, SphereGeometry} from 'three'
-import {useObject3d, object3dProps} from "../../useObjectd3d";
-import {useTransform, transformProps, transformEmits} from "../../useTransform";
-import {useMaterial, materialProps} from "../../useMaterial";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {materialProps, useMaterial} from "../../useMaterial";
 
 export default {
     name: "Sphere",
