@@ -10,6 +10,7 @@ const _defaultOptions = {
 
 /** @class Vue3d - 三维渲染组件库 **/
 class Vue3d extends aggregation(EventBus) {
+    options
 
     /**
      *

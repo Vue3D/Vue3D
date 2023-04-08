@@ -5,39 +5,34 @@
 <script>
 import {LoadingManager, TextureLoader, Object3D} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
-import {provide, watch} from "vue";
-import {ceramic} from '../../../const/materials';
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {useMaterial, materialProps} from "../../useMaterial";
+import {provide, watch, inject} from "vue";
 import Box3 from "../../../library/Box3";
 
 export default {
     name: "ObjLoader",
-    emits: [...object3dEmits, 'loaded', 'progress', 'error'],
+    emits: [...transformEmits, 'loaded', 'progress', 'error'],
     props: {
         ...object3dProps,
+        ...transformProps,
+        ...materialProps,
         name: {type: String, default: 'Object3D'},
         path: {type: String},
-        material: {
-            type: Object, default: ceramic()
-        },
         map: {type: [Object, String]},
         centered: {type: Boolean, default: false},
         contain: {type: Boolean, default: false},
     },
     setup(props, ctx) {
+        const render = inject("render")
         const manager = new LoadingManager()
         const loader = new OBJLoader(manager)
+        const object3d = new Object3D();
 
-        const {
-            process,
-            data,
-            init,
-            mount,
-            unmount,
-            render,
-            setScale,
-            setPosition,
-        } = useObject3d(ctx)
+        const {process, data} = useObject3d(object3d, props, ctx)
+        const {setScale} = useTransform(object3d, props, ctx)
+        const {setMaterial} = useMaterial(object3d, props.material)
 
         const loadObject = (path) => {
             return new Promise((resolve, reject) => {
@@ -54,7 +49,7 @@ export default {
             })
         }
 
-        const setMaterial = (mtl) => {
+        const setMtl = (mtl) => {
             if (data.node && mtl) {
                 data.node.traverse((child) => {
                     if (child.type === 'Mesh') {
@@ -68,9 +63,7 @@ export default {
         watch(() => props.path, () => {
             if (!props.path) return
             loadObject(props.path).then(obj => {
-                const node = new Object3D();
                 node.name = props.name;
-
                 obj.traverse((child) => {
                     node.add(child)
                 });

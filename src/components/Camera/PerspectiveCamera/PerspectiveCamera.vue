@@ -3,16 +3,20 @@
 </template>
 
 <script>
-import {CameraHelper, PerspectiveCamera, Raycaster, Vector2, Vector4} from 'three'
-import {inject, provide, reactive, watch} from "vue";
-import Orbit from "../../../library/Orbit";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
-import useRaycaster from "../useRaycaster";
+import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
+import {inject, reactive, watch} from "vue";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from '../../useTransform'
+import {useRaycaster, raycasterProps, raycasterEmits} from "../useRaycaster";
+import {useOrbitControls, orbitControlsProps} from "../useOrbitControls";
 
 export default {
     name: "PerspectiveCamera",
     props: {
         ...object3dProps,
+        ...transformProps,
+        ...raycasterProps,
+        ...orbitControlsProps,
         x: {type: Number, default: 0}, // viewport x 原点（x=0）：左
         y: {type: Number, default: 0}, // viewport y 原点（y=0）：下
         width: {type: Number}, // viewport width
@@ -23,16 +27,13 @@ export default {
         /* helper */
         withHelper: {type: Boolean, default: false},
         visibleHelper: {type: Boolean, default: false},
-        withOrbit: {type: Boolean, default: true},
-        withRay: {type: Boolean, default: true},
-        rayLayer: {type: Array},
         main: {type: Boolean, default: false}
     },
-    emits: [...object3dEmits, 'cast'],
+    emits: ['cast', ...transformEmits, ...raycasterEmits],
     setup(props, ctx) {
         const vWidth = inject('width')
         const vHeight = inject('height')
-        const {vue3d, stage, parent, process, data, init, render} = useObject3d(ctx)
+        const stage = inject('stage')
 
         const viewport = reactive({
             width: props.width ? props.width : vWidth.value,
@@ -41,14 +42,19 @@ export default {
 
         const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
 
+        watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.value, () => props.fov], () => {
+            viewport.width = props.width ? props.width : vWidth.value
+            viewport.height = props.height ? props.height : vHeight.value
+            updateCamera()
+        })
+
         const updateCamera = () => {
             camera.fov = props.fov;
             camera.aspect = viewport.width / viewport.height
             camera.viewport = new Vector4(Math.floor(props.x), Math.floor(props.y), Math.ceil(viewport.width), Math.ceil(viewport.height))
             camera.updateProjectionMatrix();
-            render()
+            stage.render()
         }
-
         updateCamera()
 
         if (props.withHelper) {
@@ -58,36 +64,15 @@ export default {
             stage.scene.add(helper)
         }
 
-        if (props.withRay) {
-            const {raycaster} = useRaycaster(camera, stage, props.rayLayer, (targets) => {
-                ctx.emit("cast", targets)
-            })
-        }
-
-        let orbit = null
-        if (props.withOrbit) {
-            orbit = new Orbit(camera, stage.dom)
-            orbit.control.addEventListener('change', render, true);
-        }
-
-        let transform = null
-        if (props.transform) {
-            transform = new Transform()
-        }
-
+        // 初始化
+        const {process, data} = useObject3d(camera, props, ctx)
+        useTransform(camera, props, ctx)
+        useRaycaster(camera, props, ctx)
+        useOrbitControls(camera, props, ctx)
         props.main && (stage.camera = camera)
 
-        watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.value, () => props.fov], () => {
-            viewport.width = props.width ? props.width : vWidth.value
-            viewport.height = props.height ? props.height : vHeight.value
-            updateCamera()
-        })
-
-        init(camera, props)
-        provide('parent', data)
-
         return {
-            process, viewport, orbit, data, updateCamera
+            process, viewport, updateCamera
         }
     }
 }

@@ -1,10 +1,10 @@
 import Vue3DHandler from "./stage"
-import Vue3DComponent from '@vue3d/stage/Vue3D.vue'
-import {classHandler, componentsPrefix, mainComponentName} from "./const/config"
+import Vue3DComponent from './stage/Vue3D.vue'
+import {componentsPrefix, mainComponentName} from "./const/config"
+import {markRaw} from "vue";
 
 const defaultOptions = {
     componentsPrefix, // 组件前缀
-    classHandler,
     mainComponentName
 }
 
@@ -14,9 +14,9 @@ export default {
         const options = Object.assign({}, defaultOptions, customOptions)
         const vue3d = new Vue3DHandler(options)
         // 全局注入
-        app.config.globalProperties['$' + options.classHandler] = vue3d
+        app.config.globalProperties['$v3d'] = vue3d
         // 组件注入
-        app.provide(options.classHandler, vue3d)
+        app.provide('v3d', markRaw(vue3d))
         // 全局注册组件
         app.component(options.mainComponentName ?? Vue3DComponent.name, Vue3DComponent)
     }

@@ -5,9 +5,8 @@
 <script>
 import {inject, provide, toRaw, watch} from "vue";
 import {BoxHelper, Color, Object3D} from 'three'
-import useLifecycle from '../../useLifecycle'
-import useLayers, {layersProps} from "../../useLayers";
 import {noop} from "@unjuanable/jokes";
+import {useObject3d, object3dProps} from "../../useObjectd3d";
 
 export default {
     name: "BoxHelper",
@@ -19,16 +18,14 @@ export default {
             },
         },
         color: {type: String, default: 'rgb(255,255,0)'},
-        ...layersProps
+        ...object3dProps
     },
     setup(props) {
-        const vue3d = inject('vue3d')
         const stage = inject('stage')
 
         const box = new BoxHelper();
 
-        const {process} = useLifecycle()
-        const {setLayer} = useLayers(box, props.layer)
+        const {process} = useObject3d(box, props)
 
         const color = new Color(props.color).getHex()
 
@@ -42,7 +39,7 @@ export default {
             box.visible = true
             if (target && target.hasOwnProperty("isVue3d") && target.isVue3d) {
                 box.setFromObject(target, color)
-                vue3d.render(callback);
+                stage.render(callback);
             } else {
                 setTarget(target.parent)
             }
@@ -50,7 +47,7 @@ export default {
 
         watch(() => props.target, (val) => {
             setTarget(toRaw(val))
-            vue3d.render();
+            stage.render();
         }, {deep: false})
         return {process, box}
     }

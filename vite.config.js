@@ -5,9 +5,7 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue()], resolve: {
-        alias: {
-            '@vue3d': '/src'
-        }
+        alias: {}
     },
     css: {
         // css预处理器

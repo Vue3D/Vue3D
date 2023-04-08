@@ -1,28 +1,27 @@
 import {Raycaster, Vector2} from "three";
 import {noop} from "@unjuanable/jokes";
+import {inject, watch} from "vue";
 
-/**
- * 使用射线
- * @param camera 发射射线的摄像机
- * @param stage 当前舞台节点
- * @param layers 可以捕获的对象图层
- * @param callback
- */
-export default function useRaycaster(camera, stage, layers = [], callback = noop) {
+export function useRaycaster(camera, props, ctx) {
+    if (!props.withRay) return
+    const stage = inject("stage")
     const pointer = new Vector2();
     const raycaster = new Raycaster()
 
     let charging = false // 充能
 
-    /**
-     * 调整射线距离参数
-     * @param near
-     * @param far
-     */
-    const setRay = (near, far) => {
-        if (!near) near = 0;
-        if (near) raycaster.near = near;
-        if (far && far > near) raycaster.far = far;
+    watch(() => props.rayFar, (val) => {
+        setFar(val)
+    })
+    watch(() => props.rayNear, (val) => {
+        setNear(val)
+    })
+
+    const setFar = (far) => {
+        raycaster.far = far
+    }
+    const setNear = (near) => {
+        raycaster.near = near
     }
 
     stage.dom.addEventListener("pointerdown", function (event) {
@@ -41,17 +40,22 @@ export default function useRaycaster(camera, stage, layers = [], callback = noop
             pointer.x = ((event.clientX - camera.viewport.x) / camera.viewport.w) * 2 - 1;
             pointer.y = -((event.clientY - camera.viewport.y) / camera.viewport.z) * 2 + 1;
             raycaster.setFromCamera(pointer, camera);
-            for (let layer of layers) {
+            for (let layer of props.rayLayer) {
                 raycaster.layers.enable(layer)
             }
             const targets = raycaster.intersectObjects(stage.scene.children, false)
-            callback && callback(targets)
-            console.log(targets)
-            console.log(stage.scene.children)
-            console.log(raycaster)
+            ctx.emit("raycast", targets)
         }
         charging = false
     }, false)
 
     return {raycaster}
+}
+
+export const raycasterEmits = ["raycast"]
+export const raycasterProps = {
+    withRay: {type: Boolean, default: true},
+    rayLayer: {type: Array},
+    rayFar: {type: Number},
+    rayNear: {type: Number}
 }

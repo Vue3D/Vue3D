@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
 import {provide} from "vue";
 import {GridHelper} from 'three'
 
@@ -11,22 +12,19 @@ export default {
     name: "GridHelper",
     props: {
         ...object3dProps,
+        ...transformProps,
         x: {type: Number, default: 1},
         y: {type: Number, default: 1},
         z: {type: Number, default: 1},
         size: {type: Number, default: 10},
         divisions: {type: Number, default: 10},
     },
-    emits: [...object3dEmits],
+    emits: [...transformEmits],
     setup(props, ctx) {
         const helper = new GridHelper(props.size, props.divisions);
-        const {
-            process,
-            data,
-            init,
-        } = useObject3d(ctx)
+        const {process, data,} = useObject3d(helper, props, ctx)
+        useTransform(helper, props, ctx)
 
-        init(helper, props)
         provide('parent', data)
 
         return {

@@ -4,27 +4,26 @@
 
 <script>
 import {DirectionalLight, DirectionalLightHelper} from 'three'
-import {provide} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
+import {inject, provide} from "vue";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
 
 export default {
     name: "DirectionalLight",
     props: {
         ...object3dProps,
+        ...transformProps,
         color: {type: String, default: 'rgb(255,255,255)'},
         intensity: {type: Number, default: 1.0},
         withHelper: {type: Boolean, default: true},
         visibleHelper: {type: Boolean, default: false},
     },
-    emits: [...object3dEmits],
+    emits: [...transformEmits],
     setup(props, ctx) {
         const light = new DirectionalLight(props.color, props.intensity);
-
-        const {
-            process,
-            data,
-            init,
-        } = useObject3d(ctx)
+        const p = inject("parent")
+        const {process, data,} = useObject3d(light, props, ctx)
+        useTransform(light, props, ctx)
 
         if (props.withHelper) {
             const helper = new DirectionalLightHelper(light);
@@ -32,10 +31,6 @@ export default {
             light.helper = helper;
             light.add(helper)
         }
-
-        init(light, props)
-
-        provide('parent', data)
 
         return {
             process, data

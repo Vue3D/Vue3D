@@ -13,6 +13,7 @@ import {useDelegation} from './useDelegation';
 import ScenesManager from "./ScenesManager";
 import {useLifecycle} from "./useLifecycle";
 import {ev} from "../const/event";
+import {noop} from "@unjuanable/jokes";
 
 export default {
     name: "Vue3d",
@@ -46,7 +47,7 @@ export default {
     },
     emits: ['updated'],
     setup(props, ctx) {
-        const vue3d = inject('vue3d')
+        const v3d = inject('v3d')
 
         const canvas = ref(null) // 获取 Canvas DOM
 
@@ -57,23 +58,25 @@ export default {
             id: props.id,
             dom: null, // 记录 Canvas DOM
             scenesManager: new ScenesManager(props.id), // 场景管理器
-            renderer: null, // 渲染器
             scene: null, // 当前场景
             camera: null, // 当前摄像机
+            renderer: null, // 渲染器
+            render: noop,
         })
 
         /**
          * 渲染
          */
-        const render = () => {
+        const render = (callback = noop) => {
             if (process.rendering || props.pause) return;
             if (!data.scene || !data.camera) return;
             process.rendering = requestAnimationFrame(() => {
-                delegation.call(this); // 调用委托中的方法
+                delegation.call(data); // 调用委托中的方法
                 data.renderer.render(data.scene, data.camera);
                 data.camera.updateProjectionMatrix()
                 process.rendering = null; // 当前帧渲染完成，释放
-                vue3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
+                callback && callback()
+                v3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
                 if (props.auto) {
                     render();
                 }
@@ -96,7 +99,6 @@ export default {
         onMounted(() => {
             data.dom = canvas.value // 获取Dom对象
             data.scene = data.scenesManager.getActive()
-
             switch (props.mode.toLowerCase()) {
                 case 'webgl':
                 default:
@@ -112,22 +114,22 @@ export default {
             }
 
             /** 创建事件对象 **/
-            vue3d.createPool(props.id, data) && vue3d.emit(ev.renderer.created.handler)
+            v3d.createPool(props.id, data) && v3d.emit(ev.renderer.created.handler)
 
-            props.active && vue3d.setActive(props.id, () => {
-                vue3d.emit(ev.renderer.activate.handler)
+            props.active && v3d.setActive(props.id, () => {
+                v3d.emit(ev.renderer.activate.handler)
             })
 
             // 加载完成
             process.mounted = true
 
-            vue3d.on(ev.renderer.render.handler, render, props.id)
-
+            v3d.on(ev.renderer.render.handler, render, props.id)
+            data.render = render
             render()
         })
 
         onUnmounted(() => {
-            vue3d.removePool(props.id) && vue3d.emit(ev.renderer.destroy.handler)
+            v3d.removePool(props.id) && v3d.emit(ev.renderer.destroy.handler)
         })
 
         provide('stage', data)
@@ -138,9 +140,8 @@ export default {
         provide('height', computed(() => {
             return props.height
         }))
-        provide('render', render)
 
-        return {vue3d, canvas, process, delegation, data, render}
+        return {v3d, canvas, process, delegation, data, render}
     },
 }
 </script>

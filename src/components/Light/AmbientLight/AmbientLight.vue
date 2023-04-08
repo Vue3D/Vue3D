@@ -5,25 +5,24 @@
 <script>
 import {AmbientLight} from 'three'
 import {provide} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
 
 export default {
     name: "AmbientLight",
     props: {
         ...object3dProps,
+        ...transformProps,
         color: {type: String, default: 'rgb(255,255,255)'},
         intensity: {type: Number, default: 1.0},
     },
-    emits: [...object3dEmits],
+    emits: [...transformEmits],
     setup(props, ctx) {
         const light = new AmbientLight(props.color, props.intensity);
-        const {
-            process,
-            data,
-            init,
-        } = useObject3d(ctx)
 
-        init(light, props)
+        const {process, data,} = useObject3d(light, props, ctx)
+        useTransform(light, props, ctx)
+
         provide('parent', data)
 
         return {

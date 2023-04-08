@@ -1,13 +1,15 @@
 <template>
     <vue3d ref="scene" :width="800" :height="800" active>
-        <v3d-perspective-camera main withRay :layer="[0,31]" :rayLayer="[0]" :position="{x:0,y:0,z:20}" @cast="onCast">
+        <v3d-perspective-camera main withRay withOrbit autoOrbit :rayLayer="[0,1]" :position="{x:0,y:0,z:20}"
+                                @raycast="onCast">
             <v3d-directional-light :intensity="0.8"></v3d-directional-light>
         </v3d-perspective-camera>
         <v3d-grid-helper :layer="31" :size="100" :divisions="100"></v3d-grid-helper>
         <v3d-box-helper :layer="31" :target="data.target"></v3d-box-helper>
 
-        <v3d-cube :position="{y:-1}"></v3d-cube>
-        <v3d-obj-loader path="/example/cup.obj"></v3d-obj-loader>
+
+        <v3d-cube :position="{y:1}"></v3d-cube>
+        <v3d-obj-loader path="/example/cup.obj" contain :layer="[0,1]"></v3d-obj-loader>
     </vue3d>
     <div class="scene"></div>
 </template>
@@ -20,10 +22,12 @@ import {
     V3dPerspectiveCamera,
     V3dObjLoader,
     V3dBoxHelper
-} from "@vue3d";
-import {markRaw, reactive, ref} from "vue";
+} from "../src";
+import {inject, markRaw, reactive, ref} from "vue";
 
+const v3d = inject('v3d')
 const scene = ref(null)
+
 const data = reactive({
     target: null
 })

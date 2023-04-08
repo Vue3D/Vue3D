@@ -3,15 +3,18 @@
 </template>
 
 <script>
-import {provide, watch} from "vue";
+import {provide} from "vue";
 import {Mesh, SphereGeometry} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
-import {ceramic} from "../../../const/materials";
+import {useObject3d, object3dProps} from "../../useObjectd3d";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
+import {useMaterial, materialProps} from "../../useMaterial";
 
 export default {
     name: "Sphere",
     props: {
         ...object3dProps,
+        ...transformProps,
+        ...materialProps,
         radius: {type: Number, default: 1},
         widthSegments: {
             type: Number, default: 64, validate(value) {
@@ -35,35 +38,16 @@ export default {
                 return Math.PI
             }
         },
-        material: {
-            type: Object, default() {
-                return ceramic()
-            }
-        },
-        withHelper: {type: Boolean, default: false}
+        withHelper: {type: Boolean, default: false},
     },
-    emits: [...object3dEmits],
+    emits: [...transformEmits],
     setup(props, ctx) {
         const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
         const object3d = new Mesh(geometry, props.material);
 
-        const {process, data, init,} = useObject3d(ctx)
-
-        watch(() => props.material, (val) => {
-            setMaterial(val)
-        })
-
-        const setMaterial = (mtl) => {
-            if (geometry) {
-                object3d.material = mtl;
-            }
-        }
-
-        setMaterial(props.material)
-
-        init(object3d, props)
-
-        provide('parent', data)
+        const {process, data} = useObject3d(object3d, props, ctx)
+        useTransform(object3d, props, ctx)
+        useMaterial(object3d, props.material)
 
         return {process, data}
     },

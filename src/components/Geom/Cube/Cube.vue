@@ -5,46 +5,32 @@
 <script>
 import {provide, watch} from "vue";
 import {BoxGeometry, Mesh} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObjectd3d";
-import {ceramic} from "../../../const/materials";
+import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {useMaterial, materialProps} from "../../useMaterial";
+import {useTransform, transformProps, transformEmits} from "../../useTransform";
 
 export default {
     name: "Cube",
     props: {
         ...object3dProps,
+        ...transformProps,
         x: {type: Number, default: 1},
         y: {type: Number, default: 1},
         z: {type: Number, default: 1},
         xSegments: {type: Number, default: 1},
         ySegments: {type: Number, default: 1},
         zSegments: {type: Number, default: 1},
-        material: {
-            type: Object, default() {
-                return ceramic()
-            }
-        },
-        withHelper: {type: Boolean, default: false}
+        withHelper: {type: Boolean, default: false},
+        ...materialProps
     },
-    emits: [...object3dEmits],
+    emits: [...transformEmits],
     setup(props, ctx) {
         const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
         const object3d = new Mesh(geometry, props.material);
 
-        const {process, data, init,} = useObject3d(ctx)
-
-        watch(() => props.material, (val) => {
-            setMaterial(val)
-        })
-
-        const setMaterial = (mtl) => {
-            if (geometry) {
-                object3d.material = mtl;
-            }
-        }
-
-        setMaterial(props.material)
-
-        init(object3d, props)
+        const {process, data} = useObject3d(object3d, props, ctx)
+        useTransform(object3d, props, ctx)
+        useMaterial(object3d, props.material)
 
         provide('parent', data)
 
