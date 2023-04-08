@@ -1,6 +1,6 @@
 <template>
     <vue3d ref="scene" :width="800" :height="800" active>
-        <v3d-perspective-camera main withRay :control="['orbit','transform']" orbitAuto :rayLayer="[0]"
+        <v3d-perspective-camera main withRay :control="['orbit','transform']" :rayLayer="[0]"
                                 :position="{x:0,y:0,z:20}"
                                 @pick="onPick">
             <v3d-directional-light :intensity="0.8"></v3d-directional-light>
@@ -26,6 +26,7 @@ const data = reactive({
 })
 
 const onPick = (target) => {
+    // console.log(target)
     data.target = target
 }
 </script>

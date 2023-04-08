@@ -60,8 +60,12 @@ export function useRaycaster(camera, props, ctx) {
             ctx.emit("raycast", targets)
             // 提取最优解
             if (targets.length > 0) {
-                const target = getTarget(targets[0].object)
-                ctx.emit("pick", target)
+                let best = null
+                for (let target of targets) {
+                    best = getTarget(target.object)
+                    if (best) break
+                }
+                ctx.emit("pick", best)
             } else {
                 ctx.emit("pick", null)
             }

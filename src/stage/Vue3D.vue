@@ -62,6 +62,7 @@ export default {
             camera: null, // 当前摄像机
             renderer: null, // 渲染器
             render: noop,
+            delegation
         })
 
         /**

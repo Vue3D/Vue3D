@@ -9,28 +9,31 @@ export function useControls(camera, props, ctx) {
     if (props.control && props.control.includes("orbit")) {
         orbit = new OrbitControls(camera, stage.dom)
 
-        watch(() => props.orbitAuto, (val) => {
-            orbit.autoRotate = val
-        })
+        watch(() => props.autoRotate, (val) => {
+            if (props.autoRotate > 0) {
+                orbit.autoRotate = true
+                orbit.autoRotateSpeed = props.autoRotate
+            }
+        }, {immediate: true})
         orbit.addEventListener("change", stage.render, true)
-        orbit.autoRotate = props.orbitAuto
+        stage.delegation.add(orbit.update)
     }
     // Transform
     if (props.control && props.control.includes("transform")) {
         tf = new TransformControls(camera, stage.dom)
         watch(() => props.tfMode, (val) => {
             tf.setMode(val)
-        })
+        }, {immediate: true})
         watch(() => props.tfSpace, (val) => {
             tf.setSpace(val)
-        })
+        }, {immediate: true})
         tf.addEventListener('change', stage.render);
         tf.addEventListener('dragging-changed', function (event) {
             orbit.enabled = !event.value;
         });
-        tf.setMode(props.tfMode)
-        tf.setSpace(props.tfSpace)
-        // stage.scene.add(tf)
+        tf.layers.disable(props.rayLayer)
+        console.log(tf)
+        stage.scene.add(tf)
     }
 
     return {orbit, tf}
@@ -38,7 +41,7 @@ export function useControls(camera, props, ctx) {
 
 export const controlsProps = {
     control: {type: Array},
-    orbitAuto: {type: Boolean, default: false},
+    autoRotate: {type: Number, default: 0}, // 必须stage的属性auto=true
     tfMode: {
         type: String, default: "translate", validator(val) {
             return ["translate", "rotate", "scale"].includes(val)
