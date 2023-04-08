@@ -1,5 +1,5 @@
-import Vue3DHandler from "./stage"
-import Vue3DComponent from './stage/Vue3D.vue'
+import Vue3DHandler from "./core"
+import Vue3DStage from './components/Stage'
 import {componentsPrefix, mainComponentName} from "./const/config"
 import {markRaw} from "vue";
 
@@ -18,7 +18,7 @@ export default {
         // 组件注入
         app.provide('v3d', markRaw(vue3d))
         // 全局注册组件
-        app.component(options.mainComponentName ?? Vue3DComponent.name, Vue3DComponent)
+        app.component(options.mainComponentName ?? Vue3DStage.name, Vue3DStage)
     }
 }
 
