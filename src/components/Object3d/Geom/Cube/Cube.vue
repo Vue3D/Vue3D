@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {provide} from "vue";
+import {provide, reactive} from "vue";
 import {BoxGeometry, Mesh} from '../../../../../three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialProps, useMaterial} from "../../useMaterial";
@@ -14,6 +14,7 @@ export default {
     props: {
         ...object3dProps,
         ...transformProps,
+        ...materialProps,
         x: {type: Number, default: 1},
         y: {type: Number, default: 1},
         z: {type: Number, default: 1},
@@ -21,12 +22,11 @@ export default {
         ySegments: {type: Number, default: 1},
         zSegments: {type: Number, default: 1},
         withHelper: {type: Boolean, default: false},
-        ...materialProps
     },
     emits: [...transformEmits],
     setup(props, ctx) {
-        const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments);
-        const object3d = new Mesh(geometry, props.material);
+        const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
+        const object3d = reactive(new Mesh(geometry, props.material))
 
         const {process, data} = useObject3d(object3d, props, ctx)
         useTransform(object3d, props, ctx)

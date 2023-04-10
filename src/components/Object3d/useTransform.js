@@ -1,7 +1,7 @@
 import {Euler, Vector3} from "../../../three";
 import {noop} from "@unjuanable/jokes";
 import {angle2euler} from "../../utils";
-import {inject, watch} from "vue";
+import {inject, reactive, toRaw, watch, watchEffect} from "vue";
 
 export function useTransform(object3d, props, ctx) {
     const stage = inject('stage')
@@ -15,7 +15,6 @@ export function useTransform(object3d, props, ctx) {
         if (!pos) return
         let vec3 = Object.assign(new Vector3(), pos)
         object3d.position.set(vec3.x, vec3.y, vec3.z)
-        ctx.emit('update:position', pos)
         stage.render(callback);
     }
     /**
@@ -29,7 +28,7 @@ export function useTransform(object3d, props, ctx) {
         const x = angle2euler(vec3.x);
         const y = angle2euler(vec3.y);
         const z = angle2euler(vec3.z);
-        let euler = new Euler(x, y, z);
+        let euler = reactive(new Euler(x, y, z));
         object3d.setRotationFromEuler(euler);
         ctx.emit('update:rotation', angle)
         stage.render(callback);
@@ -41,11 +40,9 @@ export function useTransform(object3d, props, ctx) {
      */
     const setScale = (scale, callback = noop) => {
         if (!scale) return
-        let vec3 = new Vector3()
+        let vec3 = new Vector3(1, 1, 1)
         if (typeof scale === 'object') {
-            vec3.x = scale.hasOwnProperty('x') ? scale.x : 1
-            vec3.y = scale.hasOwnProperty('y') ? scale.y : 1
-            vec3.z = scale.hasOwnProperty('z') ? scale.z : 1
+            vec3 = Object.assign(vec3, scale)
         } else if (typeof scale === 'number') {
             vec3.x = scale
             vec3.y = scale
@@ -75,10 +72,10 @@ export function useTransform(object3d, props, ctx) {
         if (val === oldValue) return
         setPosition(props.position)
     }, {deep: true, immediate: true})
-    watch(() => props.rotation, (val, oldValue) => {
-        if (val === oldValue) return
-        setRotation(props.rotation)
-    }, {deep: true, immediate: true})
+    // watch(() => props.rotation, (val, oldValue) => {
+    //     if (val === oldValue) return
+    //     setRotation(props.rotation)
+    // }, {deep: true, immediate: true})
     watch(() => props.scale, (val, oldValue) => {
         if (val === oldValue) return
         setScale(props.scale)
@@ -87,6 +84,17 @@ export function useTransform(object3d, props, ctx) {
         setTarget(props.target)
     }, {deep: true, immediate: true})
 
+    watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
+        ctx.emit('update:position', {x, y, z})
+    })
+    watch([() => object3d.rotation, () => object3d.rotation.y, () => object3d.rotation.z], ([x, y, z]) => {
+        ctx.emit('update:rotation', {x, y, z})
+    })
+    watch([() => object3d.scale.x, () => object3d.scale.y, () => object3d.scale.z], ([x, y, z]) => {
+        ctx.emit('update:scale', {x, y, z})
+    })
+
+    console.log(object3d.rotation)
     return {setPosition, setRotation, setScale, setTarget}
 }
 

@@ -4,7 +4,7 @@
 
 <script>
 import {AmbientLight} from '../../../../../three'
-import {provide} from "vue";
+import {provide, reactive} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
@@ -18,7 +18,7 @@ export default {
     },
     emits: [...transformEmits],
     setup(props, ctx) {
-        const light = new AmbientLight(props.color, props.intensity);
+        const light = reactive(new AmbientLight(props.color, props.intensity))
 
         const {process, data,} = useObject3d(light, props, ctx)
         useTransform(light, props, ctx)

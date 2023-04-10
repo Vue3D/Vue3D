@@ -8,7 +8,7 @@ import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {materialProps, useMaterial} from "../../useMaterial";
-import {inject, watch} from "vue";
+import {inject, reactive, watch} from "vue";
 import Box3 from "../../../../library/Box3";
 
 export default {
@@ -28,7 +28,7 @@ export default {
         const stage = inject("stage")
         const manager = new LoadingManager()
         const loader = new OBJLoader(manager)
-        const object3d = new Object3D();
+        const object3d = reactive(new Object3D());
 
         const {process, data, unmount, mount, setChildLayer} = useObject3d(object3d, props, ctx)
         const {setScale} = useTransform(object3d, props, ctx)

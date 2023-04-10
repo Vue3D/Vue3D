@@ -4,7 +4,7 @@
 
 <script>
 import {CameraHelper, PerspectiveCamera, Vector4} from '../../../../../three'
-import {inject, reactive, watch} from "vue";
+import {inject, reactive, toRaw, watch} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from '../../useTransform'
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
@@ -40,7 +40,7 @@ export default {
             height: props.height ? props.height : vHeight.value
         })
 
-        const camera = new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far);
+        const camera = reactive(new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far))
 
         const updateCamera = () => {
             camera.fov = props.fov;
@@ -64,11 +64,12 @@ export default {
         }, {immediate: true})
 
         // 初始化
-        const {process, data} = useObject3d(camera, props, ctx)
+        const {process} = useObject3d(camera, props, ctx)
         useTransform(camera, props, ctx)
         useRaycaster(camera, props, ctx)
         useControls(camera, props, ctx)
-        props.main && (stage.camera = camera)
+
+        props.main && (stage.camera = toRaw(camera))
 
         return {
             process, viewport, updateCamera

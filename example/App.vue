@@ -5,8 +5,9 @@
         </v3d-perspective-camera>
         <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
         <!--        <v3d-box-helper :layer="31" :target="data.target"></v3d-box-helper>-->
-        <v3d-cube :position="{y:1}"></v3d-cube>
-        <v3d-obj-loader path="/example/cup.obj" contain></v3d-obj-loader>
+        <v3d-cube v-model:position="data.position" v-model:rotation="data.rotation"></v3d-cube>
+        <v3d-obj-loader path="/example/cup.obj" contain v-model:position="data.position"
+                        v-model:rotation="data.rotation"></v3d-obj-loader>
     </vue3d>
     <div class="scene"></div>
 </template>
@@ -32,7 +33,10 @@ watch(mode, (val) => {
 })
 
 const data = reactive({
-    target: null
+    target: null,
+    position: {x: 0, y: 0, z: 0},
+    rotation: {x: 0, y: 0, z: 0},
+    scale: {x: 1, y: 1, z: 1}
 })
 
 const onPick = (target) => {
@@ -62,6 +66,7 @@ onMounted(() => {
         }
     })
 })
+
 </script>
 
 <style>

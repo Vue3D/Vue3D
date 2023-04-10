@@ -1,4 +1,4 @@
-import {inject, markRaw, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
+import {inject, markRaw, onBeforeMount, onBeforeUnmount, provide, reactive, toRaw, watch} from "vue";
 
 import {noop} from "@unjuanable/jokes";
 
@@ -68,7 +68,7 @@ export function useObject3d(object3d, props, ctx) {
      */
     const mount = (object3d) => {
         if (parent.node) {
-            parent.node?.add(object3d);
+            parent.node?.add(toRaw(object3d));
         }
         stage.render()
     }

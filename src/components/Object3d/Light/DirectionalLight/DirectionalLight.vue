@@ -4,7 +4,7 @@
 
 <script>
 import {DirectionalLight, DirectionalLightHelper} from '../../../../../three'
-import {inject} from "vue";
+import {inject, reactive} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
@@ -20,9 +20,9 @@ export default {
     },
     emits: [...transformEmits],
     setup(props, ctx) {
-        const light = new DirectionalLight(props.color, props.intensity);
-        const p = inject("parent")
-        const {process, data,} = useObject3d(light, props, ctx)
+        const light = reactive(new DirectionalLight(props.color, props.intensity))
+
+        const {process, data} = useObject3d(light, props, ctx)
         useTransform(light, props, ctx)
 
         if (props.withHelper) {

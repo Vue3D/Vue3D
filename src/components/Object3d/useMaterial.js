@@ -1,12 +1,12 @@
 import {ceramic} from "../../const/materials";
 
-export function useMaterial(object3d, material) {
+export function useMaterial(object3d, props, ctx) {
     const setMaterial = (material) => {
         if (object3d && material) {
             object3d.material = material;
         }
     }
-    setMaterial(material)
+    setMaterial(props.material)
 
     return {setMaterial}
 }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {inject, toRaw, watch} from "vue";
+import {inject, reactive, toRaw, watch} from "vue";
 import {BoxHelper, Color} from '../../../../../three'
 import {noop} from "@unjuanable/jokes";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
@@ -24,7 +24,7 @@ export default {
     setup(props, ctx) {
         const stage = inject('stage')
 
-        const box = new BoxHelper();
+        const box = reactive(new BoxHelper())
 
         const {process} = useObject3d(box, props)
 

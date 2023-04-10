@@ -5,7 +5,7 @@
 <script>
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
-import {provide} from "vue";
+import {provide, reactive} from "vue";
 import {GridHelper} from '../../../../../three'
 
 export default {
@@ -22,7 +22,8 @@ export default {
     },
     emits: [...transformEmits],
     setup(props, ctx) {
-        const helper = new GridHelper(props.size, props.divisions);
+        const helper = reactive(new GridHelper(props.size, props.divisions))
+
         const {process, data,} = useObject3d(helper, props, ctx)
         useTransform(helper, props, ctx)
 
