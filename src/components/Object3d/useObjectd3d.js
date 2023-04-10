@@ -110,6 +110,9 @@ export function useObject3d(object3d, props, ctx) {
     watch(() => props.visible, (val) => {
         setVisible(val)
     }, {immediate: true})
+    watch(() => props.layer, (val) => {
+        setLayer(val)
+    }, {immediate: true})
 
     return {
         process, data,

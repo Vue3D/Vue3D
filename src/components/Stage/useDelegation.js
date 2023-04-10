@@ -1,7 +1,7 @@
 import {inject} from 'vue'
 
 export default function useDelegation() {
-    const v3d = inject("v3d")
+    const $vue3d = inject("$vue3d")
     const _delegations = []
 
     /**
@@ -12,7 +12,7 @@ export default function useDelegation() {
         if (typeof func === 'function') {
             _delegations.push(func);
         } else {
-            v3d.error('delegation need a function');
+            $vue3d.error('delegation need a function');
         }
     }
 
@@ -25,7 +25,7 @@ export default function useDelegation() {
         if (index >= 0) {
             _delegations.slice(index, 1);
         } else {
-            v3d.warn('Function is not found in delegation');
+            $vue3d.warn('Function is not found in delegation');
         }
     }
 

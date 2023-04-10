@@ -10,4 +10,9 @@ export const ev = {
         loading: {handler: '{uuid}:renderer:loading'}, // 开始加载
         loaded: {handler: '{uuid}:renderer:loaded'}, // 加载完成
     },
+    selected: {
+        attach: {handler: '{uuid}:selected:attach'},
+        tfMode: {handler: '{uuid}:selected:tfMode'},
+        tfSpace: {handler: '{uuid}:selected:tfSpace'},
+    }
 }

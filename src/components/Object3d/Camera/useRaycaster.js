@@ -1,9 +1,10 @@
 import {Raycaster, Vector2} from "../../../../three";
 import {inject, watch} from "vue";
-import {noop} from "@unjuanable/jokes";
+import {ev} from "../../../const/event";
 
 export function useRaycaster(camera, props, ctx) {
     if (!props.withRay) return
+    const $vue3d = inject("$vue3d")
     const stage = inject("stage")
     const pointer = new Vector2();
     const raycaster = new Raycaster()
@@ -53,6 +54,7 @@ export function useRaycaster(camera, props, ctx) {
                     if (best) break
                 }
                 ctx.emit("pick", best)
+                $vue3d.emit(ev.selected.attach.handler, best, stage.id)
             } else {
                 ctx.emit("pick", null)
             }
@@ -60,8 +62,8 @@ export function useRaycaster(camera, props, ctx) {
         charging = false
     }, false)
 
-    if (props.rayLayer) {
-        for (let layer of props.rayLayer) {
+    if (Array.isArray(props.withRay)) {
+        for (let layer of props.withRay) {
             raycaster.layers.enable(layer)
         }
     }
@@ -78,8 +80,7 @@ export function useRaycaster(camera, props, ctx) {
 
 export const raycasterEmits = ["raycast", "pick"]
 export const raycasterProps = {
-    withRay: {type: Boolean, default: true},
-    rayLayer: {type: Array},
+    withRay: {type: [Boolean, Array], default: true},
     rayFar: {type: Number},
     rayNear: {type: Number}
 }

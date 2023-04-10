@@ -8,7 +8,7 @@ import {inject, reactive, watch} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from '../../useTransform'
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
-import {controlsProps, useControls} from "../useControls";
+import {controlsProps, controlsEmits, useControls} from "../useControls";
 
 export default {
     name: "PerspectiveCamera",
@@ -29,7 +29,7 @@ export default {
         visibleHelper: {type: Boolean, default: false},
         main: {type: Boolean, default: false}
     },
-    emits: ['cast', ...transformEmits, ...raycasterEmits],
+    emits: ['cast', ...transformEmits, ...raycasterEmits, ...controlsEmits],
     setup(props, ctx) {
         const vWidth = inject('width')
         const vHeight = inject('height')

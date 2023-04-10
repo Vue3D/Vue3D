@@ -1,6 +1,7 @@
 import {inject, watch} from "vue";
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TransformControls} from "three/addons/controls/TransformControls.js";
+import {ev} from "../../../const/event";
 
 export function useControls(camera, props, ctx) {
     const stage = inject("stage")
@@ -18,35 +19,68 @@ export function useControls(camera, props, ctx) {
         orbit.addEventListener("change", stage.render, true)
         stage.delegation.add(orbit.update)
     }
+
     // Transform
     if (props.control && props.control.includes("transform")) {
+        const $vue3d = inject("$vue3d")
+
         tf = new TransformControls(camera, stage.dom)
-        watch(() => props.tfMode, (val) => {
-            tf.setMode(val)
-        }, {immediate: true})
-        watch(() => props.tfSpace, (val) => {
-            tf.setSpace(val)
-        }, {immediate: true})
+        let mode, space
+
         tf.addEventListener('change', stage.render);
         tf.addEventListener('dragging-changed', function (event) {
             orbit.enabled = !event.value;
         });
+
+        watch(() => props.tfMode, (val) => {
+            mode = val ?? "translate"
+            tf.setMode(mode)
+        }, {immediate: true})
+        watch(() => props.tfSpace, (val) => {
+            space = val ?? "world"
+            tf.setSpace(space)
+        }, {immediate: true})
+        // set target
+        $vue3d.on(ev.selected.attach.handler, (target) => {
+            if (target) {
+                tf.attach(target)
+            } else {
+                tf.detach()
+            }
+        }, stage.id)
+        // set transform mode
+        $vue3d.on(ev.selected.tfMode.handler, (val) => {
+            tf.setMode(val)
+            ctx.emit("update:tfMode", val)
+        }, stage.id)
+        // set transform space
+        $vue3d.on(ev.selected.tfSpace.handler, (val) => {
+            if (val && ["world", "local"].includes(val)) {
+                space = val
+            } else {
+                space = space === "world" ? "local" : "world"
+            }
+            tf.setSpace(space)
+            ctx.emit("update:tfSpace", space)
+        }, stage.id)
+
         stage.scene.add(tf)
     }
 
     return {orbit, tf}
 }
 
+export const controlsEmits = ["update:tfMode", "update:tfSpace"]
 export const controlsProps = {
     control: {type: Array},
     autoRotate: {type: Number, default: 0}, // 必须stage的属性auto=true
     tfMode: {
-        type: String, default: "translate", validator(val) {
+        type: String, validator(val) {
             return ["translate", "rotate", "scale"].includes(val)
         }
     },
     tfSpace: {
-        type: String, default: "world", validator(val) {
+        type: String, validator(val) {
             return ["world", "local"].includes(val)
         }
     }

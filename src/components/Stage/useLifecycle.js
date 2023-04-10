@@ -7,7 +7,7 @@ import {ev} from '../../const/event.js'
  * @returns {{loading: boolean, mounted: boolean}}
  */
 export default function useLifecycle(uuid) {
-    const v3d = inject('v3d')
+    const $vue3d = inject('$vue3d')
     const process = reactive({
         mounted: false,
         loading: true,
@@ -15,12 +15,12 @@ export default function useLifecycle(uuid) {
     })
 
     // 开始加载
-    v3d.on(ev.renderer.loading.handler, () => {
+    $vue3d.on(ev.renderer.loading.handler, () => {
         process.loading = true
     }, uuid)
 
     // 加载完成
-    v3d.on(ev.renderer.loaded.handler, () => {
+    $vue3d.on(ev.renderer.loaded.handler, () => {
         process.loading = false
     }, uuid)
 

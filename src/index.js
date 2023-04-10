@@ -14,9 +14,9 @@ export default {
         const options = Object.assign({}, defaultOptions, customOptions)
         const vue3d = new Vue3DHandler(options)
         // 全局注入
-        app.config.globalProperties['$v3d'] = vue3d
+        app.config.globalProperties['$vue3d'] = vue3d
         // 组件注入
-        app.provide('v3d', markRaw(vue3d))
+        app.provide('$vue3d', markRaw(vue3d))
         // 全局注册组件
         app.component(options.mainComponentName ?? Vue3DStage.name, Vue3DStage)
     }

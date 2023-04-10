@@ -47,7 +47,7 @@ export default {
     },
     emits: ['updated'],
     setup(props, ctx) {
-        const v3d = inject('v3d')
+        const $vue3d = inject('$vue3d')
 
         const canvas = ref(null) // 获取 Canvas DOM
 
@@ -77,7 +77,7 @@ export default {
                 data.camera.updateProjectionMatrix()
                 process.rendering = null; // 当前帧渲染完成，释放
                 if (typeof callback === "function") callback()
-                v3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
+                $vue3d.emit(ev.renderer.rendered.handler, null, props.id) // 渲染完成后触发
                 if (props.auto) {
                     render();
                 }
@@ -115,22 +115,22 @@ export default {
             }
 
             /** 创建事件对象 **/
-            v3d.createPool(props.id, data) && v3d.emit(ev.renderer.created.handler)
+            $vue3d.createPool(props.id, data) && $vue3d.emit(ev.renderer.created.handler)
 
-            props.active && v3d.setActive(props.id, () => {
-                v3d.emit(ev.renderer.activate.handler)
+            props.active && $vue3d.setActive(props.id, () => {
+                $vue3d.emit(ev.renderer.activate.handler)
             })
 
             // 加载完成
             process.mounted = true
 
-            v3d.on(ev.renderer.render.handler, render, props.id)
+            $vue3d.on(ev.renderer.render.handler, render, props.id)
             data.render = render
             render()
         })
 
         onUnmounted(() => {
-            v3d.removePool(props.id) && v3d.emit(ev.renderer.destroy.handler)
+            $vue3d.removePool(props.id) && $vue3d.emit(ev.renderer.destroy.handler)
         })
 
         provide('stage', data)
@@ -142,7 +142,7 @@ export default {
             return props.height
         }))
 
-        return {v3d, canvas, process, delegation, data, render}
+        return {canvas, process, delegation, data, render}
     },
 }
 </script>

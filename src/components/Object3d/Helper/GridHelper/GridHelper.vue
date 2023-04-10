@@ -18,6 +18,7 @@ export default {
         z: {type: Number, default: 1},
         size: {type: Number, default: 10},
         divisions: {type: Number, default: 10},
+        layer: {type: Number, default: 22}
     },
     emits: [...transformEmits],
     setup(props, ctx) {
