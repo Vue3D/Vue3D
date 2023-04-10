@@ -3,6 +3,9 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TransformControls} from "three/addons/controls/TransformControls.js";
 import {ev} from "../../../const/event";
 
+let modeRange = ["translate", "rotate", "scale"]
+const spaceRange = ["world", "local"]
+
 export function useControls(camera, props, ctx) {
     const stage = inject("stage")
     let orbit, tf
@@ -25,7 +28,7 @@ export function useControls(camera, props, ctx) {
         const $vue3d = inject("$vue3d")
 
         tf = new TransformControls(camera, stage.dom)
-        let mode, space
+        let mode = "translate", space = "world" // default value
 
         tf.addEventListener('change', stage.render);
         tf.addEventListener('dragging-changed', function (event) {
@@ -33,11 +36,13 @@ export function useControls(camera, props, ctx) {
         });
 
         watch(() => props.tfMode, (val) => {
-            mode = val ?? "translate"
+            if (val === mode || !modeRange.includes(val)) return
+            mode = val
             tf.setMode(mode)
         }, {immediate: true})
         watch(() => props.tfSpace, (val) => {
-            space = val ?? "world"
+            if (val === space || !spaceRange.includes(val)) return
+            space = val
             tf.setSpace(space)
         }, {immediate: true})
         // set target
@@ -50,6 +55,8 @@ export function useControls(camera, props, ctx) {
         }, stage.id)
         // set transform mode
         $vue3d.on(ev.selected.tfMode.handler, (val) => {
+            if (!modeRange.includes(val)) return
+            mode = val
             tf.setMode(val)
             ctx.emit("update:tfMode", val)
         }, stage.id)
@@ -76,12 +83,12 @@ export const controlsProps = {
     autoRotate: {type: Number, default: 0}, // 必须stage的属性auto=true
     tfMode: {
         type: String, validator(val) {
-            return ["translate", "rotate", "scale"].includes(val)
+            return modeRange.includes(val)
         }
     },
     tfSpace: {
         type: String, validator(val) {
-            return ["world", "local"].includes(val)
+            return spaceRange.includes(val)
         }
     }
 }
