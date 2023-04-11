@@ -5,7 +5,7 @@
 <script>
 import {object3dProps, useObject3d,} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
-import {Group} from "../../../../../three";
+import {Group} from "three";
 import {reactive} from "vue";
 
 export default {

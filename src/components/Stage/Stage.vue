@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Color, WebGLRenderer} from "../../../three";
+import {Color, WebGLRenderer} from "three";
 import {computed, inject, markRaw, onMounted, onUnmounted, provide, reactive, ref, watch,} from "vue";
 import {nanoid} from "nanoid";
 import useDelegation from './useDelegation';

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {CameraHelper, PerspectiveCamera, Vector4} from '../../../../../three'
+import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
 import {inject, reactive, toRaw, watch} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from '../../useTransform'

@@ -78,7 +78,7 @@ export function useObject3d(object3d, props, ctx) {
      */
     const unmount = (object3d) => {
         if (parent.node) {
-            parent.node?.remove(object3d);
+            parent.node?.remove(toRaw(object3d));
         }
         stage.render()
     }

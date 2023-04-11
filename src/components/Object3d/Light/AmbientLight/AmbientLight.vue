@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {AmbientLight} from '../../../../../three'
+import {AmbientLight} from 'three'
 import {provide, reactive} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";

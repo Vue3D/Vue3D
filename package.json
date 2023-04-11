@@ -1,15 +1,17 @@
 {
   "name": "vue3d",
-  "version": "0.24.0",
+  "version": "0.25.4",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "src/index.js",
   "files": [
     "src/",
-    "three.js"
+    "dep/"
   ],
   "exports": {
+    ".": "./src/index.js",
     "./object3d/*": "./src/components/*",
-    "./three": "./three"
+    "./object3d": "./src/components/index.js",
+    "./three": "./dep/three.js"
   },
   "scripts": {
     "dev": "vite",

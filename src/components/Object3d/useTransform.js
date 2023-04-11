@@ -1,4 +1,4 @@
-import {Euler, Vector3} from "../../../three";
+import {Euler, Vector3} from "three";
 import {noop} from "@unjuanable/jokes";
 import {angle2euler} from "../../utils";
 import {inject, reactive, toRaw, watch, watchEffect} from "vue";
@@ -72,10 +72,10 @@ export function useTransform(object3d, props, ctx) {
         if (val === oldValue) return
         setPosition(props.position)
     }, {deep: true, immediate: true})
-    // watch(() => props.rotation, (val, oldValue) => {
-    //     if (val === oldValue) return
-    //     setRotation(props.rotation)
-    // }, {deep: true, immediate: true})
+    watch(() => props.rotation, (val, oldValue) => {
+        if (val === oldValue) return
+        setRotation(props.rotation)
+    }, {deep: true, immediate: true})
     watch(() => props.scale, (val, oldValue) => {
         if (val === oldValue) return
         setScale(props.scale)
@@ -87,14 +87,13 @@ export function useTransform(object3d, props, ctx) {
     watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
         ctx.emit('update:position', {x, y, z})
     })
-    watch([() => object3d.rotation, () => object3d.rotation.y, () => object3d.rotation.z], ([x, y, z]) => {
+    watch([() => object3d.rotation.x, () => object3d.rotation.y, () => object3d.rotation.z], ([x, y, z]) => {
         ctx.emit('update:rotation', {x, y, z})
     })
     watch([() => object3d.scale.x, () => object3d.scale.y, () => object3d.scale.z], ([x, y, z]) => {
         ctx.emit('update:scale', {x, y, z})
     })
 
-    console.log(object3d.rotation)
     return {setPosition, setRotation, setScale, setTarget}
 }
 

@@ -10,7 +10,6 @@ export {default as V3dSphere} from './Object3d/Geom/Sphere'
 // Helper
 export {default as V3dBoxHelper} from './Object3d/Helper/BoxHelper'
 export {default as V3dGridHelper} from './Object3d/Helper/GridHelper'
-
 // Light
 export {default as V3dAmbientLight} from './Object3d/Light/AmbientLight'
 export {default as V3dDirectionalLight} from './Object3d/Light/DirectionalLight'

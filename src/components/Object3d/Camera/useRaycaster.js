@@ -1,4 +1,4 @@
-import {Raycaster, Vector2} from "../../../../three";
+import {Raycaster, Vector2} from "three";
 import {inject, watch} from "vue";
 import {ev} from "../../../const/event";
 

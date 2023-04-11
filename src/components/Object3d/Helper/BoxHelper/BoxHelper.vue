@@ -4,7 +4,7 @@
 
 <script>
 import {inject, reactive, toRaw, watch} from "vue";
-import {BoxHelper, Color} from '../../../../../three'
+import {BoxHelper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 

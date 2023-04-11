@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {LoadingManager, Object3D, TextureLoader} from '../../../../../three'
+import {LoadingManager, Object3D, TextureLoader} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";

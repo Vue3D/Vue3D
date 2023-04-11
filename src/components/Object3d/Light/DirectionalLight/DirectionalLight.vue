@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {DirectionalLight, DirectionalLightHelper} from '../../../../../three'
+import {DirectionalLight, DirectionalLightHelper} from 'three'
 import {inject, reactive} from "vue";
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";

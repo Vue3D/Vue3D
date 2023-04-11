@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {Mesh, SphereGeometry} from '../../../../../three'
+import {Mesh, SphereGeometry} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {materialProps, useMaterial} from "../../useMaterial";

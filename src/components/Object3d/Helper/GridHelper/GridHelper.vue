@@ -6,7 +6,7 @@
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {provide, reactive} from "vue";
-import {GridHelper} from '../../../../../three'
+import {GridHelper} from 'three'
 
 export default {
     name: "GridHelper",

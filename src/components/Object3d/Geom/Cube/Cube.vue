@@ -4,7 +4,7 @@
 
 <script>
 import {provide, reactive} from "vue";
-import {BoxGeometry, Mesh} from '../../../../../three'
+import {BoxGeometry, Mesh} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
