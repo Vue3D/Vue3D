@@ -1,12 +1,18 @@
 {
   "name": "vue3d",
-  "version": "0.22.3",
+  "version": "0.25.4",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "src/index.js",
   "files": [
     "src/",
-    "three.js"
+    "dep/"
   ],
+  "exports": {
+    ".": "./src/index.js",
+    "./object3d/*": "./src/components/*",
+    "./object3d": "./src/components/index.js",
+    "./three": "./dep/three.js"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,7 +22,6 @@
     "type": "git",
     "url": "git+https://github.com/Vue3D/Vue3D.git"
   },
-
   "keywords": [
     "vue",
     "three"
@@ -28,7 +33,7 @@
   },
   "homepage": "https://github.com/Vue3D/Vue3D#readme",
   "dependencies": {
-    "@unjuanable/jokes": "^0.2.7",
+    "@unjuanable/jokes": "^0.2.8",
     "aggregation": "^1.2.7",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",

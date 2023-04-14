@@ -1,6 +1,7 @@
 import {Euler} from "three";
 
-export const setObjectRotation = (obj, angle, callback = ()=>{}) => {
+export const setObjectRotation = (obj, angle, callback = () => {
+}) => {
     if (!obj) return
     if (angle && angle.hasOwnProperty('x') && angle.hasOwnProperty('y') && angle.hasOwnProperty('z')) {
         const x = angle2euler(angle.x);
@@ -21,3 +22,9 @@ export const angle2euler = (angle) => {
     const euler = (angle % 360) / 180;
     return euler * Math.PI
 }
+
+export const euler2angle = (euler) => {
+    let angle = euler / Math.PI
+    return angle * 180;
+}
+

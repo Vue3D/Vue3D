@@ -1,7 +1,7 @@
 <template><!-- Scene --></template>
 
 <script>
-import {inject, watch} from "vue";
+import {inject} from "vue";
 
 export default {
   name: "Scene",
