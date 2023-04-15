@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {provide, reactive} from "vue";
+import {reactive} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialProps, useMaterial} from "../../useMaterial";
@@ -31,8 +31,6 @@ export default {
         const {process, data} = useObject3d(object3d, props, ctx)
         useTransform(object3d, props, ctx)
         useMaterial(object3d, props.material)
-
-        provide('parent', data)
 
         return {process, data}
     },

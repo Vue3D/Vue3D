@@ -45,7 +45,7 @@ export function useRaycaster(camera, props, ctx) {
             raycaster.setFromCamera(pointer, camera);
             // 射线检测对象。参数二 recursive: 遍历检测子物体
             const targets = raycaster.intersectObjects(stage.scene.children, true)
-            ctx.emit("raycast", targets)
+            ctx.emit("cast", targets)
             // 提取最优解
             if (targets.length > 0) {
                 let best = null
@@ -78,7 +78,7 @@ export function useRaycaster(camera, props, ctx) {
     return {raycaster}
 }
 
-export const raycasterEmits = ["raycast", "pick"]
+export const raycasterEmits = ["cast", "pick"]
 export const raycasterProps = {
     withRay: {type: [Boolean, Array], default: true},
     rayFar: {type: Number},

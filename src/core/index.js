@@ -22,6 +22,11 @@ class Vue3d extends aggregation(EventBus) {
         this.options = options
     }
 
+    /**
+     * 渲染一帧
+     * @param callback function
+     * @param uuid string
+     */
     render(callback = noop, uuid = null) {
         this.emit(ev.renderer.render.handler, null, uuid)
         if (callback && typeof callback === 'function') {

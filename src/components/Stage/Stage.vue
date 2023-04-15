@@ -7,7 +7,7 @@
 
 <script>
 import {Color, WebGLRenderer} from "three";
-import {computed, inject, markRaw, onMounted, onUnmounted, provide, reactive, ref, watch,} from "vue";
+import {computed, inject, markRaw, onMounted, onUnmounted, provide, ref, watch,} from "vue";
 import {nanoid} from "nanoid";
 import useDelegation from './useDelegation';
 import useSceneManager from "./useSceneManager";
@@ -34,7 +34,11 @@ export default {
                 }
             }
         },
-        mode: {type: String, default: 'webgl'}, // 渲染模式
+        mode: {
+            type: String, default: 'webgl', validator(value) {
+                return ['webgl'].includes(value)
+            }
+        }, // 渲染模式
         width: {type: Number, required: true}, // 显示宽度
         height: {type: Number, required: true}, // 显示高度
         ratio: {type: Number, default: 1}, // 像素比例

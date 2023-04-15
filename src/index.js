@@ -1,9 +1,11 @@
 import Vue3DHandler from "./core"
 import Vue3DStage from './components/Stage'
-import {componentsPrefix, mainComponentName} from "./const/config"
+import * as V3dComponents from './components'
+import {componentsPrefix, globalImport, mainComponentName} from "./const/config"
 import {markRaw} from "vue";
 
 const defaultOptions = {
+    globalImport,
     componentsPrefix, // 组件前缀
     mainComponentName
 }
@@ -19,6 +21,11 @@ export default {
         app.provide('$vue3d', markRaw(vue3d))
         // 全局注册组件
         app.component(options.mainComponentName ?? Vue3DStage.name, Vue3DStage)
+        if (options.globalImport) {
+            for (let key in V3dComponents) {
+                app.component(options.componentsPrefix + V3dComponents[key].name, V3dComponents[key])
+            }
+        }
     }
 }
 
