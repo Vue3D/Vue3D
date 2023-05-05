@@ -32,7 +32,7 @@ export default {
 
         const {process, data, unmount, mount, setChildLayer} = useObject3d(object3d, props, ctx)
         const {setScale} = useTransform(object3d, props, ctx)
-        useMaterial(object3d, props.material)
+        useMaterial(object3d, props)
 
         const loadObject = (path) => {
             return new Promise((resolve, reject) => {
@@ -62,6 +62,9 @@ export default {
 
         watch(() => props.path, () => {
             if (!props.path) return
+            if (object3d) {
+                unmount(object3d)
+            }
             loadObject(props.path).then(obj => {
                 obj.name = props.name;
                 obj.traverse((child) => {
@@ -69,11 +72,8 @@ export default {
                     object3d.add(child)
                 });
 
-                if (object3d) {
-                    unmount(object3d)
-                }
-
                 setMaterial(props.material);
+
                 mount(object3d)
                 if (props.contain) {
                     let box3 = new Box3(object3d)

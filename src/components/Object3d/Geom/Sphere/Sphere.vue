@@ -43,11 +43,11 @@ export default {
     emits: [...transformEmits],
     setup(props, ctx) {
         const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
-        const object3d = reactive(new Mesh(geometry, props.material))
+        const object3d = reactive(new Mesh(geometry))
 
         const {process, data} = useObject3d(object3d, props, ctx)
         useTransform(object3d, props, ctx)
-        useMaterial(object3d, props.material)
+        useMaterial(object3d, props)
 
         return {process, data}
     },
