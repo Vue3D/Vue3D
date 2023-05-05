@@ -90,9 +90,6 @@ export function useTransform(object3d, props, ctx) {
     watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
         ctx.emit('update:position', {x, y, z})
     })
-    // watch([() => object3d.rotation.x, () => object3d.rotation.y, () => object3d.rotation.z], ([x, y, z]) => {
-    //     ctx.emit('update:rotation', {x, y, z})
-    // })
     watch(() => object3d.quaternion, (val) => {
         let x = euler2angle(object3d.rotation.x)
         let y = euler2angle(object3d.rotation.y)

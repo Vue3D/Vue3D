@@ -4,7 +4,7 @@
 
 <script>
 import {reactive} from "vue";
-import {BoxGeometry, Mesh} from 'three'
+import {BoxGeometry, Object3D, Mesh} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
@@ -26,11 +26,13 @@ export default {
     emits: [...transformEmits],
     setup(props, ctx) {
         const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
-        const object3d = reactive(new Mesh(geometry))
+        const object3d = reactive(new Object3D())
+        const mesh = new Mesh(geometry)
 
         const {process, data} = useObject3d(object3d, props, ctx)
         useTransform(object3d, props, ctx)
-        useMaterial(object3d, props)
+        useMaterial(mesh, props)
+        object3d.add(mesh)
 
         return {process, data}
     },

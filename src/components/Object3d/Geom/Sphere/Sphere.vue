@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {Mesh, SphereGeometry} from 'three'
+import {Mesh, Object3D, SphereGeometry} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {materialProps, useMaterial} from "../../useMaterial";
@@ -43,11 +43,13 @@ export default {
     emits: [...transformEmits],
     setup(props, ctx) {
         const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
-        const object3d = reactive(new Mesh(geometry))
+        const object3d = reactive(new Object3D());
+        const mesh = new Mesh(geometry)
 
         const {process, data} = useObject3d(object3d, props, ctx)
         useTransform(object3d, props, ctx)
-        useMaterial(object3d, props)
+        useMaterial(mesh, props)
+        object3d.add(mesh)
 
         return {process, data}
     },

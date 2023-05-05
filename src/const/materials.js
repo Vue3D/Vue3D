@@ -1,4 +1,4 @@
-import {MeshPhongMaterial} from 'three'
+import {MeshPhongMaterial,DoubleSide} from 'three'
 
 export const ceramic = () => {
     return new MeshPhongMaterial({
@@ -7,5 +7,6 @@ export const ceramic = () => {
         // roughness: 0,
         reflectivity: 1,
         shininess: Math.pow(2, 10),
+        side:DoubleSide,
     })
 }
