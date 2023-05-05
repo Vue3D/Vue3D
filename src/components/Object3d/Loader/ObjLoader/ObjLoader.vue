@@ -3,24 +3,23 @@
 </template>
 
 <script>
-import {LoadingManager, Object3D, TextureLoader} from 'three'
+import {LoadingManager, Object3D} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
-import {materialProps, useMaterial} from "../../useMaterial";
+import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
 import {inject, reactive, watch} from "vue";
 import Box3 from "../../../../library/Box3";
 
 export default {
     name: "ObjLoader",
-    emits: [...transformEmits, 'loaded', 'progress', 'error'],
+    emits: [...transformEmits, ...materialEmits, 'loaded', 'progress', 'error'],
     props: {
         ...object3dProps,
         ...transformProps,
         ...materialProps,
         name: {type: String, default: 'Object3D'},
         path: {type: String},
-        map: {type: [Object, String]},
         centered: {type: Boolean, default: false},
         contain: {type: Boolean, default: false},
     },
@@ -82,19 +81,6 @@ export default {
                     stage.render()
                 }
             })
-        }, {immediate: true})
-
-        watch(() => props.map, () => {
-            if (props.map) {
-                if (typeof props.map === 'object') {
-                    props.material.map = props.map
-                    stage.render()
-                } else if (typeof props.map === 'string') {
-                    props.material.map = new TextureLoader().load(props.map, () => {
-                        stage.render()
-                    });
-                }
-            }
         }, {immediate: true})
 
         return {

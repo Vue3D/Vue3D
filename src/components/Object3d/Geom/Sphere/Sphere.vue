@@ -6,7 +6,7 @@
 import {Mesh, Object3D, SphereGeometry} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
-import {materialProps, useMaterial} from "../../useMaterial";
+import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
 import {reactive} from "vue";
 
 export default {
@@ -40,7 +40,7 @@ export default {
         },
         withHelper: {type: Boolean, default: false},
     },
-    emits: [...transformEmits],
+    emits: [...transformEmits, ...materialEmits],
     setup(props, ctx) {
         const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
         const object3d = reactive(new Object3D());

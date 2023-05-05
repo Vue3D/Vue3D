@@ -6,7 +6,7 @@
 import {reactive} from "vue";
 import {BoxGeometry, Object3D, Mesh} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {materialProps, useMaterial} from "../../useMaterial";
+import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 
 export default {
@@ -23,7 +23,7 @@ export default {
         zSegments: {type: Number, default: 1},
         withHelper: {type: Boolean, default: false},
     },
-    emits: [...transformEmits],
+    emits: [...transformEmits, ...materialEmits],
     setup(props, ctx) {
         const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
         const object3d = reactive(new Object3D())
