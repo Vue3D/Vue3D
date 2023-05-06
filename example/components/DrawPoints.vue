@@ -1,12 +1,12 @@
 <script setup>
-import {ref, defineEmits, defineProps, onMounted, reactive} from 'vue'
+import {markRaw, onMounted, reactive, ref} from 'vue'
 import {Vector2} from "three";
 
 const emits = defineEmits(["change"])
 const props = defineProps(["width", "height"])
 const canvas = ref(null)
 const flag = ref(false)
-const points = reactive([])
+const points = markRaw([])
 let ctx = null
 
 onMounted(() => {
@@ -19,6 +19,7 @@ onMounted(() => {
 const onStart = (e) => {
     ctx.clearRect(0, 0, props.width, props.height);
     flag.value = true
+    points.length = 0
     ctx.beginPath()
 }
 

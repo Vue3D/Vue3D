@@ -2,7 +2,7 @@
 import {inject, reactive, watch} from "vue";
 import {LatheGeometry, Mesh, Object3D, Vector3} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
+import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import Box3 from "../../../../library/Box3";
 
@@ -14,7 +14,7 @@ export default {
         ...materialProps,
         points: {type: Array},// Vector2 对象数组
         segments: {type: Number, default: 12}, // 要生成的车削几何体圆周分段的数量，默认值是12。
-        phiStart: {type: Number, default: 0}, //  以弧度表示的起始角度，默认值为0。
+        phiStart: {type: Number, default: 0}, // 以弧度表示的起始角度，默认值为0。
         phiLength: {type: Number, default: Math.PI * 2}, // 车削部分的弧度（0-2PI）范围，2PI将是一个完全闭合的、完整的车削几何体，小于2PI是部分的车削。默认值是2PI。
         withHelper: {type: Boolean, default: false},
         contain: {type: Boolean, default: false},
@@ -40,7 +40,7 @@ export default {
                 stage.render()
             }
             useMaterial(mesh, props)
-        })
+        }, {deep: true})
 
         return {process, data}
     },
