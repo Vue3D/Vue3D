@@ -87,7 +87,7 @@ export function useObject3d(object3d, props, ctx) {
      * @param object3d
      * @param props
      */
-    object3d.isVue3d = true
+    object3d.isVue3d ??= true
     object3d.name = props.name
 
     data.node = object3d

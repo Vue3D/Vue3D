@@ -34,6 +34,7 @@ const mousemove = (e) => {
 }
 
 const onEnd = (e) => {
+    if (!flag.value) return;
     flag.value = false
     emits("change", points)
 }

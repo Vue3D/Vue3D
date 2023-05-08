@@ -4,35 +4,21 @@
             <v3d-directional-light :intensity="0.8"></v3d-directional-light>
         </v3d-perspective-camera>
         <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
-        <!--        <v3d-box-helper :layer="31" :target="data.target"></v3d-box-helper>-->
+<!--        <v3d-box-helper :layer="31" :target="data.target"></v3d-box-helper>-->
         <v3d-cube v-model:position="data.position" v-model:rotation="data.rotation" :x="10"></v3d-cube>
         <v3d-obj-loader path="/example/cup.obj" contain v-model:position="data.position"
                         v-model:rotation="data.rotation" v-model:scale="data.scale"></v3d-obj-loader>
-        <v3d-lathe :points="points" :segments="30"></v3d-lathe>
     </vue3d>
 </template>
 
 <script setup>
-import {
-    ev,
-    V3dCube,
-    V3dDirectionalLight,
-    V3dGridHelper,
-    V3dObjLoader,
-    V3dPerspectiveCamera,
-    V3dLathe,
-    V3dSphere
-} from "../../src";
+import {ev, V3dCube,V3dBoxHelper, V3dDirectionalLight, V3dGridHelper, V3dObjLoader, V3dPerspectiveCamera} from "../../src";
 import {inject, onMounted, reactive, ref, watch} from "vue";
-import {Vector2, MeshBasicMaterial} from "three";
 
 const $vue3d = inject('$vue3d')
 const scene = ref(null)
 const mode = ref("translate")
-const points = reactive([])
-for (let i = 0; i < 10; i++) {
-    points.push(new Vector2(i * 0.2, i * 0.2));
-}
+
 watch(mode, (val) => {
     console.log(val)
 })
@@ -45,7 +31,6 @@ const data = reactive({
 })
 
 const onPick = (target) => {
-    // console.log(target)
     data.target = target
 }
 

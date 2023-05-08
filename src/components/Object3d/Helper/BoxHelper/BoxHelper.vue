@@ -19,16 +19,15 @@ export default {
             },
         },
         color: {type: String, default: 'rgb(255,255,0)'},
-
     },
     setup(props, ctx) {
         const stage = inject('stage')
 
-        const box = reactive(new BoxHelper())
+        const box = reactive(new BoxHelper(undefined, new Color(props.color).getHex()))
+        box.isVue3d = false
 
         const {process} = useObject3d(box, props)
 
-        const color = new Color(props.color).getHex()
         const setTarget = (target, callback = noop) => {
             if (!target) {
                 box.visible = false
@@ -36,19 +35,25 @@ export default {
             }
             box.visible = true
             if (target && target.hasOwnProperty("isVue3d") && target.isVue3d) {
-                box.setFromObject(target, color)
+                box.setFromObject(target)
                 stage.render(callback);
             } else {
                 setTarget(target.parent)
             }
         }
 
-        watch(() => props.target, (val) => {
+        watch(() => props.target, (val, oldVal) => {
+            if (val === oldVal) return
             setTarget(toRaw(val))
+            stage.render();
+        }, {deep: false})
+
+        watch([() => props.target.position, () => props.target.rotation, () => props.target.scale], () => {
+            setTarget(toRaw(props.target))
             stage.render();
         }, {deep: true})
 
-        stage.scene.add(box)
+        stage.scene.add(toRaw(box))
 
         return {process, box}
     }
