@@ -9,8 +9,8 @@ export {default as V3dCube} from './Object3d/Geom/Cube'
 export {default as V3dSphere} from './Object3d/Geom/Sphere'
 export {default as V3dLathe} from './Object3d/Geom/Lathe'
 // Helper
-export {default as V3dBoxHelper} from './Object3d/Helper/BoxHelper'
-export {default as V3dGridHelper} from './Object3d/Helper/GridHelper'
+export {default as V3dBoxHelper} from './Helper/BoxHelper'
+export {default as V3dGridHelper} from './Helper/GridHelper'
 // Light
 export {default as V3dAmbientLight} from './Object3d/Light/AmbientLight'
 export {default as V3dDirectionalLight} from './Object3d/Light/DirectionalLight'

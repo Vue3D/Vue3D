@@ -1,17 +1,12 @@
-<template>
-    <slot v-if="process.mounted"></slot>
-</template>
-
 <script>
-import {inject, reactive, toRaw, watch} from "vue";
-import {BoxHelper, Color} from 'three'
+import {inject, toRaw, watch} from "vue";
+import {Box3, Box3Helper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
-import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {ev} from "../../../const/event"
 
 export default {
     name: "BoxHelper",
     props: {
-        ...object3dProps,
         target: {
             type: [Object, null], validator(value) {
                 if (!value) return true
@@ -21,19 +16,21 @@ export default {
         color: {type: String, default: 'rgb(255,255,0)'},
     },
     setup(props, ctx) {
+        const vue3d = inject('$vue3d')
         const stage = inject('stage')
-
-        const box = reactive(new BoxHelper(undefined, new Color(props.color).getHex()))
-        box.isVue3d = false
-
-        const {process} = useObject3d(box, props)
+        const box = new Box3();
+        const helper = new Box3Helper(box, new Color(props.color).getHex())
+        helper.updateMatrixWorld(true)
+        helper.visible = false
+        stage.scene.add(helper)
 
         const setTarget = (target, callback = noop) => {
             if (!target) {
-                box.visible = false
+                helper.visible = false
                 return
             }
-            box.visible = true
+            helper.visible = true
+            // 绑定BoxHelper
             if (target && target.hasOwnProperty("isVue3d") && target.isVue3d) {
                 box.setFromObject(target)
                 stage.render(callback);
@@ -44,18 +41,21 @@ export default {
 
         watch(() => props.target, (val, oldVal) => {
             if (val === oldVal) return
+            if (oldVal) {
+                oldVal.remove(box)
+            }
             setTarget(toRaw(val))
-            stage.render();
         }, {deep: false})
 
-        watch([() => props.target.position, () => props.target.rotation, () => props.target.scale], () => {
-            setTarget(toRaw(props.target))
-            stage.render();
-        }, {deep: true})
+        vue3d.on(ev.selected.transform.handler, (object) => {
+            if (object === props.target) {
+                box.setFromObject(toRaw(object))
+            }
+        })
 
-        stage.scene.add(toRaw(box))
-
-        return {process, box}
+        return {box}
     }
 }
 </script>
+
+<template></template>

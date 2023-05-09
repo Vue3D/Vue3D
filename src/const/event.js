@@ -11,8 +11,9 @@ export const ev = {
         loaded: {handler: '{uuid}:renderer:loaded'}, // 加载完成
     },
     selected: {
-        attach: {handler: '{uuid}:selected:attach'},
-        tfMode: {handler: '{uuid}:selected:tfMode'},
-        tfSpace: {handler: '{uuid}:selected:tfSpace'},
+        attach: {handler: '{uuid}:selected:attach'}, // 选定
+        tfMode: {handler: '{uuid}:selected:tfMode'}, // 切换Transform Control 模式
+        tfSpace: {handler: '{uuid}:selected:tfSpace'}, // 切换Transform Control 坐标系
+        transform: {handler: '{uuid}:selected:transform'}, // 发生变换
     }
 }

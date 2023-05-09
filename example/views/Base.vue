@@ -1,10 +1,10 @@
 <template>
     <vue3d ref="scene" :width="800" :height="800" active>
+        <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
+        <v3d-box-helper :target="data.target"></v3d-box-helper>
         <v3d-perspective-camera main withRay :control="['orbit','transform']" :position="{x:0,y:0,z:20}" @pick="onPick">
             <v3d-directional-light :intensity="0.8"></v3d-directional-light>
         </v3d-perspective-camera>
-        <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
-<!--        <v3d-box-helper :layer="31" :target="data.target"></v3d-box-helper>-->
         <v3d-cube v-model:position="data.position" v-model:rotation="data.rotation" :x="10"></v3d-cube>
         <v3d-obj-loader path="/example/cup.obj" contain v-model:position="data.position"
                         v-model:rotation="data.rotation" v-model:scale="data.scale"></v3d-obj-loader>
@@ -12,7 +12,15 @@
 </template>
 
 <script setup>
-import {ev, V3dCube,V3dBoxHelper, V3dDirectionalLight, V3dGridHelper, V3dObjLoader, V3dPerspectiveCamera} from "../../src";
+import {
+    ev,
+    V3dBoxHelper,
+    V3dCube,
+    V3dDirectionalLight,
+    V3dGridHelper,
+    V3dObjLoader,
+    V3dPerspectiveCamera
+} from "../../src";
 import {inject, onMounted, reactive, ref, watch} from "vue";
 
 const $vue3d = inject('$vue3d')

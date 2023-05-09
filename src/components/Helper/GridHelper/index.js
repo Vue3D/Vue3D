@@ -1,5 +1,5 @@
 import _GridHelper from "./GridHelper.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import {getPrefixComponent} from "../../../const/config";
 
 const GridHelper = Object.assign(_GridHelper, {
     install: function (app) {
