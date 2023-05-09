@@ -1,6 +1,6 @@
 <script>
-import {inject, reactive, watch} from "vue";
-import {LatheGeometry, Mesh, Object3D, Vector3} from 'three'
+import {inject, reactive, toRaw, watch} from "vue";
+import {LatheGeometry, Mesh, Object3D} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
@@ -17,7 +17,7 @@ export default {
         phiStart: {type: Number, default: 0}, // 以弧度表示的起始角度，默认值为0。
         phiLength: {type: Number, default: Math.PI * 2}, // 车削部分的弧度（0-2PI）范围，2PI将是一个完全闭合的、完整的车削几何体，小于2PI是部分的车削。默认值是2PI。
         withHelper: {type: Boolean, default: false},
-        contain: {type: Boolean, default: false},
+        adapted: {type: Boolean, default: false},
     },
     emits: [...transformEmits, ...materialEmits],
     setup(props, ctx) {
@@ -28,18 +28,31 @@ export default {
         let mesh = null
 
         watch(() => props.points, (val) => {
-            if (mesh) object3d.remove((mesh))
-            const geometry = new LatheGeometry(props.points, props.segments, props.phiStart, props.phiLength)
+            if (props.points.length < 5) return
+            if (mesh) object3d.remove(mesh)
+            const geometry = new LatheGeometry(toRaw(props.points), props.segments, props.phiStart, props.phiLength)
             mesh = new Mesh(geometry)
+            const box3 = new Box3(mesh)
+            geometry.computeBoundingBox()
+            geometry.center()
+            geometry.translate(0, box3.center.y / 2, 0);
+            console.log(box3)
             object3d.add(mesh)
-            if (props.contain) {
-                let box3 = new Box3(object3d)
-                box3.center = new Vector3()
+            useMaterial(mesh, props)
+
+            // geometry.applyMatrix4(new Matrix4().makeTranslation(3, 3, 3))
+            geometry.translate(3, 3, 3)
+
+            console.log(geometry)
+
+            if (props.adapted) {
+
                 let scale = box3.getContainedScale()
+                console.log(scale)
                 setScale(scale)
                 stage.render()
             }
-            useMaterial(mesh, props)
+
         }, {deep: true})
 
         return {process, data}

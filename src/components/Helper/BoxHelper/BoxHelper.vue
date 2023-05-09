@@ -52,8 +52,6 @@ export default {
                 box.setFromObject(toRaw(object))
             }
         })
-
-        return {box}
     }
 }
 </script>

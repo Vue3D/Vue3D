@@ -6,7 +6,6 @@ import {reactive, ref} from "vue";
 const points = ref([])
 const getPoints = (p) => {
     points.value.length = 0
-    console.log(p)
     p.forEach(item => {
         points.value.push(item)
     })
@@ -33,7 +32,7 @@ const onPick = (target) => {
         </v3d-perspective-camera>
         <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
         <v3d-box-helper  :target="data.target"></v3d-box-helper>
-        <v3d-lathe :points="points" :segments="30" contain></v3d-lathe>
+        <v3d-lathe :points="points" :segments="30" adapted></v3d-lathe>
         <v3d-cube></v3d-cube>
     </vue3d>
 </template>
