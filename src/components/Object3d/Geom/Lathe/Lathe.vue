@@ -32,26 +32,23 @@ export default {
             if (mesh) object3d.remove(mesh)
             const geometry = new LatheGeometry(toRaw(props.points), props.segments, props.phiStart, props.phiLength)
             mesh = new Mesh(geometry)
-            const box3 = new Box3(mesh)
-            geometry.computeBoundingBox()
-            geometry.center()
-            geometry.translate(0, box3.center.y / 2, 0);
-            console.log(box3)
+
             object3d.add(mesh)
             useMaterial(mesh, props)
-
-            // geometry.applyMatrix4(new Matrix4().makeTranslation(3, 3, 3))
-            geometry.translate(3, 3, 3)
-
-            console.log(geometry)
-
+            // 自适应调整模型
             if (props.adapted) {
-
+                const box3 = new Box3(mesh)
+                // 通过包装盒重新规划中心点
+                geometry.computeBoundingBox()
+                geometry.center()
+                // 将中心点Y轴修正到底部，方便对齐其他模型
+                geometry.translate(0, box3.size.y / 2, 0);
+                // 缩放到屏幕比例
                 let scale = box3.getContainedScale()
-                console.log(scale)
                 setScale(scale)
-                stage.render()
             }
+            // 渲染
+            stage.render()
 
         }, {deep: true})
 
