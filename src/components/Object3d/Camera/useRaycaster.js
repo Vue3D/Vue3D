@@ -40,8 +40,11 @@ export function useRaycaster(camera, props, ctx) {
     stage.dom.addEventListener("pointerup", function (event) {
         if (charging && event.button === 0) {
             event.preventDefault();
-            pointer.x = ((event.clientX - stage.dom.getBoundingClientRect().left - camera.viewport.x) / camera.viewport.w) * 2 - 1;
-            pointer.y = -((event.clientY - stage.dom.getBoundingClientRect().top - camera.viewport.y) / camera.viewport.z) * 2 + 1;
+            // camera.viewport.z 宽度
+            pointer.x = ((event.clientX - stage.dom.getBoundingClientRect().left - camera.viewport.x) / camera.viewport.z) * 2 - 1;
+            // camera.viewport.z 高度
+            pointer.y = -((event.clientY - stage.dom.getBoundingClientRect().top - camera.viewport.y) / camera.viewport.w) * 2 + 1;
+            // 发射射线
             raycaster.setFromCamera(pointer, camera);
             // 射线检测对象。参数二 recursive: 遍历检测子物体
             const targets = raycaster.intersectObjects(stage.scene.children, true)
