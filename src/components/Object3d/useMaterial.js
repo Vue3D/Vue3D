@@ -6,11 +6,17 @@ export function useMaterial(object3d, props, ctx) {
     const setMaterial = (material) => {
         if (object3d && material) {
             object3d.material = material;
+            object3d.traverse((child) => {
+                if (child.name === object3d.uuid) {
+                    child.material = material;
+                }
+            });
         }
     }
     // setMaterial(props.material)
     watch(() => props.material, () => {
         setMaterial(props.material)
+        ctx.emit("render")
     }, {immediate: true})
 
     watch(() => props.map, () => {

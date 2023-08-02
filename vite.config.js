@@ -7,13 +7,4 @@ export default defineConfig({
     resolve: {
         alias: {}
     },
-    css: {
-        // css预处理器
-        // preprocessorOptions: {
-        //     less: {
-        //         javascriptEnabled: true,
-        //         additionalData: `@import "${path.resolve(__dirname, 'cihua/theme/base.less')}";`
-        //     }
-        // },
-    },
 })
