@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {LoadingManager, Object3D} from 'three'
+import {LoadingManager, Object3D, Vector3} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
@@ -20,8 +20,7 @@ export default {
     ...materialProps,
     name: {type: String, default: 'Object3D'},
     path: {type: String},
-    centered: {type: Boolean, default: false},
-    contain: {type: Boolean, default: false},
+    size: {type: Number},
   },
   setup(props, ctx) {
     const stage = inject("stage")
@@ -64,9 +63,10 @@ export default {
         setMaterial(props.material);
 
         mount(object3d)
-        if (props.contain) {
+
+        if (props.size > 0) {
           let box3 = new Box3(object3d)
-          let scale = box3.getContainedScale()
+          let scale = box3.getContainedScale(props.size)
           setScale(scale)
           stage.render()
         }

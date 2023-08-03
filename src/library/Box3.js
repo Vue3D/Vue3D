@@ -20,7 +20,8 @@ export default class Box3 {
         return this.center
     }
 
-    getContainedScale(vec3 = new Vector3(10, 10, 10)) {
+    getContainedScale(size = 10) {
+        let vec3 = new Vector3(size, size, size)
         let scale = 1
         if (this.size.x > this.size.y) {
             scale = Math.round(vec3.x / this.size.x * 100) / 100

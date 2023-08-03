@@ -7,10 +7,7 @@
     </v3d-perspective-camera>
 
     <v3d-obj-loader path="/example/cup.obj"
-                    contain
-                    v-model:position="data.position"
-                    v-model:rotation="data.rotation"
-                    v-model:scale="data.scale"
+                    :size="5"
                     :material="mtl">
       <v3d-cube v-model:position="data.position" v-model:rotation="data.rotation" :x="10"></v3d-cube>
     </v3d-obj-loader>
