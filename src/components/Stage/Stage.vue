@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Color, WebGLRenderer} from "three";
+import {ACESFilmicToneMapping, Color, WebGLRenderer} from "three";
 import {computed, inject, markRaw, onMounted, onUnmounted, provide, ref, watch,} from "vue";
 import {nanoid} from "nanoid";
 import useDelegation from './useDelegation';
@@ -110,6 +110,7 @@ export default {
                     data.renderer = new WebGLRenderer({canvas: data.dom, ...props.conf});
                     data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
                     data.renderer.setPixelRatio(props.ratio)
+                    data.renderer.toneMapping = ACESFilmicToneMapping;
             }
 
             if (props.dataEngine) {

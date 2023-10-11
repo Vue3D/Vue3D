@@ -1,6 +1,6 @@
 import {ceramic} from "../../const/materials";
 import {watch} from "vue";
-import {TextureLoader} from "three";
+import {RepeatWrapping, SRGBColorSpace, TextureLoader} from "three";
 
 export function useMaterial(object3d, props, ctx) {
     const setMaterial = (material) => {
@@ -25,7 +25,8 @@ export function useMaterial(object3d, props, ctx) {
                 props.material.map = props.map
                 ctx.emit("render")
             } else if (typeof props.map === 'string') {
-                props.material.map = new TextureLoader().load(props.map, () => {
+                props.material.map = new TextureLoader().load(props.map, (texture) => {
+                    texture.colorSpace = SRGBColorSpace;
                     ctx.emit("render")
                 });
             }

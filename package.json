@@ -1,6 +1,6 @@
 {
   "name": "vue3d",
-  "version": "0.27.2",
+  "version": "0.27.3",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "src/index.js",
   "files": [
@@ -37,7 +37,7 @@
     "aggregation": "^1.2.7",
     "mitt": "^3.0.1",
     "nanoid": "^4.0.2",
-    "three": "^0.154.0"
+    "three": "^0.157.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
