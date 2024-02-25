@@ -3,7 +3,7 @@
  * @param units {function}
  */
 export function useVue3D(...units) {
-    const p = {}, e = [], c = [], m = [], u = [], d = []
+    const _props = {}, _emits = [], _binds = [], _mounted = [], _update = [], _unmounted = []
     for (let unit of units) {
         const {props, emits, bind, mounted, update, unmounted} = unit()
         if (typeof props === "object") {
@@ -14,6 +14,6 @@ export function useVue3D(...units) {
         //     m.push(mounted)
         // }
     }
-    return {props:p,}
+    return {props: _props,}
 }
 
