@@ -15,14 +15,14 @@ class SceneManager {
         // 在根节点上加载全部子场景
         this._mountAll = () => {
             this.scenes.forEach(item => {
-                this.root.add(item);
+                this._root.add(item);
             })
         }
 
         // 在根节点上移除全部子场景
         this._unmountAll = () => {
             this.scenes.forEach(item => {
-                this.root.remove(item);
+                this._root.remove(item);
             })
         }
     }
@@ -80,7 +80,7 @@ class SceneManager {
             index = scene;
         }
         if (!this._focused) {
-            this.root.remove(this.scenes[scene]);
+            this._root.remove(this.scenes[scene]);
         }
         this.scenes.splice(index, 1);
     }
@@ -96,7 +96,7 @@ class SceneManager {
         }
         if (this._index < 0) return;
         this._unmountAll();
-        this.root.add(this.root[this._index]);
+        this._root.add(this._root[this._index]);
         this._focused = true;
     }
 
@@ -117,7 +117,7 @@ class SceneManager {
         if (this._index >= 0 && this.scenes.length > this._index) {
             return this.scenes[this._index];
         } else {
-            return this.root;
+            return this._root;
         }
     }
 

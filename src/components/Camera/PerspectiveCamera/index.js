@@ -1,5 +1,5 @@
 import _PerspectiveCamera from "./PerspectiveCamera.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import {getPrefixComponent} from "../../../const/config";
 
 const PerspectiveCamera = Object.assign(_PerspectiveCamera, {
     install: function (app) {

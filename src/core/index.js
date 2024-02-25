@@ -1,39 +1,19 @@
-import aggregation from 'aggregation/es6' // 模拟多重继承
-import {EventBus} from '@unjuanable/jokes/classes'
-import {ev} from "../const/event";
-import {noop} from "@unjuanable/jokes";
-
-// 默认配置文件
-const _defaultOptions = {
-    dataEngine: null
-}
-
-/** @class Vue3d - 三维渲染组件库 **/
-class Vue3d extends aggregation(EventBus) {
-    options
-
-    /**
-     *
-     * @param options
-     */
-    constructor(options = {}) {
-        options = Object.assign(_defaultOptions, options)
-        super(options)
-        this.options = options
-    }
-
-    /**
-     * 渲染一帧
-     * @param callback function
-     * @param uuid string
-     */
-    render(callback = noop, uuid = null) {
-        this.emit(ev.renderer.render.handler, null, uuid)
-        if (callback && typeof callback === 'function') {
-            callback()
+/**
+ * 使用元组件对象
+ * @param units {function}
+ */
+export function useVue3D(...units) {
+    const p = {}, e = [], c = [], m = [], u = [], d = []
+    for (let unit of units) {
+        const {props, emits, bind, mounted, update, unmounted} = unit()
+        if (typeof props === "object") {
+            Object.assign(p, props)
         }
+        console.log(props, emits, bind, mounted, update, unmounted)
+        // if (mounted) {
+        //     m.push(mounted)
+        // }
     }
+    return {props:p,}
 }
 
-
-export default Vue3d

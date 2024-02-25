@@ -1,4 +1,4 @@
-import {Euler, Vector3} from "three";
+import {Euler, Quaternion, Vector3} from "three";
 import {noop} from "@unjuanable/jokes";
 import {angle2euler, euler2angle} from "../../utils";
 import {inject, watch} from "vue";
@@ -119,7 +119,7 @@ export const transformProps = {
     rotation: {
         type: Object,
         default() {
-            return new Vector3()
+            return new Quaternion()
         },
     },
     scale: {

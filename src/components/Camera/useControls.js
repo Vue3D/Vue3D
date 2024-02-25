@@ -1,7 +1,7 @@
 import {inject, watch} from "vue";
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TransformControls} from "three/addons/controls/TransformControls.js";
-import {ev} from "../../../const/event";
+import {ev} from "../../const/event";
 
 let modeRange = ["translate", "rotate", "scale"]
 const spaceRange = ["world", "local"]

@@ -1,6 +1,6 @@
 import {Raycaster, Vector2} from "three";
 import {inject, watch} from "vue";
-import {ev} from "../../../const/event";
+import {ev} from "../../const/event";
 
 export function useRaycaster(camera, props, ctx) {
     if (!props.withRay) return

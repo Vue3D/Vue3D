@@ -5,8 +5,8 @@
 <script>
 import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
 import {inject, reactive, toRaw, watch} from "vue";
-import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {transformEmits, transformProps, useTransform} from '../../useTransform'
+import {object3dProps, useObject3d} from "../../Object3d/useObjectd3d";
+import {transformEmits, transformProps, useTransform} from '../../Object3d/useTransform'
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
 import {controlsProps, controlsEmits, useControls} from "../useControls";
 

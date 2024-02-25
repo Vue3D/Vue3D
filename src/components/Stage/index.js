@@ -1,10 +1,9 @@
-import _Stage from "./Stage.vue"
-import {getPrefixComponent} from "../../const/config";
+import Stage from "./Stage.vue"
 
-const Stage = Object.assign(_Stage, {
+const V3dStage = Object.assign(Stage, {
     install: function (app) {
-        app.component(getPrefixComponent(_Stage.name), _Stage);
+        app.component("V3dStage", Stage);
     }
 })
 
-export default Stage
+export {V3dStage}
