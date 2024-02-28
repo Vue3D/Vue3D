@@ -1,13 +1,13 @@
 <template>
   <v3d-stage ref="base" :width="800" :height="800" backgroundColor="rgb(255,255,255)">
-
+    <v3d-Scene></v3d-Scene>
   </v3d-stage>
 </template>
 
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {V3dStage} from "../../src";
+import {V3dScene, V3dStage} from "../../src";
 
 const base = ref(null)
 const mode = ref("translate")

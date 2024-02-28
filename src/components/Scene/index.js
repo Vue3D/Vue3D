@@ -1,10 +1,9 @@
-import _Scene from "./Scene.vue"
-import {getPrefixComponent} from "../../const/config";
+import Scene from "./Scene.vue"
 
-const Scene = Object.assign(_Scene, {
+const V3dScene = Object.assign(Scene, {
     install: function (app) {
-        app.component(getPrefixComponent(_Scene.name), _Scene);
+        app.component("V3dScene", Scene);
     }
 })
 
-export default Scene
+export {V3dScene}

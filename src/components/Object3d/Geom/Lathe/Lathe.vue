@@ -4,7 +4,7 @@ import {LatheGeometry, Mesh, Object3D} from 'three'
 import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
-import Box3 from "../../../../library/Box3";
+import Box3 from "../../../../utils/Box3";
 
 export default {
   name: "Lathe",

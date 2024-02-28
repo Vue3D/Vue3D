@@ -9,7 +9,7 @@ import {object3dProps, useObject3d} from "../../useObjectd3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
 import {inject, reactive, watch} from "vue";
-import Box3 from "../../../../library/Box3";
+import Box3 from "../../../../utils/Box3";
 
 export default {
   name: "ObjLoader",

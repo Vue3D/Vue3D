@@ -1,5 +1,19 @@
 // Event Handler
 export const ev = {
+    stage: {
+        // 接收的命令
+        command: {
+            render: 'command:stage:render'
+        },
+        // 发出的响应
+        response: {
+            mounted: 'response:stage:mounted',
+            loading: 'response:stage:loading',
+            loaded: 'response:stage:loaded',
+            rendering: 'response:stage:rendering',
+            rendered: 'response:stage:rendered'
+        },
+    },
     renderer: { // 渲染器
         created: {handler: 'renderer:created'}, // 创建渲染器
         destroy: {handler: 'renderer:destroy'}, // 销毁渲染器

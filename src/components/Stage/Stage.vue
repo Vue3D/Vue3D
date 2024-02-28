@@ -1,16 +1,14 @@
 <script setup>
 import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
-import {ACESFilmicToneMapping, Color, Scene, WebGLRenderer} from "three";
+import {ACESFilmicToneMapping, Color, WebGLRenderer} from "three";
 import {nanoid} from "nanoid";
 import {noop} from "@unjuanable/jokes";
-import {useSceneManager} from "../common/SceneManager";
-import {useEvent} from "../common/Event";
 import {ev} from "../../const/event";
+import {Node, TYPE} from "../../classes/node.class"
+import {useEvent} from "./Event";
+import {useScenesManager} from "./useScenesManager";
 
-import {useTransform} from "../../core/transform";
-import {useVue3D} from "../../core";
-
-useVue3D(useTransform)
+const emits = defineEmits(['updated'])
 const props = defineProps({
   uuid: {
     type: [String, Number], default() {
@@ -43,35 +41,31 @@ const props = defineProps({
   clearAlpha: {type: Number, default: 1}, // 背景透明度
   dataEngine: {type: String, default: null}, // Canvas Dom data-engine attribute
 })
-const emits = defineEmits(["updated"])
-useTransform()
-/** DOM **/
+
 const canvas = ref(null) // 获取 Canvas DOM
 
-/** Data **/
-const data = markRaw({
-  id: props.uuid,
+const {process, event} = useEvent(props.uuid)
+
+const stage = markRaw({
+  uuid: props.uuid,
   dom: null, // 记录 Canvas DOM
-  scene: null, // 场景管理器
-  camera: null, // 当前摄像机
+  scenes: useScenesManager(), // 场景管理器
   renderer: null, // 渲染器
-  render: noop,
 })
 
-/** Lib **/
-const {process, event} = useEvent(props.uuid)
-const scenes = useSceneManager(props.uuid)
-// const cameras = useCameraManager(props.multiView)
+const {scene, camera} = stage.scenes.getBase()
 
-/** Main **/
-
-// 渲染
+/**
+ * 渲染一帧
+ * @param callback
+ */
 const render = (callback = noop) => {
   if (process.rendering || props.pause) return;
-  if (!data.scene || !data.camera) return;
+  const {scene, camera} = stage.scenes.getActivated()
+  if (!camera?.isCamera) return
   process.rendering = requestAnimationFrame(() => {
-    data.renderer.render(data.scene, data.camera);
-    data.camera.updateProjectionMatrix()
+    stage.renderer.render(scene, camera);
+    camera.updateProjectionMatrix()
     process.rendering = null; // 当前帧渲染完成，释放
     if (typeof callback === "function") callback()
     if (props.auto) {
@@ -80,28 +74,29 @@ const render = (callback = noop) => {
   })
 }
 
+
 onMounted(() => {
-  data.dom = canvas.value // 获取Dom对象
-  data.root = new Scene()
+  stage.dom = canvas.value
   switch (props.mode.toLowerCase()) {
     case 'webgl':
     default:
-      data.renderer = new WebGLRenderer({canvas: data.dom, ...props.conf});
-      data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
-      data.renderer.setPixelRatio(props.ratio)
-      data.renderer.toneMapping = ACESFilmicToneMapping;
+      stage.renderer = new WebGLRenderer({canvas: canvas.value, ...props.conf});
+      stage.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+      stage.renderer.setPixelRatio(props.ratio)
+      stage.renderer.toneMapping = ACESFilmicToneMapping;
   }
 
   if (props.dataEngine) {
-    data.dom.setAttribute('data-engine', props.dataEngine)
+    stage.dom.setAttribute('data-engine', props.dataEngine)
   } else {
-    data.dom.removeAttribute('data-engine')
+    stage.dom.removeAttribute('data-engine')
   }
 
   // 加载完成
   process.mounted = true
 
-  event.on(ev.renderer.render.handler, render)
+  // Command
+  event.on(ev.stage.command.render, render)
 
   render()
 })
@@ -109,21 +104,21 @@ onMounted(() => {
 // 监听尺寸变化
 watch([() => props.width, () => props.height], () => {
   if (!process.mounted) return
-  data.renderer.setSize(props.width, props.height);
+  stage.renderer.setSize(props.width, props.height);
   emits('updated')
 })
 // 监听背景变化
 watch([() => props.clearColor, () => props.clearAlpha], () => {
   if (!process.mounted) return
-  data.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
+  stage.renderer.setClearColor(new Color(props.clearColor).getHex(), props.clearAlpha);
   emits('updated')
 })
 
 /** Expose **/
-defineExpose({data, event, render})
+defineExpose({expose: stage, event, render})
 
-provide('stage', data)
-provide('parent', {node: scenes.root})
+provide('stage', stage)
+provide('parent', new Node(scene, TYPE.STAGE, props.uuid))
 provide('event', event)
 provide('width', computed(() => {
   return props.width
