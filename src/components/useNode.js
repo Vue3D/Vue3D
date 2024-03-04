@@ -35,9 +35,16 @@ class Node {
 }
 
 class SceneNode extends Node {
-    constructor(node, type, uuid) {
-        super(node, type, uuid);
-        if (!node?.isScene) return
-        this.scene = node
+    constructor(scene, type, uuid) {
+        super(scene, type, uuid);
+        if (!scene?.isScene) return
+        this.scene = scene
+
+        this.addScene = (scene) => {
+            const node = createSceneNode(scene, component, uuid)
+            node.parnet = this
+            this.children.push(node)
+            return node
+        }
     }
 }
