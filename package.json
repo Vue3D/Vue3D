@@ -34,7 +34,7 @@
     "@unjuanable/jokes": "^0.3.1",
     "mitt": "^3.0.1",
     "nanoid": "^5.0.6",
-    "three": "^0.161.0"
+    "three": "^0.162.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.6.2",

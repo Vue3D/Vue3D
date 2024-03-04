@@ -8,8 +8,7 @@ import {compose, noop} from "@unjuanable/jokes";
  */
 export function useRenderer(canvas, props, emits) {
     let renderer = null // 渲染器
-    let scene = null
-    let camera = null
+    let node = null
     let rendering = ref(0)
 
     onMounted(async () => {
@@ -34,15 +33,10 @@ export function useRenderer(canvas, props, emits) {
     })
 
     /**
-     * 绑定场景和摄像机
-     * @param newScene {Scene}
-     * @param newCamera {Camera}
+     * 绑定节点
      */
-    const bind = (newScene, newCamera) => {
-        if (newScene && newScene.isScene && newCamera && newCamera.isCamera) {
-            scene = newScene
-            camera = newCamera
-        }
+    const bind = (n) => {
+        node = n
     }
 
     // 渲染中间件
@@ -67,14 +61,14 @@ export function useRenderer(canvas, props, emits) {
      * 渲染一帧
      */
     const render = (callback = noop()) => {
-        if (!scene?.isScene || !camera?.isCamera) return
+        if (!node || !node?.scene?.isScene || !node?.mainCamera?.isCamera) return
         if (!renderer || rendering.value || props.pause) return
         rendering.value = requestAnimationFrame(async () => {
             const fn = compose(_renderMiddleware)
-            renderer.render(scene, camera);
-            camera.updateProjectionMatrix()
+            renderer.render(node.scene, node.mainCamera);
+            node.mainCamera.updateProjectionMatrix()
             await fn()
-            callback && callback()
+            callback && typeof callback === "function" && callback()
             rendering.value = 0; // 当前帧渲染完成，释放
             if (props.auto) {
                 render();

@@ -1,7 +1,7 @@
 <script setup>
 import {inject} from "vue";
 import {Scene} from "three";
-import {object3dEmits, object3dProps, useObject3d} from "../Object3d/useObject3d";
+import {object3dEmits, object3dProps, useObject3d} from "../useObject3d";
 import {ComponentName} from "./index";
 
 const emits = defineEmits([...object3dEmits])
@@ -14,7 +14,9 @@ const parent = inject('parent')
 
 /** start **/
 const scene = new Scene()
-const {status} = useObject3d(scene, props, emits, ComponentName)
+
+parent.addScene(scene, ComponentName, props.uuid)
+const {status} = useObject3d(scene, props, emits)
 
 /** Expose **/
 defineExpose({scene})

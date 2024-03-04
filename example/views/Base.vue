@@ -1,7 +1,8 @@
 <template>
   <v3d-stage ref="base" :width="width" :height="800">
-    <v3d-editor-camera :position="{x:0,y:0,z:-20}" main></v3d-editor-camera>
+    <v3d-stage-camera :position="{x:0,y:0,z:-20}" main></v3d-stage-camera>
     <v3d-cube></v3d-cube>
+    <v3d-ambient-light></v3d-ambient-light>
     <v3d-scene uuid="child"></v3d-scene>
   </v3d-stage>
 </template>
@@ -9,7 +10,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {V3dCube, V3dEditorCamera, V3dScene, V3dStage} from "../../src";
+import {V3dCube, V3dStageCamera, V3dScene, V3dStage, V3dAmbientLight} from "../../src";
 
 const base = ref(null)
 const mode = ref("translate")

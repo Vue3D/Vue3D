@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps, inject, reactive, toRaw, watch} from "vue";
+import {inject, reactive, toRaw, watch} from "vue";
 import {CameraHelper, PerspectiveCamera, Vector4} from "three";
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
@@ -14,6 +14,7 @@ const emits = defineEmits([
   ...transformControlEmits,
   ...orbitControlEmits,
   ...raycasterEmits])
+
 const props = defineProps({
   ...object3dProps,
   ...transformProps,
@@ -34,7 +35,7 @@ const props = defineProps({
 })
 
 const stage = inject('stage')
-const scene = inject('scene')
+const parent = inject('parent')
 
 const vWidth = stage.width.value
 const vHeight = stage.height.value
@@ -68,8 +69,8 @@ watch([() => props.width, () => props.height, () => vWidth, () => vHeight, () =>
 
 // 初始化
 const {status} = useObject3d(camera, props, emits, ComponentName)
-useTransform(camera, props, emits)
-useRaycaster(camera, props, emits)
+const {} = useTransform(camera, props, emits)
+const {} = useRaycaster(camera, props, emits)
 const {tfControl} = useTransformControl(camera, props, emits)
 const {orbit} = useOrbitControl(camera, props, emits)
 
@@ -77,9 +78,10 @@ tfControl.addEventListener('dragging-changed', function (event) {
   orbit.enabled = !event.value;
 });
 
+parent.add(camera)
+
 if (props.main) {
-  scene.mainCamera = toRaw(camera)
-  console.log(scene)
+  parent.mainCamera = toRaw(camera)
 }
 </script>
 

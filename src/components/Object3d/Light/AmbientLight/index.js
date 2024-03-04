@@ -1,10 +1,11 @@
-import _AmbientLight from "./AmbientLight.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import AmbientLight from "./AmbientLight.vue";
 
-const AmbientLight = Object.assign(_AmbientLight, {
+const ComponentName = "V3dAmbientLight"
+
+const V3dAmbientLight = Object.assign(AmbientLight, {
     install: function (app) {
-        app.component(getPrefixComponent(_AmbientLight.name), _AmbientLight);
+        app.component(ComponentName, AmbientLight);
     }
 })
 
-export default AmbientLight
+export {V3dAmbientLight, ComponentName}

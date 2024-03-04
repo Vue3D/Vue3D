@@ -1,12 +1,13 @@
 <script setup>
-import {computed, markRaw, onMounted, provide, ref} from "vue";
+import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
 import {Scene} from "three";
 import mitt from "mitt";
 import {ev} from "../../event";
-import {createNode} from "../useNode"
+import {createRoot} from "../Object3d/useNode"
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
 import {rendererEmits, rendererProps, useRenderer} from "./useRenderer";
 import {noop} from "@unjuanable/jokes";
+import {ComponentName} from "../Object3d/Scene";
 
 const emits = defineEmits([
   ...rendererEmits,
@@ -21,10 +22,8 @@ const props = defineProps({
 })
 
 const canvas = ref(null) // 获取 Canvas DOM
-const scene = new Scene() // 场景
-const root = createNode(scene, "V3dStage", props.uuid)
-console.log(scene)
-scene.mainCamera = null
+
+const {scene, root} = createRoot(ComponentName, props.uuid)
 
 const stage = markRaw({
   uuid: props.uuid,
@@ -64,16 +63,21 @@ onMounted(() => {
   // Command
   stage.event.on(ev.stage.command.render, renderer.render)
   stage.event.emit(ev.stage.mounted)
-
   renderer.render()
 })
+
+watch(() => props.play, (val) => {
+  if (val) {
+  } else {
+    renderer.bind(root)
+    renderer.render()
+  }
+}, {immediate: true})
 
 /** Expose **/
 defineExpose({data: stage, renderer})
 
 provide('stage', stage)
-provide('scene', scene)
-provide('parent', root)
 </script>
 
 <template>

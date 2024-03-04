@@ -7,6 +7,7 @@ const spaceRange = ["world", "local"]
 
 export function useTransformControl(camera, props, emits) {
     const stage = inject("stage")
+    const scene = inject("scene")
 
     const tfControl = new TransformControls(camera, stage.dom)
     let mode = "translate", space = "world" // default value
@@ -49,8 +50,8 @@ export function useTransformControl(camera, props, emits) {
         emits("update:tfSpace", space)
     }, stage.id)
 
-    stage.root.add(tfControl, "V3dTransformControl", "V3dTransformControl")
-    stage.root.node.add(tfControl)
+    // scene.add(tfControl, "V3dTransformControl", "V3dTransformControl")
+    scene.add(tfControl)
 
     return {tfControl}
 }
