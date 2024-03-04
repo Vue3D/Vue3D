@@ -1,10 +1,11 @@
-import _Group from "./Group.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import Group from "./Group.vue"
 
-const Group = Object.assign(_Group, {
+const ComponentName = "V3dGroup"
+
+const Group = Object.assign(Group, {
     install(app) {
-        app.component(getPrefixComponent(_Group.name), _Group)
+        app.component(ComponentName, Group)
     }
 })
 
-export default Group
+export {ComponentName, Group}

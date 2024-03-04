@@ -5,8 +5,8 @@
 <script>
 import {LoadingManager, Object3D, Vector3} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
-import {object3dProps, useObject3d} from "../../useObjectd3d";
-import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {object3dProps, useObject3d} from "../../useObject3d";
+import {transformEmits, transformProps, transform} from "../../useTransform";
 import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
 import {inject, reactive, watch} from "vue";
 import Box3 from "../../../../utils/Box3";
@@ -28,8 +28,8 @@ export default {
     const loader = new OBJLoader(manager)
     const object3d = reactive(new Object3D());
 
-    const {process, data, unmount, mount, setChildLayer} = useObject3d(object3d, props, ctx)
-    const {setScale} = useTransform(object3d, props, ctx)
+    const {process, data, unmount, mount, setChildLayer} = object3d(object3d, props, ctx)
+    const {setScale} = transform(object3d, props, ctx)
     const {setMaterial} = useMaterial(object3d, props, ctx)
 
     const loadObject = (path) => {

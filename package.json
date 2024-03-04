@@ -9,8 +9,6 @@
   ],
   "exports": {
     ".": "./src/index.js",
-    "./object3d/*": "./src/components/*",
-    "./object3d": "./src/components/index.js",
     "./three": "./three/three.js"
   },
   "scripts": {

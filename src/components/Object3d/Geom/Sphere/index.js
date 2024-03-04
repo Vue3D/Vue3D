@@ -1,10 +1,15 @@
-import _Sphere from "./Sphere.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import Sphere from "./Sphere.vue"
+import {Object3D} from "three";
 
-const Sphere = Object.assign(_Sphere, {
+const ComponentName = "V3dSphere"
+
+class SphereGeom extends Object3D {
+}
+
+const V3dSphere = Object.assign(Sphere, {
     install: function (app) {
-        app.component(getPrefixComponent(_Sphere.name), _Sphere);
+        app.component(ComponentName, Sphere);
     }
 })
 
-export default Sphere
+export {ComponentName, SphereGeom, V3dSphere}

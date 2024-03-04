@@ -1,8 +1,8 @@
-import {ceramic} from "../../const/materials";
+import {ceramic} from "../../materials";
 import {watch} from "vue";
-import {RepeatWrapping, SRGBColorSpace, TextureLoader} from "three";
+import {SRGBColorSpace, TextureLoader} from "three";
 
-export function useMaterial(object3d, props, ctx) {
+export function useMaterial(object3d, props, emits) {
     const setMaterial = (material) => {
         if (object3d && material) {
             object3d.material = material;
@@ -16,18 +16,18 @@ export function useMaterial(object3d, props, ctx) {
     // setMaterial(props.material)
     watch(() => props.material, () => {
         setMaterial(props.material)
-        ctx.emit("render")
+        emits("render")
     }, {immediate: true})
 
     watch(() => props.map, () => {
         if (props.map) {
             if (typeof props.map === 'object') {
                 props.material.map = props.map
-                ctx.emit("render")
+                emits("render")
             } else if (typeof props.map === 'string') {
                 props.material.map = new TextureLoader().load(props.map, (texture) => {
                     texture.colorSpace = SRGBColorSpace;
-                    ctx.emit("render")
+                    emits("render")
                 });
             }
         }

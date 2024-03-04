@@ -1,9 +1,9 @@
 <script>
 import {inject, reactive, toRaw, watch} from "vue";
 import {LatheGeometry, Mesh, Object3D} from 'three'
-import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {object3dProps, useObject3d} from "../../useObject3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
-import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {transformEmits, transformProps, transform} from "../../useTransform";
 import Box3 from "../../../../utils/Box3";
 
 export default {
@@ -23,8 +23,8 @@ export default {
   setup(props, ctx) {
     const stage = inject("stage")
     const object3d = reactive(new Object3D())
-    const {process, data} = useObject3d(object3d, props, ctx)
-    const {setScale} = useTransform(object3d, props, ctx)
+    const {process, data} = object3d(object3d, props, ctx)
+    const {setScale} = transform(object3d, props, ctx)
     let mesh = null
 
     watch(() => props.points, (val) => {

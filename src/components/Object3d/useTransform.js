@@ -1,12 +1,12 @@
+import {inject, watch} from "vue";
 import {Euler, Quaternion, Vector3} from "three";
 import {noop} from "@unjuanable/jokes";
 import {angle2euler, euler2angle} from "../../utils";
-import {inject, watch} from "vue";
-import {ev} from "../../const/event"
+import {ev} from "../../event";
 
 export function useTransform(object3d, props, ctx) {
-    const $vue3d = inject("$vue3d")
     const stage = inject('stage')
+
     const position = new Vector3()
     const angle = new Vector3()
     const scale = new Vector3(1, 1, 1)
@@ -91,18 +91,18 @@ export function useTransform(object3d, props, ctx) {
 
     watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
         ctx.emit('update:position', {x, y, z})
-        $vue3d.emit(ev.selected.transform.handler, object3d)
+        stage.event.emit(ev.selected.transform.handler, object3d)
     })
     watch(() => object3d.quaternion, (val) => {
         let x = euler2angle(object3d.rotation.x)
         let y = euler2angle(object3d.rotation.y)
         let z = euler2angle(object3d.rotation.z)
         ctx.emit('update:rotation', {x, y, z})
-        $vue3d.emit(ev.selected.transform.handler, object3d)
+        stage.event.emit(ev.selected.transform.handler, object3d)
     }, {deep: true})
     watch([() => object3d.scale.x, () => object3d.scale.y, () => object3d.scale.z], ([x, y, z]) => {
         ctx.emit('update:scale', {x, y, z})
-        $vue3d.emit(ev.selected.transform.handler, object3d)
+        stage.event.emit(ev.selected.transform.handler, object3d)
     })
 
     return {setPosition, setRotation, setScale, setTarget}
@@ -132,5 +132,3 @@ export const transformProps = {
         type: Object
     },
 }
-
-

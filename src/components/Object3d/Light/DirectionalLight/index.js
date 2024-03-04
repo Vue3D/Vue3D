@@ -1,11 +1,9 @@
-import _DirectionalLight from './DirectionalLight.vue'
+import DirectionalLight from './DirectionalLight.vue'
 
-import {getPrefixComponent} from "../../../../const/config";
-
-const DirectionalLight = Object.assign(_DirectionalLight, {
+const V3dDirectionalLight = Object.assign(DirectionalLight, {
     install: function (app) {
-        app.component(getPrefixComponent(_DirectionalLight.name), _DirectionalLight);
+        app.component("V3dDirectionalLight", DirectionalLight);
     }
 })
 
-export default DirectionalLight
+export {V3dDirectionalLight}

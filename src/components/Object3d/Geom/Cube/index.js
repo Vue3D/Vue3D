@@ -1,9 +1,14 @@
-import _Cube from "./Cube.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import {Object3D} from "three";
+import Cube from "./Cube.vue"
 
-const Cube = Object.assign(_Cube, {
+const ComponentName = "V3dCube"
+
+class CubeGeom extends Object3D {
+}
+
+const V3dCube = Object.assign(Cube, {
     install: function (app) {
-        app.component(getPrefixComponent(_Cube.name), _Cube);
+        app.component(ComponentName, Cube);
     }
 })
-export default Cube
+export {ComponentName, V3dCube, CubeGeom}

@@ -1,35 +1,26 @@
 <script setup>
-import {inject, onMounted, provide} from "vue";
+import {inject} from "vue";
 import {Scene} from "three";
-import {inLifecycle, useLifecycle} from "../../cells/lifecycle";
-import {Node, TYPE} from "../../classes/node.class"
+import {object3dEmits, object3dProps, useObject3d} from "../Object3d/useObject3d";
+import {ComponentName} from "./index";
 
+const emits = defineEmits([...object3dEmits])
+const props = defineProps({
+  ...object3dProps,
+  v3dComponent: "V3dScene",
+})
 const stage = inject('stage')
 const parent = inject('parent')
-const event = inject('event')
 
-const props = defineProps({
-  ...inLifecycle.props
-})
-
-const emits = defineEmits([...inLifecycle.emits])
+/** start **/
 const scene = new Scene()
-
-const life = useLifecycle(scene, props, emits)
-
-scene.name = life.uuid
-
-onMounted(() => {
-  life.onMounted()
-})
+const {status} = useObject3d(scene, props, emits, ComponentName)
 
 /** Expose **/
 defineExpose({scene})
 
-provide("parent", new Node(scene, TYPE.SCENE, life.uuid))
-
 </script>
 
 <template>
-  <slot v-if="life.status.mounted"></slot>
+  <slot v-if="status.mounted"></slot>
 </template>

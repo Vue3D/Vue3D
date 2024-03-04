@@ -1,19 +1,11 @@
-import {inject, markRaw, onBeforeMount, onBeforeUnmount, provide, reactive, toRaw, watch} from "vue";
+import {inject, onBeforeMount, onBeforeUnmount, provide, toRaw, watch} from "vue";
+import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
 
-import {noop} from "@unjuanable/jokes";
-
-export function useObject3d(object3d, props, ctx) {
-    const parent = inject('parent')
+export function useObject3d(object3d, props, emits, v3dComponentName = "V3dComponents") {
     const stage = inject('stage')
+    const parent = inject('parent')
 
-    // 数据节点
-    const data = markRaw({
-        node: null
-    })
-    const process = reactive({
-        mounted: false, // 挂载完成
-        loaded: false, // 加载完成
-    })
+    const {status} = useLifecycle(object3d, props, emits)
 
     /**
      * 设置图层
@@ -33,6 +25,7 @@ export function useObject3d(object3d, props, ctx) {
             object3d.layers.enable(layer)
         }
     }
+
     /**
      * 设置子对象图层
      */
@@ -52,16 +45,17 @@ export function useObject3d(object3d, props, ctx) {
             }
         })
     }
+
     /**
      * 设置是否可见
      * @param visible
-     * @param callback
      */
-    const setVisible = (visible, callback = noop) => {
+    const setVisible = (visible) => {
         visible = !!visible
         object3d.visible = visible
-        stage.render(callback)
+        stage.render()
     }
+
     /**
      * 在父节点上挂载
      * @param object3d
@@ -72,6 +66,7 @@ export function useObject3d(object3d, props, ctx) {
         }
         stage.render()
     }
+
     /**
      * 在父节点上卸载
      * @param object3d
@@ -82,6 +77,7 @@ export function useObject3d(object3d, props, ctx) {
         }
         stage.render()
     }
+
     /**
      * 初始化对象节点设置
      * @param object3d
@@ -90,21 +86,17 @@ export function useObject3d(object3d, props, ctx) {
     object3d.isVue3d ??= true
     object3d.name = props.name
 
-    data.node = object3d
-    provide('parent', data)
+    const node = parent.add(toRaw(object3d), v3dComponentName, props.uuid)
+    provide("parent", node)
 
     onBeforeMount(() => {
-        if (!data.node) return
-        mount(data.node)
-        process.mounted = true
-        stage.render()
+        if (!object3d) return
+        mount(object3d)
     })
 
     onBeforeUnmount(() => {
-        if (!data.node) return
-        unmount(data.node)
-        process.mounted = false
-        stage.render()
+        if (!object3d) return
+        unmount(object3d)
     })
 
     watch(() => props.visible, (val) => {
@@ -115,7 +107,7 @@ export function useObject3d(object3d, props, ctx) {
     }, {immediate: true})
 
     return {
-        process, data,
+        status,
         mount, unmount,
         setVisible,
         setLayer,
@@ -123,7 +115,9 @@ export function useObject3d(object3d, props, ctx) {
     }
 }
 
+export const object3dEmits = [...lifecycleEmits]
 export const object3dProps = {
+    ...lifecycleProps,
     name: {type: String, default: ''},
     visible: {type: Boolean, default: true},
     layer: {

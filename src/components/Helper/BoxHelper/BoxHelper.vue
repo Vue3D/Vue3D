@@ -2,7 +2,7 @@
 import {inject, toRaw, watch} from "vue";
 import {Box3, Box3Helper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
-import {ev} from "../../../const/event"
+import {ev} from "../../../event"
 
 export default {
     name: "BoxHelper",

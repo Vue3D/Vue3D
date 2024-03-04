@@ -1,41 +1,36 @@
-<template>
-  <slot v-if="process.mounted"></slot>
-</template>
-
-<script>
+<script setup>
 import {reactive} from "vue";
-import {BoxGeometry, Object3D, Mesh} from 'three'
-import {object3dProps, useObject3d} from "../../useObjectd3d";
+import {BoxGeometry, Mesh} from 'three'
+import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
 import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {ComponentName, CubeGeom} from "./index";
 
-export default {
-  name: "Cube",
-  props: {
-    ...object3dProps,
-    ...transformProps,
-    ...materialProps,
-    x: {type: Number, default: 1},
-    y: {type: Number, default: 1},
-    z: {type: Number, default: 1},
-    xSegments: {type: Number, default: 1},
-    ySegments: {type: Number, default: 1},
-    zSegments: {type: Number, default: 1},
-    withHelper: {type: Boolean, default: false},
-  },
-  emits: [...transformEmits, ...materialEmits],
-  setup(props, ctx) {
-    const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
-    const object3d = reactive(new Object3D())
-    const mesh = new Mesh(geometry)
+const props = defineProps({
+  ...object3dProps,
+  ...transformProps,
+  ...materialProps,
+  x: {type: Number, default: 1},
+  y: {type: Number, default: 1},
+  z: {type: Number, default: 1},
+  xSegments: {type: Number, default: 1},
+  ySegments: {type: Number, default: 1},
+  zSegments: {type: Number, default: 1},
+  withHelper: {type: Boolean, default: false},
+})
 
-    const {process, data} = useObject3d(object3d, props, ctx)
-    useTransform(object3d, props, ctx)
-    useMaterial(mesh, props, ctx)
-    object3d.add(mesh)
+const emits = defineEmits([...transformEmits, ...materialEmits, ...object3dEmits])
+const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
+const object3d = reactive(new CubeGeom())
+const mesh = new Mesh(geometry)
 
-    return {process, data}
-  },
+const {status, data} = useObject3d(object3d, props, emits, ComponentName)
+useTransform(object3d, props, emits)
+useMaterial(mesh, props, emits)
 
-}
+object3d.add(mesh)
 </script>
+
+<template>
+  <slot v-if="status.mounted"></slot>
+</template>
