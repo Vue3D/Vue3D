@@ -12,8 +12,6 @@ export function createRoot(uuid, componentName) {
 }
 
 export function useNode(object3d, uuid, componentName = "V3dComponent") {
-
-
     const createNode = () => {
         return new Node(object3d, componentName, uuid)
     }
