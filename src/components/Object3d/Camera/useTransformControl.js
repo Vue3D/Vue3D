@@ -1,6 +1,5 @@
 import {inject, watch} from "vue";
 import {TransformControls} from "three/addons/controls/TransformControls.js";
-import {ev} from "../../../event";
 
 let modeRange = ["translate", "rotate", "scale"]
 const spaceRange = ["world", "local"]
@@ -25,34 +24,7 @@ export function useTransformControl(camera, props, emits) {
         space = val
         tfControl.setSpace(space)
     }, {immediate: true})
-    // set target
-    stage.event.on(ev.selected.command.attach, (target) => {
-        console.log(target)
-        if (target) {
-            tfControl.attach(target)
-        } else {
-            tfControl.detach()
-        }
-    })
-    // set transform mode
-    stage.event.on(ev.selected.command.tfMode, (val) => {
-        if (!modeRange.includes(val)) return
-        mode = val
-        tfControl.setMode(val)
-        emits("update:tfMode", val)
-    })
-    // set transform space
-    stage.event.on(ev.selected.command.tfSpace, (val) => {
-        if (val && ["world", "local"].includes(val)) {
-            space = val
-        } else {
-            space = space === "world" ? "local" : "world"
-        }
-        tfControl.setSpace(space)
-        emits("update:tfSpace", space)
-    }, stage.id)
 
-    // scene.add(tfControl, "V3dTransformControl", "V3dTransformControl")
     scene.add(tfControl)
 
     return {tfControl}

@@ -1,7 +1,5 @@
 <script setup>
 import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
-import mitt from "mitt";
-import {ev} from "../../event";
 import {createRoot} from "../Object3d/useNode"
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
 import {rendererEmits, rendererProps, useRenderer} from "./useRenderer";
@@ -28,7 +26,6 @@ const stage = markRaw({
   uuid: props.uuid,
   dom: null, // Canvas DOM
   root,
-  event: new mitt(), // 事件引擎
   render: noop(), // 渲染函数
   renderer: null, // 渲染器
   width: computed(() => {
@@ -42,12 +39,6 @@ const stage = markRaw({
 const life = useLifecycle(stage, props, emits)
 const renderer = useRenderer(canvas, props, emits)
 
-life.onLoading((next) => {
-  stage.event.emit(ev.stage.response.loading)
-  next()
-  stage.event.emit(ev.stage.response.loaded)
-})
-
 onMounted(() => {
   stage.dom = canvas.value
   stage.renderer = renderer
@@ -60,8 +51,6 @@ onMounted(() => {
   }
 
   // Command
-  stage.event.on(ev.stage.command.render, renderer.render)
-  stage.event.emit(ev.stage.mounted)
   renderer.render()
 })
 
@@ -74,7 +63,7 @@ watch(() => props.play, (val) => {
 }, {immediate: true})
 
 /** Expose **/
-defineExpose({data: stage, renderer})
+defineExpose(stage)
 
 provide('stage', stage)
 </script>

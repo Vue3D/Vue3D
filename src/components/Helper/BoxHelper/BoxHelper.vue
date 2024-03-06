@@ -2,7 +2,6 @@
 import {inject, toRaw, watch} from "vue";
 import {Box3, Box3Helper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
-import {ev} from "../../../event"
 
 const props = defineProps({
   target: {
@@ -14,7 +13,7 @@ const props = defineProps({
   color: {type: String, default: 'rgb(255,255,0)'},
 })
 
-const emits = []
+const emits = ["update:target"]
 
 const stage = inject('stage')
 const parent = inject('parent')
@@ -48,11 +47,6 @@ watch(() => props.target, (val, oldVal) => {
   setTarget(toRaw(val))
 }, {deep: false})
 
-stage.event.on(ev.selected.response.transform, (object) => {
-  if (object === props.target) {
-    box.setFromObject(toRaw(object))
-  }
-})
 </script>
 
 <template></template>

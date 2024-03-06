@@ -1,6 +1,5 @@
 import {Raycaster, Vector2} from "three";
 import {inject, watch} from "vue";
-import {ev} from "../../../event";
 
 export function useRaycaster(camera, props, emits) {
     if (!props.withRay) return
@@ -54,7 +53,7 @@ export function useRaycaster(camera, props, emits) {
             raycaster.setFromCamera(pointer, camera);
             // 射线检测对象。参数二 recursive: 遍历检测子物体
             const targets = raycaster.intersectObjects(stage.root.scene, true)
-            console.log(stage.root.scene)
+
             emits("cast", targets)
             // 提取最优解
             if (targets.length > 0) {
@@ -64,7 +63,6 @@ export function useRaycaster(camera, props, emits) {
                     if (best) break
                 }
                 emits("pick", best)
-                stage.event.emit(ev.selected.command.attach, best, stage.id)
             } else {
                 emits("pick", null)
             }
