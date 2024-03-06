@@ -1,4 +1,4 @@
-import {inject, onBeforeMount, onBeforeUnmount, provide, toRaw, watch} from "vue";
+import {defineExpose, inject, watch} from "vue";
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
 import {layerEmits, layerProps, useLayer} from "./useLayer";
 import {transformEmits, transformProps, useTransform} from "./useTransform";

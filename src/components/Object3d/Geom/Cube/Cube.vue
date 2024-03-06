@@ -1,5 +1,5 @@
 <script setup>
-import {inject, reactive} from "vue";
+import {defineExpose, inject, reactive, toRaw} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
@@ -29,6 +29,9 @@ const {status} = useObject3d(object3d, props, emits, ComponentName)
 const {} = useMaterial(mesh, props, emits)
 
 object3d.add(mesh)
+
+/** EXPOSE **/
+defineExpose({data: toRaw(object3d)})
 
 parent.add(object3d, ComponentName, props.uuid)
 </script>

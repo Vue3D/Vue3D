@@ -1,7 +1,7 @@
 <template>
   <v3d-stage ref="base" :width="width" :height="800" :tfMode="mode">
-    <v3d-stage-camera :position="{x:0,y:0,z:-20}" main></v3d-stage-camera>
-    <v3d-cube></v3d-cube>
+    <v3d-stage-camera :position="{x:0,y:0,z:-20}" main :target="target" @pick="onPick"></v3d-stage-camera>
+    <v3d-cube ref="cube"></v3d-cube>
     <v3d-ambient-light></v3d-ambient-light>
     <v3d-grid-helper></v3d-grid-helper>
     <v3d-box-helper></v3d-box-helper>
@@ -11,15 +11,25 @@
 
 <script setup>
 
-import {onMounted, ref} from "vue";
+import {onMounted, ref, toRaw} from "vue";
 import {V3dAmbientLight, V3dBoxHelper, V3dCube, V3dGridHelper, V3dScene, V3dStage, V3dStageCamera} from "../../src";
 
 const base = ref(null)
 const mode = ref("translate")
 const width = ref(800)
 
-onMounted(() => {
+const target = ref(null)
+const cube = ref(null)
 
+const onPick = (val) => {
+  console.log(val)
+  target.value = toRaw(val)
+}
+
+onMounted(async () => {
+  // setTimeout(() => {
+  //   target.value = cube.value.data
+  // }, 1000)
 })
 
 </script>

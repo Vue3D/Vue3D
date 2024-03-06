@@ -2,14 +2,16 @@
 import {computed, inject, reactive, toRaw} from "vue"
 import {ArrayCamera, OrthographicCamera, PerspectiveCamera, Vector4} from "three";
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {useTransformControl} from "../useTransformControl";
-import {useOrbitControl} from "../useOrbitControl";
+import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
+import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../useOrbitControl";
 
 const stage = inject('stage')
 const parent = inject('parent')
 
 const props = defineProps({
   ...object3dProps,
+  ...transformControlProps,
+  ...orbitControlProps,
   near: {type: Number, default: 0.1},
   far: {type: Number, default: 2000},
   fov: {type: Number, default: 50},
@@ -17,7 +19,7 @@ const props = defineProps({
   main: {type: Boolean, default: false}
 })
 
-const emits = defineEmits([...object3dEmits])
+const emits = defineEmits([...object3dEmits, ...transformControlEmits, ...orbitControlEmits])
 
 const aspect = computed(() => {
   return stage.width.value / stage.height.value
@@ -57,6 +59,8 @@ const sCamera = new PerspectiveCamera(props.fov, aspect.value, props.near, props
 sCamera.viewport = new Vector4(viewport.x, 0, viewport.width, viewport.height);
 sCamera.position.set(0, 0, 10)
 
+const camera = reactive(new ArrayCamera([tCamera, lCamera, fCamera, sCamera]))
+
 const {tfControl} = useTransformControl(sCamera, props, emits)
 const {orbit} = useOrbitControl(sCamera, props, emits)
 
@@ -69,21 +73,18 @@ stage.renderer.onRender(next => {
   updateCamera()
 })
 
-const camera = reactive(new ArrayCamera([tCamera, lCamera, fCamera, sCamera]))
-
 const {status} = useObject3d(camera, props, emits)
 
 const updateCamera = () => {
   stage.render()
 }
 
-parent.add(camera)
-stage.render()
-
 if (props.main) {
   parent.mainCamera = toRaw(camera)
 }
+stage.render()
 
+parent.add(camera)
 </script>
 
 <template>

@@ -52,7 +52,7 @@ export function useRaycaster(camera, props, emits) {
             // 发射射线
             raycaster.setFromCamera(pointer, camera);
             // 射线检测对象。参数二 recursive: 遍历检测子物体
-            const targets = raycaster.intersectObjects(stage.root.scene, true)
+            const targets = raycaster.intersectObjects(stage.root.scene.children, true)
 
             emits("cast", targets)
             // 提取最优解

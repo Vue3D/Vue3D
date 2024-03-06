@@ -1,7 +1,7 @@
 <template>
   <v3d-stage ref="base" :width="width" :height="800" :tfMode="mode">
-    <v3d-three-view-camera main></v3d-three-view-camera>
-    <v3d-cube></v3d-cube>
+    <v3d-three-view-camera main :target="target"></v3d-three-view-camera>
+    <v3d-cube ref="cube"></v3d-cube>
     <v3d-ambient-light></v3d-ambient-light>
     <v3d-grid-helper></v3d-grid-helper>
     <v3d-box-helper></v3d-box-helper>
@@ -18,8 +18,13 @@ const base = ref(null)
 const mode = ref("translate")
 const width = ref(800)
 
-onMounted(() => {
+const target = ref(null)
+const cube = ref(null)
 
+onMounted(() => {
+  setTimeout(() => {
+    target.value = cube.value.data
+  }, 1000)
 })
 
 </script>

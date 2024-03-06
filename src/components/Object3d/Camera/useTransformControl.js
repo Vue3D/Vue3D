@@ -1,4 +1,4 @@
-import {inject, watch} from "vue";
+import {inject, toRaw, watch} from "vue";
 import {TransformControls} from "three/addons/controls/TransformControls.js";
 
 let modeRange = ["translate", "rotate", "scale"]
@@ -25,6 +25,14 @@ export function useTransformControl(camera, props, emits) {
         tfControl.setSpace(space)
     }, {immediate: true})
 
+    watch(() => props.target, (val) => {
+        if (val && val.isObject3D) {
+            tfControl.attach(toRaw(val))
+        } else {
+            tfControl.detach()
+        }
+    }, {immediate: true})
+
     scene.add(tfControl)
 
     return {tfControl}
@@ -40,6 +48,11 @@ export const transformControlProps = {
     tfSpace: {
         type: String, validator(val) {
             return spaceRange.includes(val)
+        }
+    },
+    target: {
+        type: [Object, null], validator(val) {
+            return (val && val.isObject3D)
         }
     }
 }

@@ -75,11 +75,11 @@ tfControl.addEventListener('dragging-changed', function (event) {
   orbit.enabled = !event.value;
 });
 
-parent.add(camera, ComponentName, props.uuid)
-
 if (props.main) {
   parent.mainCamera = toRaw(camera)
 }
+
+parent.add(camera, ComponentName, props.uuid)
 </script>
 
 <template>

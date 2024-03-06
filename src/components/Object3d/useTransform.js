@@ -3,7 +3,7 @@ import {Euler, Quaternion, Vector3} from "three";
 import {noop} from "@unjuanable/jokes";
 import {angle2euler, euler2angle} from "../../utils";
 
-export function useTransform(object3d, props, ctx) {
+export function useTransform(object3d, props, emits) {
     const stage = inject('stage')
 
     const position = new Vector3()
@@ -56,20 +56,6 @@ export function useTransform(object3d, props, ctx) {
         // ctx.emit('update:scale', {x: vec3.x, y: vec3.y, z: vec3.z})
         stage.render(callback);
     }
-    /**
-     * Set Target
-     * @param target
-     * @param callback
-     */
-    const setTarget = (target, callback = noop) => {
-        if (!target) return
-        let vec3 = new Vector3()
-        vec3.x = target.hasOwnProperty('x') ? target.x : 0
-        vec3.y = target.hasOwnProperty('y') ? target.y : 0
-        vec3.z = target.hasOwnProperty('z') ? target.z : 0
-        object3d.lookAt(vec3.x, vec3.y, vec3.z);
-        stage.render(callback);
-    }
 
     ///// 监听
     watch(() => props.position, (val, oldValue) => {
@@ -84,24 +70,21 @@ export function useTransform(object3d, props, ctx) {
         if (val === oldValue) return
         setScale(props.scale)
     }, {deep: true, immediate: true})
-    watch(() => props.target, (val, oldValue) => {
-        setTarget(props.target)
-    }, {deep: true, immediate: true})
 
     watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
-        ctx.emit('update:position', {x, y, z})
+        emits('update:position', {x, y, z})
     })
     watch(() => object3d.quaternion, (val) => {
         let x = euler2angle(object3d.rotation.x)
         let y = euler2angle(object3d.rotation.y)
         let z = euler2angle(object3d.rotation.z)
-        ctx.emit('update:rotation', {x, y, z})
+        emits('update:rotation', {x, y, z})
     }, {deep: true})
     watch([() => object3d.scale.x, () => object3d.scale.y, () => object3d.scale.z], ([x, y, z]) => {
-        ctx.emit('update:scale', {x, y, z})
+        emits('update:scale', {x, y, z})
     })
 
-    return {setPosition, setRotation, setScale, setTarget}
+    return {setPosition, setRotation, setScale}
 }
 
 export const transformEmits = ['update:position', 'update:scale', 'update:rotation']
@@ -123,8 +106,5 @@ export const transformProps = {
         default() {
             return new Vector3(1, 1, 1)
         }
-    },
-    target: {
-        type: Object
     },
 }
