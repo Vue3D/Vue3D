@@ -1,82 +1,25 @@
 <template>
-  <vue3d ref="scene" :width="800" :height="800" active>
-    <v3d-grid-helper :size="100" :divisions="100"></v3d-grid-helper>
-    <v3d-box-helper :target="data.target"></v3d-box-helper>
-    <array-camera>
-      <v3d-perspective-camera main withRay :control="['orbit','transform']" :position="{x:0,y:0,z:20}" @pick="onPick">
-        <v3d-directional-light :intensity="0.8"></v3d-directional-light>
-      </v3d-perspective-camera>
-    </array-camera>
-
-    <v3d-obj-loader path="/example/cup.obj"
-                    :size="5"
-                    :material="mtl">
-      <v3d-cube v-model:position="data.position" v-model:rotation="data.rotation" :x="10"></v3d-cube>
-    </v3d-obj-loader>
-  </vue3d>
+  <v3d-stage ref="base" :width="width" :height="800" :tfMode="mode">
+    <v3d-three-view-camera main></v3d-three-view-camera>
+    <v3d-cube></v3d-cube>
+    <v3d-ambient-light></v3d-ambient-light>
+    <v3d-grid-helper></v3d-grid-helper>
+    <v3d-box-helper></v3d-box-helper>
+    <v3d-scene uuid="child"></v3d-scene>
+  </v3d-stage>
 </template>
 
 <script setup>
-import {
-  ceramic,
-  ev,
-  V3dBoxHelper,
-  V3dCube,
-  V3dDirectionalLight,
-  V3dGridHelper,
-  V3dObjLoader,
-  V3dPerspectiveCamera
-} from "../../src";
-import {inject, onMounted, reactive, ref, watch} from "vue";
-import {Color} from "three";
 
-const $vue3d = inject('$vue3d')
-const scene = ref(null)
+import {onMounted, ref} from "vue";
+import {V3dAmbientLight, V3dBoxHelper, V3dCube, V3dGridHelper, V3dScene, V3dStage, V3dThreeViewCamera} from "../../src";
+
+const base = ref(null)
 const mode = ref("translate")
-const mtl = ref(ceramic())
-
-watch(mode, (val) => {
-  console.log(val)
-})
-
-const data = reactive({
-  target: null,
-  position: {x: 3, y: 5, z: 0},
-  rotation: {x: 0, y: 0, z: 0},
-  scale: {x: 1, y: 1, z: 1}
-})
-
-const onPick = (target) => {
-  data.target = target
-}
+const width = ref(800)
 
 onMounted(() => {
-  const uuid = scene.value.id
-  window.addEventListener('keydown', function (event) {
-    switch (event.key) {
-      case 'q':
-        $vue3d.emit(ev.selected.tfMode.handler, "translate", uuid)
-        break;
 
-      case 'w':
-        $vue3d.emit(ev.selected.tfMode.handler, "rotate", uuid)
-        break;
-
-      case "e":
-        $vue3d.emit(ev.selected.tfMode.handler, "scale", uuid)
-        break;
-
-      case "t":
-        $vue3d.emit(ev.selected.tfSpace.handler, null, uuid)
-        break;
-    }
-  })
-  setTimeout(() => {
-    const c = ceramic()
-    c.color = new Color(255, 255, .0)
-    mtl.value = c
-    console.log(c)
-  }, 5000)
 })
 
 </script>

@@ -2,7 +2,6 @@
 import {inject, reactive, toRaw, watch} from "vue";
 import {CameraHelper, PerspectiveCamera, Vector4} from "three";
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {transformEmits, transformProps, useTransform} from "../../useTransform";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
 import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../useOrbitControl"
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
@@ -10,14 +9,12 @@ import {ComponentName} from "./index"
 
 const emits = defineEmits([
   ...object3dEmits,
-  ...transformEmits,
   ...transformControlEmits,
   ...orbitControlEmits,
   ...raycasterEmits])
 
 const props = defineProps({
   ...object3dProps,
-  ...transformProps,
   ...transformControlProps,
   ...orbitControlProps,
   ...raycasterProps,
@@ -46,6 +43,7 @@ const viewport = reactive({
 })
 
 const camera = reactive(new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far))
+
 const updateCamera = () => {
   camera.fov = props.fov;
   camera.aspect = viewport.width / viewport.height
@@ -68,8 +66,7 @@ watch([() => props.width, () => props.height, () => vWidth, () => vHeight, () =>
 }, {immediate: true})
 
 // 初始化
-const {status} = useObject3d(camera, props, emits, ComponentName)
-const {} = useTransform(camera, props, emits)
+const {status} = useObject3d(camera, props, emits)
 const {} = useRaycaster(camera, props, emits)
 const {tfControl} = useTransformControl(camera, props, emits)
 const {orbit} = useOrbitControl(camera, props, emits)
@@ -78,7 +75,7 @@ tfControl.addEventListener('dragging-changed', function (event) {
   orbit.enabled = !event.value;
 });
 
-parent.add(camera)
+parent.add(camera, ComponentName, props.uuid)
 
 if (props.main) {
   parent.mainCamera = toRaw(camera)

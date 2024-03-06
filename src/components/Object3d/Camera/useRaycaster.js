@@ -11,6 +11,12 @@ export function useRaycaster(camera, props, emits) {
 
     let charging = false // 充能
 
+    if (Array.isArray(props.withRay)) {
+        for (let layer of props.withRay) {
+            raycaster.layers.enable(layer)
+        }
+    }
+
     /**
      * 从捕获对象中选择最近对象
      * @param target
@@ -47,7 +53,8 @@ export function useRaycaster(camera, props, emits) {
             // 发射射线
             raycaster.setFromCamera(pointer, camera);
             // 射线检测对象。参数二 recursive: 遍历检测子物体
-            const targets = raycaster.intersectObjects(stage.root.node, true)
+            const targets = raycaster.intersectObjects(stage.root.scene, true)
+            console.log(stage.root.scene)
             emits("cast", targets)
             // 提取最优解
             if (targets.length > 0) {
@@ -57,19 +64,13 @@ export function useRaycaster(camera, props, emits) {
                     if (best) break
                 }
                 emits("pick", best)
-                stage.event.emit(ev.selected.attach.handler, best, stage.id)
+                stage.event.emit(ev.selected.command.attach, best, stage.id)
             } else {
                 emits("pick", null)
             }
         }
         charging = false
     }, false)
-
-    if (Array.isArray(props.withRay)) {
-        for (let layer of props.withRay) {
-            raycaster.layers.enable(layer)
-        }
-    }
 
     watch(() => props.rayFar, (val) => {
         raycaster.far = val

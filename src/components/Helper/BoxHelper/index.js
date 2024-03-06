@@ -1,10 +1,11 @@
-import _BoxHelper from "./BoxHelper.vue"
-import {getPrefixComponent} from "../../../const/config";
+import BoxHelper from "./BoxHelper.vue"
 
-const BoxHelper = Object.assign(_BoxHelper, {
+const ComponentName = "V3dBoxHelper"
+
+const V3dBoxHelper = Object.assign(BoxHelper, {
     install: function (app) {
-        app.component(getPrefixComponent(_BoxHelper.name), _BoxHelper);
+        app.component(ComponentName, BoxHelper);
     }
 })
 
-export default BoxHelper
+export {V3dBoxHelper, ComponentName}

@@ -19,13 +19,15 @@ export function useTransformControl(camera, props, emits) {
         mode = val
         tfControl.setMode(mode)
     }, {immediate: true})
+
     watch(() => props.tfSpace, (val) => {
         if (val === space || !spaceRange.includes(val)) return
         space = val
         tfControl.setSpace(space)
     }, {immediate: true})
     // set target
-    stage.event.on(ev.selected.attach.handler, (target) => {
+    stage.event.on(ev.selected.command.attach, (target) => {
+        console.log(target)
         if (target) {
             tfControl.attach(target)
         } else {
@@ -33,14 +35,14 @@ export function useTransformControl(camera, props, emits) {
         }
     })
     // set transform mode
-    stage.event.on(ev.selected.tfMode.handler, (val) => {
+    stage.event.on(ev.selected.command.tfMode, (val) => {
         if (!modeRange.includes(val)) return
         mode = val
         tfControl.setMode(val)
         emits("update:tfMode", val)
     })
     // set transform space
-    stage.event.on(ev.selected.tfSpace.handler, (val) => {
+    stage.event.on(ev.selected.command.tfSpace, (val) => {
         if (val && ["world", "local"].includes(val)) {
             space = val
         } else {

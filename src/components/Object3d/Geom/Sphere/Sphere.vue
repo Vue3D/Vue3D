@@ -1,9 +1,9 @@
 <script setup>
 import {Mesh, SphereGeometry} from 'three'
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {transformEmits, transformProps} from "../../useTransform";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
-import {reactive} from "vue";
+import {inject, reactive} from "vue";
 import {ComponentName, SphereGeom} from "./index";
 
 const props = defineProps({
@@ -38,15 +38,19 @@ const props = defineProps({
 
 const emits = defineEmits([...transformEmits, ...materialEmits, ...object3dEmits])
 
+const parent = inject("parent")
+
 const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
 const object3d = reactive(new SphereGeom());
 const mesh = new Mesh(geometry)
 
-const {status, data} = useObject3d(object3d, props, emits, ComponentName)
-useTransform(object3d, props, emits)
+const {status} = useObject3d(object3d, props, emits, ComponentName)
+
 useMaterial(mesh, props, emits)
 
 object3d.add(mesh)
+
+parent.add(object3d, ComponentName, props.uuid)
 </script>
 
 <template>

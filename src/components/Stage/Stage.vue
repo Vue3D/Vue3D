@@ -1,6 +1,5 @@
 <script setup>
 import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
-import {Scene} from "three";
 import mitt from "mitt";
 import {ev} from "../../event";
 import {createRoot} from "../Object3d/useNode"

@@ -1,20 +1,19 @@
-<script>
+<script setup>
 import {inject} from "vue";
 import {GridHelper} from 'three'
 
-export default {
-    name: "GridHelper",
-    props: {
-        size: {type: Number, default: 10},
-        divisions: {type: Number, default: 10},
-    },
-    setup(props, ctx) {
-        const stage = inject('stage')
-        const helper = new GridHelper(props.size, props.divisions)
-        stage.scene.add(helper)
-    }
-}
-</script>
+const props = defineProps({
+  size: {type: Number, default: 10},
+  divisions: {type: Number, default: 10},
+})
 
+const stage = inject('stage')
+const parent = inject('parent')
+
+const helper = new GridHelper(props.size, props.divisions)
+
+parent.add(helper)
+
+</script>
 
 <template></template>

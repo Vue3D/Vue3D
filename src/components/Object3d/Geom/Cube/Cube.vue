@@ -3,7 +3,7 @@ import {inject, reactive} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
 import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
-import {transformEmits, transformProps, useTransform} from "../../useTransform";
+import {transformEmits, transformProps} from "../../useTransform";
 import {ComponentName, CubeGeom} from "./index";
 
 const props = defineProps({
@@ -25,7 +25,7 @@ const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, pro
 const object3d = reactive(new CubeGeom())
 const mesh = new Mesh(geometry)
 
-const {status, data} = useObject3d(object3d, props, emits, ComponentName)
+const {status} = useObject3d(object3d, props, emits, ComponentName)
 const {} = useMaterial(mesh, props, emits)
 
 object3d.add(mesh)

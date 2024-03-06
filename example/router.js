@@ -7,12 +7,12 @@ export const routes = [
         name: 'base',
         meta: {label: "基础组件测试"}
     },
-    // {
-    //     path: '/lathe',
-    //     component: () => import('./views/TLathe.vue'),
-    //     name: 'lathe',
-    //     meta: {label: "划线建模"}
-    // },
+    {
+        path: '/array_camera',
+        component: () => import('./views/ArrayCamera.vue'),
+        name: 'array_camera',
+        meta: {label: "多摄像机"}
+    },
 ]
 
 

@@ -1,10 +1,11 @@
-import _GridHelper from "./GridHelper.vue"
-import {getPrefixComponent} from "../../../const/config";
+import GridHelper from "./GridHelper.vue"
 
-const GridHelper = Object.assign(_GridHelper, {
+const ComponentName = "V3dGridHelper"
+
+const V3dGridHelper = Object.assign(GridHelper, {
     install: function (app) {
-        app.component(getPrefixComponent(_GridHelper.name), _GridHelper);
+        app.component(ComponentName, GridHelper);
     }
 })
 
-export default GridHelper
+export {V3dGridHelper}

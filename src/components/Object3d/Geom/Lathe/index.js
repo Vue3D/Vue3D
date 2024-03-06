@@ -1,9 +1,15 @@
-import _Lathe from "./Lathe.vue"
-import {getPrefixComponent} from "../../../../const/config";
+import Lathe from "./Lathe.vue"
+import {Object3D} from "three";
 
-const Lathe = Object.assign(_Lathe, {
+const ComponentName = "V3dLathe"
+
+class LatheGeom extends Object3D {
+}
+
+const V3dLathe = Object.assign(Lathe, {
     install: function (app) {
-        app.component(getPrefixComponent(Lathe.name), _Lathe);
+        app.component(ComponentName, Lathe);
     }
 })
-export default Lathe
+
+export {V3dLathe, ComponentName, LatheGeom}
