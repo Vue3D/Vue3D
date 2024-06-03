@@ -1,7 +1,7 @@
 <script setup>
 import {AmbientLight} from 'three'
-import {inject, provide, reactive} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
+import {inject, reactive} from "vue";
+import {object3dEmits, object3dProps, useObject3d} from "@vue3d/core";
 import {ComponentName} from "./index"
 
 const props = defineProps({

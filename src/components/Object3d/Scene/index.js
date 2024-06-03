@@ -1,5 +1,4 @@
 export const ComponentName = "V3dScene"
-
 import Scene from "./Scene.vue"
 
 const V3dScene = Object.assign(Scene, {

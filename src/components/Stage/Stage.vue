@@ -1,10 +1,9 @@
 <script setup>
 import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
-import {createRoot} from "../Object3d/useNode"
-import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
+import {createRoot, lifecycleEmits, lifecycleProps, useLifecycle} from "@vue3d/core"
 import {rendererEmits, rendererProps, useRenderer} from "./useRenderer";
 import {noop} from "@unjuanable/jokes";
-import {ComponentName} from "../Object3d/Scene";
+import {ComponentName} from "./index";
 
 const emits = defineEmits([
   ...rendererEmits,

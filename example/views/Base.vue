@@ -22,7 +22,6 @@ const target = ref(null)
 const cube = ref(null)
 
 const onPick = (val) => {
-  console.log(val)
   target.value = toRaw(val)
 }
 

@@ -1,15 +1,13 @@
 <script>
 import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
 import {inject, reactive, toRaw, watch} from "vue";
-import {object3dProps, useObject3d} from "../../useObject3d";
-import {transformEmits, transformProps, useTransform} from '../../useTransform'
+import {object3dEmits, object3dProps, useObject3d} from "@vue3d/core";
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
 
 export default {
   name: "PerspectiveCamera",
   props: {
     ...object3dProps,
-    ...transformProps,
     ...raycasterProps,
     x: {type: Number, default: 0}, // viewport x 原点（x=0）：左
     y: {type: Number, default: 0}, // viewport y 原点（y=0）：下
@@ -23,7 +21,7 @@ export default {
     visibleHelper: {type: Boolean, default: false},
     main: {type: Boolean, default: false}
   },
-  emits: [...transformEmits, ...raycasterEmits],
+  emits: [...raycasterEmits, ...object3dEmits],
   setup(props, ctx) {
     const vWidth = inject('width')
     const vHeight = inject('height')
@@ -33,6 +31,9 @@ export default {
       width: props.width ? props.width : vWidth.value,
       height: props.height ? props.height : vHeight.value
     })
+    const a = ["d", "c"]
+    a.push("up")
+    defineEmits(a)
 
     const camera = reactive(new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far))
 
@@ -59,9 +60,8 @@ export default {
 
     // 初始化
     const {process} = useObject3d(camera, props, ctx)
-    useTransform(camera, props, ctx)
     useRaycaster(camera, props, ctx)
-    useControls(camera, props, ctx)
+    // useControls(camera, props, ctx)
 
     props.main && (stage.camera = toRaw(camera))
 

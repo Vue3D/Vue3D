@@ -1,14 +1,11 @@
 <script setup>
-import {defineExpose, inject, reactive, toRaw} from "vue";
+import {inject, reactive, toRaw} from "vue";
 import {BoxGeometry, Mesh} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
-import {transformEmits, transformProps} from "../../useTransform";
+import {materialEmits, materialProps, object3dEmits, object3dProps, useMaterial, useObject3d} from "@vue3d/core";
 import {ComponentName, CubeGeom} from "./index";
 
 const props = defineProps({
   ...object3dProps,
-  ...transformProps,
   ...materialProps,
   x: {type: Number, default: 1},
   y: {type: Number, default: 1},
@@ -18,7 +15,7 @@ const props = defineProps({
   zSegments: {type: Number, default: 1},
   withHelper: {type: Boolean, default: false},
 })
-const emits = defineEmits([...transformEmits, ...materialEmits, ...object3dEmits])
+const emits = defineEmits([...materialEmits, ...object3dEmits])
 
 const parent = inject('parent')
 const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)

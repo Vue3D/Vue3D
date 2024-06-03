@@ -1,8 +1,7 @@
 <script setup>
 import {inject, reactive, toRaw, watch} from "vue";
 import {LatheGeometry, Mesh} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
+import {materialEmits, materialProps, object3dEmits, object3dProps, useMaterial, useObject3d} from "@vue3d/core";
 import Box3 from "../../../../utils/Box3";
 import {ComponentName, LatheGeom} from "./index"
 

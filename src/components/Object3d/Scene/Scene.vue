@@ -1,7 +1,7 @@
 <script setup>
 import {inject} from "vue";
 import {Scene} from "three";
-import {object3dEmits, object3dProps, useObject3d} from "../useObject3d";
+import {object3dEmits, object3dProps, useObject3d} from "@vue3d/core";
 import {ComponentName} from "./index";
 
 const emits = defineEmits([...object3dEmits])

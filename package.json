@@ -32,15 +32,16 @@
   "homepage": "https://github.com/Vue3D/Vue3D#readme",
   "dependencies": {
     "@unjuanable/jokes": "^0.3.1",
-    "nanoid": "^5.0.6",
-    "three": "^0.162.0"
+    "@vue3d/core": "F://@Vue3D/core",
+    "nanoid": "^5.0.7",
+    "three": "^0.164.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.6.2",
+    "@vitejs/plugin-vue": "^5.0.4",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
-    "vite": "^5.0.12",
-    "vue": "^3.4.19",
+    "vite": "^5.2.11",
+    "vue": "^3.4.27",
     "vue-router": "^4.3.0"
   },
   "peerDependencies": {

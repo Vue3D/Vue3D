@@ -1,7 +1,7 @@
 <script setup>
 import {inject, reactive, toRaw, watch} from "vue";
 import {CameraHelper, PerspectiveCamera, Vector4} from "three";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
+import {object3dEmits, object3dProps, useObject3d, usePlugin} from "@vue3d/core";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
 import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../useOrbitControl"
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
@@ -70,6 +70,7 @@ const {status} = useObject3d(camera, props, emits)
 const {} = useRaycaster(camera, props, emits)
 const {tfControl} = useTransformControl(camera, props, emits)
 const {orbit} = useOrbitControl(camera, props, emits)
+const {} = usePlugin(camera, props, emits)
 
 tfControl.addEventListener('dragging-changed', function (event) {
   orbit.enabled = !event.value;

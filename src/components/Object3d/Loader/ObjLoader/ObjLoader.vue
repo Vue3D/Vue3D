@@ -3,20 +3,17 @@
 </template>
 
 <script>
-import {LoadingManager, Object3D, Vector3} from 'three'
+import {LoadingManager, Object3D} from 'three'
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
-import {object3dProps, useObject3d} from "../../useObject3d";
-import {transformEmits, transformProps, transform} from "../../useTransform";
-import {materialProps, materialEmits, useMaterial} from "../../useMaterial";
+import {materialEmits, materialProps, object3dProps, useMaterial} from "@vue3d/core";
 import {inject, reactive, watch} from "vue";
 import Box3 from "../../../../utils/Box3";
 
 export default {
   name: "ObjLoader",
-  emits: [...transformEmits, ...materialEmits, 'loaded', 'progress', 'error'],
+  emits: [...materialEmits, 'loaded', 'progress', 'error'],
   props: {
     ...object3dProps,
-    ...transformProps,
     ...materialProps,
     name: {type: String, default: 'Object3D'},
     path: {type: String},

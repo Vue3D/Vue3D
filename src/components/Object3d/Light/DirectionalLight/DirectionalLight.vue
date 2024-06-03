@@ -1,7 +1,7 @@
 <script setup>
 import {DirectionalLight, DirectionalLightHelper} from 'three'
 import {inject, reactive} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
+import {object3dEmits, object3dProps, useObject3d} from "@vue3d/core";
 
 const props = defineProps({
   ...object3dProps,

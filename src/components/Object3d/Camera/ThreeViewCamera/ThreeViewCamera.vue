@@ -1,7 +1,7 @@
 <script setup>
 import {computed, inject, reactive, toRaw} from "vue"
 import {ArrayCamera, OrthographicCamera, PerspectiveCamera, Vector4} from "three";
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
+import {object3dEmits, object3dProps, useObject3d} from "@vue3d/core";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
 import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../useOrbitControl";
 

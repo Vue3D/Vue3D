@@ -1,14 +1,11 @@
 <script setup>
 import {Mesh, SphereGeometry} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../useObject3d";
-import {transformEmits, transformProps} from "../../useTransform";
-import {materialEmits, materialProps, useMaterial} from "../../useMaterial";
+import {materialEmits, materialProps, object3dEmits, object3dProps, useMaterial, useObject3d} from "@vue3d/core";
 import {inject, reactive} from "vue";
 import {ComponentName, SphereGeom} from "./index";
 
 const props = defineProps({
   ...object3dProps,
-  ...transformProps,
   ...materialProps,
   radius: {type: Number, default: 1},
   widthSegments: {
@@ -36,7 +33,7 @@ const props = defineProps({
   withHelper: {type: Boolean, default: false},
 })
 
-const emits = defineEmits([...transformEmits, ...materialEmits, ...object3dEmits])
+const emits = defineEmits([...materialEmits, ...object3dEmits])
 
 const parent = inject("parent")
 
