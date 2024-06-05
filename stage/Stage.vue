@@ -1,9 +1,9 @@
 <script setup>
 import {computed, markRaw, onMounted, provide, ref, watch} from "vue";
-import {lifecycleEmits, lifecycleProps, useLifecycle} from "vue3d/use"
-import {rendererEmits, rendererProps, useRenderer} from "@vue3d/core/use/useRenderer";
-import {pluginEmits, pluginProps, usePlugin} from "@vue3d/core/use/usePlugin"
-import {createRoot} from "@vue3d/core/libs/node.class"
+import {lifecycleEmits, lifecycleProps, useLifecycle} from "vue3d/use/useLifecycle"
+import {rendererEmits, rendererProps, useRenderer} from "vue3d/use/useRenderer";
+import {pluginEmits, pluginProps, usePlugin} from "vue3d/use/usePlugin"
+import {createRoot} from "vue3d/libs/node.class"
 import {ComponentName} from "./index";
 
 const emits = defineEmits([
