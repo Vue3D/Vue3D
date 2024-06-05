@@ -2,9 +2,13 @@
   "name": "vue3d",
   "version": "1.0.0-dev.0",
   "description": "基于Vue3的Three.js组件化项目",
-  "main": "src/index.js",
+  "main": "index.js",
   "files": [
-    "src/"
+    "helper/",
+    "libs",
+    "node",
+    "stage",
+    "use"
   ],
   "scripts": {
     "dev": "vite",
