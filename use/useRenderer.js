@@ -1,4 +1,3 @@
-import {nanoid} from "nanoid";
 import {nextTick, onMounted, ref, watch} from "vue";
 import {ACESFilmicToneMapping, Color, WebGLRenderer} from "three";
 import {compose, noop} from "@unjuanable/jokes";
@@ -94,11 +93,6 @@ export function useRenderer(canvas, props, emits) {
 
 export const rendererEmits = ["rendering", "rendered"]
 export const rendererProps = {
-    uuid: {
-        type: [String, Number], default() {
-            return nanoid(8)
-        }
-    },
     // 渲染模式
     mode: {
         type: String, default: 'webgl', validator(value) {

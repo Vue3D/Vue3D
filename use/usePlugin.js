@@ -9,7 +9,9 @@ export function usePlugin(node, props, emits) {
     return {}
 }
 
-export const pluginEmits = ["onPlugin"]
+export const pluginEmits = [
+    "onPlugin"
+]
 export const pluginProps = {
     plugins: {
         type: Array,

@@ -4,17 +4,12 @@
   "description": "基于Vue3的Three.js组件化项目",
   "main": "index.js",
   "files": [
-    "helper/",
+    "helper",
     "libs",
     "node",
-    "stage",
     "use"
   ],
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vue3D/Vue3D.git"
@@ -37,8 +32,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
     "vite": "^5.2.12",
-    "vue": "^3.4.27",
-    "vue3d": "^1.0.0-dev"
+    "vue": "^3.4.27"
   },
   "peerDependencies": {
     "vue": "^3.0.0"

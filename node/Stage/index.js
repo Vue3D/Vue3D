@@ -1,10 +1,10 @@
 import Stage from "./Stage.vue"
 
+const StageName = "V3dStage"
 const V3dStage = Object.assign(Stage, {
     install: function (app) {
-        app.component(ComponentName, Stage);
+        app.component(StageName, Stage);
     }
 })
 
-export const ComponentName = "V3dStage"
-export {V3dStage}
+export {V3dStage, StageName}
