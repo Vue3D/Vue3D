@@ -1,58 +1,42 @@
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
 import {pluginEmits, pluginProps, usePlugin} from "../usePlugin";
 import {nanoid} from "nanoid";
-import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, toRaw} from "vue";
+import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, provide} from "vue";
 import {Scene} from "three";
-import {StageNode} from "../../libs/Node.Class"
-import {StageName} from "../../node";
+import {Node, SceneNode, StageNode} from "../../libs/Node.Class"
+import {SceneName, StageName} from "../../node";
 
-export function useNode(node, props, emits) {
-    const {status} = useLifecycle(node, props, emits);
-    const {} = usePlugin(node, props, emits);
+export function useNode(obj3, props, emits, componentName = "V3dComponent") {
+    const {status} = useLifecycle(obj3, props, emits);
+    const {} = usePlugin(obj3, props, emits);
 
     const stage = inject("stage")
-    console.log(stage)
     const parent = inject("parent")
 
+    const node = markRaw(new Node(obj3, props.uuid, componentName))
+
     onBeforeMount(() => {
-        if (!node) return
-        mount(node)
+        if (!parent) return
+        node.parent = parent
+        node.mount()
+        stage.render()
     })
 
     onBeforeUnmount(() => {
-        if (!node) return
-        unmount(node)
+        if (!parent) return
+        node.unmount()
+        stage.render()
     })
 
-    /**
-     * 在父节点上挂载
-     * @param child
-     */
-    const mount = (child) => {
-        if (parent?.node) {
-            parent.node?.add(toRaw(child));
-        }
-        stage.render()
-    }
-
-    /**
-     * 在父节点上卸载
-     * @param child
-     */
-    const unmount = (child) => {
-        if (parent.node) {
-            parent.node?.remove(toRaw(child));
-        }
-        stage.render()
-    }
+    provide("parent", node)
 
     return {
-        status
+        status, node
     }
 }
 
 /**
- * 创建Stage节点
+ * 创建 Stage节点
  * @param obj3 三维对象
  * @param props 参数
  * @param emits 事件
@@ -71,11 +55,27 @@ export function useStageNode(obj3 = new Scene(), props, emits) {
         return props.height
     })
 
-    return {status, node}
+    provide("parent", node)
+
+    return {status, node, stage: node.stage}
 }
 
+/**
+ * 创建场景节点
+ * @param obj3
+ * @param props
+ * @param emits
+ * @returns
+ */
 export function useSceneNode(obj3 = new Scene(), props, emits) {
+    const {status} = useLifecycle(obj3, props, emits);
+    const {} = usePlugin(obj3, props, emits);
 
+    const node = markRaw(new SceneNode(obj3, props.uuid, SceneName))
+
+    provide("parent", node)
+
+    return {status, node, scene: obj3}
 }
 
 export const nodeEmits = [

@@ -55,7 +55,6 @@ export function useRenderer(canvas, props, emits) {
         }
     }
 
-
     /**
      * 渲染一帧
      * @param callback {function?}

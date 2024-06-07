@@ -19,17 +19,17 @@ const props = defineProps({
 const canvas = ref(null)
 
 const renderer = useRenderer(canvas, props, emits)
-const {status, node} = useStageNode(undefined, props, emits)
+const {status, stage} = useStageNode(undefined, props, emits)
 
 onMounted(() => {
-  node.dom = canvas.value
-  node.renderer = renderer
-  node.render = renderer.render
+  stage.dom = canvas.value
+  stage.renderer = renderer
+  stage.render = renderer.render
 
   if (props.dataEngine) {
-    node.dom.setAttribute('data-engine', props.dataEngine)
+    stage.dom.setAttribute('data-engine', props.dataEngine)
   } else {
-    node.dom.removeAttribute('data-engine')
+    stage.dom.removeAttribute('data-engine')
   }
 
   renderer.render()
@@ -39,17 +39,16 @@ watch(() => props.play, (val) => {
   if (val) {
 
   } else {
-    renderer.bindNode(node.scene)
+    renderer.bindNode(stage.scene)
     renderer.render()
   }
 }, {immediate: true})
 
-provide('stage', node)
-provide('parent', node)
-provide('scene', node.scene)
+provide('stage', stage)
+provide('scene', stage.scene)
 
 /** Expose **/
-defineExpose(node)
+defineExpose(stage)
 </script>
 
 <template>

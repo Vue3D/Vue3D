@@ -15,7 +15,7 @@ export function useObject3d(object3d, props, emits) {
     object3d.name = props.name
 
     const {setLayer, setChildLayer} = useLayer(object3d, props, emits)
-    const {setPosition, setRotation, setScale, setTarget} = useTransform(object3d, props, emits)
+    const {setPosition, setRotation, setScale} = useTransform(object3d, props, emits)
 
     /**
      * 设置是否可见
@@ -34,7 +34,7 @@ export function useObject3d(object3d, props, emits) {
     return {
         setVisible,
         setLayer, setChildLayer, //layer
-        setPosition, setRotation, setScale, setTarget, // transform
+        setPosition, setRotation, setScale  // transform
     }
 }
 
