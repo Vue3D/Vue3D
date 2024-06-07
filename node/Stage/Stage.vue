@@ -1,6 +1,7 @@
 <script setup>
 import {onMounted, provide, ref, watch} from "vue";
-import {nodeEmits, nodeProps, rendererEmits, rendererProps, useRenderer, useStageNode} from "../../index"
+import {rendererEmits, rendererProps, useRenderer} from "../../use"
+import {nodeEmits, nodeProps, useStageNode} from "../../use/mixins/useNode"
 
 const emits = defineEmits([
   ...rendererEmits,
