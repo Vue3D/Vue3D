@@ -1,6 +1,6 @@
 <script setup>
-import {object3dEmits, object3dProps} from "../../use/mixins/useObject3D";
-import {nodeEmits, nodeProps, useSceneNode} from "../../use/mixins/useNode";
+import {object3dEmits, object3dProps} from "../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useSceneNode} from "../../mixins/useNode";
 
 const emits = defineEmits([
   ...object3dEmits,

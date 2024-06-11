@@ -1,9 +1,10 @@
 export * from "three"
 
 export * from "./node"
+export * from "./helper"
 
-export {useNode, useStageNode, useSceneNode, nodeEmits, nodeProps} from "./use/mixins/useNode"
-export {useObject3d, object3dEmits, object3dProps} from "./use/mixins/useObject3D"
+export {useNode, useStageNode, useSceneNode, nodeEmits, nodeProps} from "./mixins/useNode"
+export {useObject3d, object3dEmits, object3dProps} from "./mixins/useObject3D"
 export {useRenderer, rendererEmits, rendererProps} from "./use/useRenderer"
 export {useMaterial, materialEmits, materialProps} from "./use/useMaterial"
 

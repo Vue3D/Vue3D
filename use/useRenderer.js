@@ -89,7 +89,7 @@ export function useRenderer(canvas, props, emits) {
      */
     const render = (callback = noop()) => {
         if (!node || !node?.scene?.isScene || !node?.mainCamera?.isCamera) return
-        if (!renderer || rendering.value || props.pause) return
+        if (!renderer || !!rendering.value || props.pause) return
         rendering.value = requestAnimationFrame(async () => {
             const fn = compose(_renderMiddleware)
             renderer.render(node.scene, node.mainCamera);

@@ -10,6 +10,7 @@ export class Node {
     stage
     parent = null
     children = []
+    helpers = []
 
     constructor(obj3, uuid, type) {
         if (!obj3 || !obj3.isObject3D) return
@@ -35,7 +36,7 @@ export class Node {
     unmount() {
         if (this.parent && this.parent.obj3.isObject3D) {
             this.parent.obj3?.remove(toRaw(this.obj3)); // three.js
-            const index = this.children.indexOf(toRaw(this.obj3))
+            const index = this.parent.children.indexOf(toRaw(this.obj3))
             this.parent.children.splice(index, 1); // node tree
             delete this
         }

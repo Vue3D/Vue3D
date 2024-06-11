@@ -2,8 +2,8 @@
 import {reactive} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {materialEmits, materialProps, useMaterial,} from "../../../use";
-import {object3dEmits, object3dProps, useObject3d} from "../../../use/mixins/useObject3D"
-import {nodeEmits, nodeProps, useNode} from "../../../use/mixins/useNode";
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 
 import {CubeGeom, CubeName} from "./index";
 
@@ -29,8 +29,8 @@ const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, pro
 const object3d = reactive(new CubeGeom())
 const mesh = new Mesh(geometry)
 
-const {status, node} = useNode(object3d, props, emits)
-const {} = useObject3d(object3d, props, emits, CubeName)
+const {status, node} = useNode(object3d, props, emits, CubeName)
+const {} = useObject3d(object3d, props, emits)
 const {} = useMaterial(mesh, props, emits)
 
 object3d.add(mesh)

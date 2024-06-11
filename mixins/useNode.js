@@ -1,10 +1,10 @@
-import {lifecycleEmits, lifecycleProps, useLifecycle} from "../useLifecycle";
-import {pluginEmits, pluginProps, usePlugin} from "../usePlugin";
+import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
+import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
 import {nanoid} from "nanoid";
 import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, provide} from "vue";
 import {Scene} from "three";
-import {Node, SceneNode, StageNode} from "../../libs/Node.Class"
-import {SceneName, StageName} from "../../node";
+import {Node, SceneNode, StageNode} from "../libs/Node.Class"
+import {SceneName, StageName} from "../node";
 
 export const nodeEmits = [
     ...lifecycleEmits,

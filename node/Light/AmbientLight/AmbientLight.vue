@@ -1,8 +1,8 @@
 <script setup>
 import {AmbientLight} from 'three'
 import {reactive} from "vue";
-import {object3dEmits, object3dProps, useObject3d} from "../../../use/mixins/useObject3D";
-import {nodeEmits, nodeProps, useNode} from "../../../use/mixins/useNode";
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 import {AmbientLightName} from "./index";
 
 const props = defineProps({

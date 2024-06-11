@@ -1,6 +1,17 @@
 import {inject, watch} from "vue";
-import {layerEmits, layerProps, useLayer} from "../useLayer";
-import {transformEmits, transformProps, useTransform} from "../useTransform";
+import {layerEmits, layerProps, useLayer} from "../use/useLayer";
+import {transformEmits, transformProps, useTransform} from "../use/useTransform";
+
+export const object3dEmits = [
+    ...layerEmits,
+    ...transformEmits
+]
+export const object3dProps = {
+    ...layerProps,
+    ...transformProps,
+    name: {type: String, default: ''},
+    visible: {type: Boolean, default: true},
+}
 
 export function useObject3d(object3d, props, emits) {
     const stage = inject('stage')
@@ -36,15 +47,4 @@ export function useObject3d(object3d, props, emits) {
         setLayer, setChildLayer, //layer
         setPosition, setRotation, setScale  // transform
     }
-}
-
-export const object3dEmits = [
-    ...layerEmits,
-    ...transformEmits
-]
-export const object3dProps = {
-    ...layerProps,
-    ...transformProps,
-    name: {type: String, default: ''},
-    visible: {type: Boolean, default: true},
 }
