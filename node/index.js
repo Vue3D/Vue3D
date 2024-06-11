@@ -7,7 +7,7 @@ export {V3dScene, SceneName} from "./Scene"
 // export {V3dThreeViewCamera} from "./Camera/ThreeViewCamera"
 export {V3dPerspectiveCamera, PerspectiveCameraName} from "./Camera/PerspectiveCamera"
 // // Light
-// export {V3dAmbientLight} from "./Light/AmbientLight"
-// export {V3dDirectionalLight} from "./Light/DirectionalLight"
+export {V3dAmbientLight} from "./Light/AmbientLight"
+export {V3dDirectionalLight} from "./Light/DirectionalLight"
 // // Cube
-// export {V3dCube} from "./Geom/Cube"
+export {V3dCube} from "./Geom/Cube"

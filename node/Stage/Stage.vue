@@ -39,7 +39,7 @@ watch(() => props.play, (val) => {
   if (val) {
 
   } else {
-    renderer.bindNode(stage.scene)
+    renderer.bindNode(stage)
     renderer.render()
   }
 }, {immediate: true})

@@ -37,7 +37,7 @@ const viewport = reactive({
 
 const camera = reactive(new PerspectiveCamera(props.fov, viewport.width / viewport.height, props.near, props.far))
 
-const {status} = useNode(camera, props, emits, PerspectiveCameraName)
+const {status, node} = useNode(camera, props, emits, PerspectiveCameraName)
 const {} = useObject3d(camera, props, emits)
 
 const updateCamera = () => {
@@ -65,6 +65,8 @@ watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.
 // useRaycaster(camera, props, ctx)
 // useControls(camera, props, ctx)
 props.main && (stage.mainCamera = toRaw(camera))
+
+defineExpose({node: node})
 </script>
 
 <template>
