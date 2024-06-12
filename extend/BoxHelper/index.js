@@ -1,11 +1,10 @@
 import BoxHelper from "./BoxHelper.vue"
 
-const ComponentName = "V3dBoxHelper"
-
+const BoxHelperName = "V3dBoxHelper"
 const V3dBoxHelper = Object.assign(BoxHelper, {
     install: function (app) {
-        app.component(ComponentName, BoxHelper);
+        app.component(BoxHelperName, BoxHelper);
     }
 })
 
-export {V3dBoxHelper, ComponentName}
+export {V3dBoxHelper, BoxHelperName}

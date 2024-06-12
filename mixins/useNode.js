@@ -1,7 +1,7 @@
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
 import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
 import {nanoid} from "nanoid";
-import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, provide} from "vue";
+import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, provide} from "vue";
 import {Scene} from "three";
 import {Node, SceneNode, StageNode} from "../libs/Node.Class"
 import {SceneName, StageName} from "../node";
@@ -38,15 +38,18 @@ export function useNode(obj3, props, emits, componentName = "V3dComponent") {
     const node = markRaw(new Node(obj3, props.uuid, componentName))
 
     onBeforeMount(() => {
-        if (!parent) return
-        node.parent = parent
-        node.mount()
-        stage.render()
+        node.setParent(parent).add().mount()
     })
 
     onBeforeUnmount(() => {
-        if (!parent) return
-        node.unmount()
+        node.remove().unmount()
+    })
+
+    onMounted(() => {
+        stage.render()
+    })
+
+    onUpdated(() => {
         stage.render()
     })
 
@@ -74,23 +77,20 @@ export function useMNode(obj3, props, emits, componentName = "V3dComponent") {
 
     const node = markRaw(new Node(obj3, props.uuid, componentName))
 
-    const mount = () => {
-        if (!parent) return
-        node.parent = parent
-        node.mount()
+    onBeforeMount(() => {
+        node.setParent(parent).mount()
         stage.render()
-    }
+    })
 
-    const unmount = () => {
-        if (!parent) return
+    onBeforeUnmount(() => {
         node.unmount()
         stage.render()
-    }
+    })
 
     provide("parent", node)
 
     return {
-        status, parent, node, mount, unmount
+        status, parent, node
     }
 }
 
@@ -116,6 +116,7 @@ export function useStageNode(obj3 = new Scene(), props, emits) {
 
     provide("parent", node)
 
+    // 这里 node === node.stage
     return {status, node, stage: node.stage}
 }
 

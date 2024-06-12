@@ -21,6 +21,11 @@ const canvas = ref(null)
 const renderer = useRenderer(canvas, props, emits)
 const {status, stage} = useStageNode(undefined, props, emits)
 
+const setActive = (scene) => {
+  stage.setActive(scene)
+  renderer.bindNode(scene)
+}
+
 onMounted(() => {
   stage.dom = canvas.value
   stage.renderer = renderer
@@ -37,18 +42,18 @@ onMounted(() => {
 
 watch(() => props.play, (val) => {
   if (val) {
-
+    setActive(val)
   } else {
     renderer.bindNode(stage)
-    renderer.render()
   }
+  renderer.render()
 }, {immediate: true})
 
 provide('stage', stage)
 provide('scene', stage.scene)
 
 /** Expose **/
-defineExpose(stage)
+defineExpose({...stage, setActive})
 </script>
 
 <template>

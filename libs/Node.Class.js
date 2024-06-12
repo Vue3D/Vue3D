@@ -10,37 +10,101 @@ export class Node {
     stage
     parent = null
     children = []
-    helpers = []
+    extends = []
 
     constructor(obj3, uuid, type) {
-        if (!obj3 || !obj3.isObject3D) return
         this.obj3 = toRaw(obj3)
         this.uuid = uuid
         this.type = type
     }
 
     /**
+     * 设置父节点
+     * @param parent
+     */
+    setParent(parent) {
+        if (parent && parent.obj3.isObject3D) {
+            this.parent = parent
+        } else {
+            throw new Error("Unhandled parent")
+        }
+        return this
+    }
+
+    /**
+     * 添加对象
+     */
+    add() {
+        if (this.parent) {
+            this.parent.obj3?.add(toRaw(this.obj3)); // three.js
+            return this;
+        }
+    }
+
+    sceneAdd() {
+
+    }
+
+    remove() {
+        if (this.parent) {
+            this.parent.obj3?.remove(toRaw(this.obj3)); // three.js
+            return this;
+        }
+    }
+
+    /**
      * 挂载节点
      */
     mount() {
-        if (this.parent && this.parent.obj3.isObject3D) {
+        if (this.parent) {
             this.stage = this.parent.stage
-            this.parent.obj3?.add(toRaw(this.obj3)); // three.js
             this.parent.children.push(this); // node tree
+            return this
         }
     }
+
 
     /**
      * 卸载节点
      */
     unmount() {
-        if (this.parent && this.parent.obj3.isObject3D) {
-            this.parent.obj3?.remove(toRaw(this.obj3)); // three.js
+        if (this.parent) {
             const index = this.parent.children.indexOf(toRaw(this.obj3))
             this.parent.children.splice(index, 1); // node tree
             delete this
         }
     }
+}
+
+export class ExtendNode extends Node {
+    constructor(extend, uuid, type) {
+        super(extend, uuid, type);
+    }
+
+    /**
+     * 挂载节点
+     */
+    mount() {
+        if (this.parent) {
+            this.stage = this.parent.stage
+            this.parent.extends.push(this); // node tree
+            return this
+        }
+    }
+
+
+    /**
+     * 卸载节点
+     */
+    unmount() {
+        if (this.parent) {
+            const index = this.parent.extends.indexOf(this)
+            this.parent.extends.splice(index, 1); // node tree
+            delete this
+        }
+    }
+
+
 }
 
 /**
@@ -65,9 +129,19 @@ export class StageNode extends SceneNode {
     render = Function.prototype
     width
     height
+    activated
 
     constructor(scene, uuid, type) {
         super(scene, uuid, type);
         this.stage = this
+        this.activated = this
+    }
+
+    /**
+     * 激活场景
+     * @param node {SceneNode}
+     */
+    setActive(node) {
+        this.activated = node
     }
 }

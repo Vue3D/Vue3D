@@ -4,7 +4,7 @@
   "description": "基于Vue3的Three.js组件化项目",
   "main": "index.js",
   "files": [
-    "helper",
+    "extend",
     "libs",
     "node",
     "use"

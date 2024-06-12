@@ -2,11 +2,11 @@
 import {inject, reactive, toRaw, watch} from "vue";
 import {CameraHelper, PerspectiveCamera, Vector4} from "three";
 import {object3dEmits, object3dProps, useObject3d} from "vue3d/use";
-import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
+import {transformControlEmits, transformControlProps, useTransformControl} from "../../../use/useTransformControl";
 import {raycasterEmits, raycasterProps, useRaycaster} from "../useRaycaster";
 import {pluginEmits, pluginProps, usePlugin} from "vue3d/use";
 import {ComponentName} from "./index"
-import {useOrbitControl} from "../useOrbitControl";
+import {useOrbitControl} from "../../../use/useOrbitControl";
 
 const emits = defineEmits([
   ...object3dEmits,

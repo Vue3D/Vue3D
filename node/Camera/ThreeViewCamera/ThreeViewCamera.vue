@@ -2,8 +2,8 @@
 import {computed, inject, reactive, toRaw} from "vue"
 import {ArrayCamera, OrthographicCamera, PerspectiveCamera, Vector4} from "three";
 import {object3dEmits, object3dProps, useObject3d} from "vue3d/use";
-import {transformControlEmits, transformControlProps, useTransformControl} from "../useTransformControl";
-import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../useOrbitControl";
+import {transformControlEmits, transformControlProps, useTransformControl} from "../../../use/useTransformControl";
+import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../../use/useOrbitControl";
 
 const stage = inject('stage')
 const parent = inject('parent')
