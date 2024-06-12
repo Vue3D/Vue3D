@@ -24,12 +24,18 @@ if (parent.obj3.isCamera) {
 
   onMounted(() => {
     scene.add(tfControl)
+    // 兼容Orbit组件
+    const orbitNode = extend.parent.getByType("V3dCameraOrbitControl")
+    if (orbitNode) {
+      const orbit = orbitNode.obj3
+      tfControl.addEventListener('dragging-changed', function (event) {
+        orbit.enabled = !event.value;
+      });
+    }
   })
 } else {
   console.error("The current parent component is not a camera component")
 }
-
-
 </script>
 
 <template></template>

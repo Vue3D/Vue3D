@@ -61,9 +61,9 @@ watch([() => props.width, () => props.height, () => vWidth.value, () => vHeight.
   updateCamera()
 }, {immediate: true})
 
+updateCamera()
+
 // 初始化
-// useRaycaster(camera, props, ctx)
-// useControls(camera, props, ctx)
 props.main && (stage.mainCamera = toRaw(camera))
 
 defineExpose({node: node})

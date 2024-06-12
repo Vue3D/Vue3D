@@ -74,6 +74,59 @@ export class Node {
             delete this
         }
     }
+
+    hasType(type) {
+        for (let item of this.children) {
+            if (item.type === type) {
+                return true
+            }
+        }
+        for (let item of this.extends) {
+            if (item.type === type) {
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * 通过节点类型获取一个子节点
+     * @param type
+     * @returns {null}
+     */
+    getByType(type) {
+        for (let item of this.children) {
+            if (item.type === type) {
+                return item
+            }
+        }
+        for (let item of this.extends) {
+            if (item.type === type) {
+                return item
+            }
+        }
+        return null
+    }
+
+    /**
+     * 通过节点类似获取匹配的所有子节点
+     * @param type
+     * @returns {*[]}
+     */
+    getsByType(type) {
+        const items = []
+        for (let item of this.children) {
+            if (item.type === type) {
+                items.push(item)
+            }
+        }
+        for (let item of this.extends) {
+            if (item.type === type) {
+                items.push(item)
+            }
+        }
+        return items
+    }
 }
 
 export class ExtendNode extends Node {
