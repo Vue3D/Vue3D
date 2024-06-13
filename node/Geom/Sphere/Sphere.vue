@@ -1,10 +1,13 @@
 <script setup>
 import {Mesh, SphereGeometry} from 'three'
-import {materialEmits, materialProps, object3dEmits, object3dProps, useMaterial, useObject3d} from "vue3d/use";
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
+import {materialEmits, materialProps, useMaterial} from "../../../use"
 import {inject, reactive} from "vue";
-import {ComponentName, SphereGeom} from "./index";
+import {SphereGeom, SphereName} from "./index";
 
 const props = defineProps({
+  ...nodeProps,
   ...object3dProps,
   ...materialProps,
   radius: {type: Number, default: 1},
@@ -33,21 +36,24 @@ const props = defineProps({
   withHelper: {type: Boolean, default: false},
 })
 
-const emits = defineEmits([...materialEmits, ...object3dEmits])
-
-const parent = inject("parent")
+const emits = defineEmits([
+  ...nodeEmits,
+  ...object3dEmits,
+  ...materialEmits,
+])
 
 const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
 const object3d = reactive(new SphereGeom());
 const mesh = new Mesh(geometry)
 
-const {status} = useObject3d(object3d, props, emits, ComponentName)
-
-useMaterial(mesh, props, emits)
+const {status, node} = useNode(object3d, props, emits, SphereName)
+const {} = useObject3d(object3d, props, emits)
+const {} = useMaterial(mesh, props, emits)
 
 object3d.add(mesh)
 
-parent.add(object3d, ComponentName, props.uuid)
+/** EXPOSE **/
+defineExpose({node: node})
 </script>
 
 <template>

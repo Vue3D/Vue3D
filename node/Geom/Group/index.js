@@ -1,11 +1,10 @@
 import Group from "./Group.vue"
 
-const ComponentName = "V3dGroup"
-
-const Group = Object.assign(Group, {
+const GroupName = "V3dGroup"
+const V3dGroup = Object.assign(Group, {
     install(app) {
-        app.component(ComponentName, Group)
+        app.component(GroupName, Group)
     }
 })
 
-export {ComponentName, Group}
+export {GroupName, V3dGroup}

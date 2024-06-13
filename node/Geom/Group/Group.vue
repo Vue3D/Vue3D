@@ -1,18 +1,25 @@
 <script setup>
-import {object3dEmits, object3dProps, useObject3d,} from "vue3d/use";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
+import {object3dEmits, object3dProps, useObject3d,} from "../../../mixins/useObject3D";
 import {Group} from "three";
 import {reactive} from "vue";
-import {ComponentName} from "./index";
+import {GroupName} from "./index";
 
 const props = defineProps({
+  ...nodeProps,
   ...object3dProps,
 })
 
-const emits = defineEmits([...object3dEmits])
+const emits = defineEmits([
+  ...nodeEmits,
+  ...object3dEmits
+])
 
-const object3d = reactive(new Group())
+const group = reactive(new Group())
 
-const {status} = useObject3d(object3d, props, emits, ComponentName)
+const {status} = useNode(group, props, emits, GroupName)
+const {} = useObject3d(group, props, emits)
+
 </script>
 <template>
   <slot v-if="status.mounted"></slot>

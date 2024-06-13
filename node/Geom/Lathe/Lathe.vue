@@ -1,11 +1,14 @@
 <script setup>
 import {inject, reactive, toRaw, watch} from "vue";
 import {LatheGeometry, Mesh} from 'three'
-import {materialEmits, materialProps, object3dEmits, object3dProps, useMaterial, useObject3d} from "vue3d/use";
-import Box3 from "../../../../utils/Box3";
-import {ComponentName, LatheGeom} from "./index"
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
+import {materialEmits, materialProps, useMaterial} from "../../../use"
+import Box3 from "../../../libs/Box3.class";
+import {LatheGeom, LatheName} from "./index"
 
 const props = defineProps({
+  ...nodeProps,
   ...object3dProps,
   ...materialProps,
   points: {type: Array},// Vector2 对象数组
@@ -16,13 +19,18 @@ const props = defineProps({
   adapted: {type: Boolean, default: false},
 })
 
-const emits = [...object3dEmits, ...materialEmits]
+const emits = defineEmits([
+  ...nodeEmits,
+  ...object3dEmits,
+  ...materialEmits
+])
 
 const stage = inject("stage")
 const parent = inject("parent")
 
 const object3d = reactive(new LatheGeom())
-const {status, setScale} = useObject3d(object3d, props, emits)
+const {status} = useNode(object3d, props, emits, LatheName)
+const {setScale} = useObject3d(object3d, props, emits)
 let mesh = null
 
 watch(() => props.points, (val) => {
@@ -50,7 +58,6 @@ watch(() => props.points, (val) => {
 
 }, {deep: true})
 
-parent.add(object3d, ComponentName, props.uuid)
 </script>
 
 <template>

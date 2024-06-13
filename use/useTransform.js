@@ -71,7 +71,8 @@ export function useTransform(object3d, props, emits) {
 
     watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
         emits('update:position', {x, y, z})
-    })
+        console.log(x, y, z)
+    }, {deep: true})
     watch(() => object3d.quaternion, (val) => {
         let x = euler2angle(object3d.rotation.x)
         let y = euler2angle(object3d.rotation.y)
