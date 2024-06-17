@@ -23,7 +23,7 @@ const light = reactive(new AmbientLight(props.color, props.intensity))
 const {status, node} = useNode(light, props, emits, AmbientLightName)
 const {} = useObject3d(light, props, emits)
 
-defineExpose({node: node})
+defineExpose({...node})
 </script>
 
 <template>

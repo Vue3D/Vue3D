@@ -1,92 +1,81 @@
-import {inject, watch} from "vue";
-import {Euler, Quaternion, Vector3} from "three";
+import {computed, inject, reactive, watch} from "vue";
+import {Euler, Vector3} from "three";
 
 export function useTransform(object3d, props, emits) {
     const stage = inject('stage')
+    const euler = new Euler(0, 0, 0, "XYZ")
+    const eAngle = reactive(new Vector3())
 
-    const position = new Vector3()
-    const angle = new Vector3()
-    const scale = new Vector3(1, 1, 1)
-
-    /**
-     * Set Position
-     * @param vec3
-     * @param callback {function?}
-     */
-    const setPosition = (vec3, callback) => {
-        if (!vec3) return
-        Object.assign(position, vec3)
-        object3d.position.set(position.x, position.y, position.z)
-        // ctx.emit('update:position', {x: vec3.x, y: vec3.y, z: vec3.z})
-        stage.render(callback);
-    }
-    /**
-     * Set Rotation
-     * @param vec3
-     * @param callback {function?}
-     */
-    const setRotation = (vec3, callback) => {
-        if (!vec3) return
-        Object.assign(angle, vec3)
-        const x = angle2euler(angle.x);
-        const y = angle2euler(angle.y);
-        const z = angle2euler(angle.z);
-        let euler = new Euler(x, y, z)
-        object3d.rotation.set(euler.x, euler.y, euler.z);
-        // ctx.emit('update:rotation', {x: vec3.x, y: vec3.y, z: vec3.z})
-        stage.render(callback);
-    }
-    /**
-     * Set Scale
-     * @param vec3
-     * @param callback {function?}
-     */
-    const setScale = (vec3, callback) => {
-        if (!vec3) return
-        if (typeof vec3 === 'object') {
-            Object.assign(scale, vec3)
-        } else if (typeof vec3 === 'number') {
-            scale.x = vec3
-            scale.y = vec3
-            scale.z = vec3
+    const position = computed({
+        get() {
+            return object3d.position
+        },
+        set(val) {
+            val = Object.assign(object3d.position, val)
+            object3d.position.set(val.x, val.y, val.z)
+            emits('update:position', val)
+            stage.render();
         }
-        object3d.scale.set(scale.x, scale.y, scale.z)
-        // ctx.emit('update:scale', {x: vec3.x, y: vec3.y, z: vec3.z})
-        stage.render(callback);
-    }
-
-    ///// 监听
-    watch(() => props.position, (val, oldValue) => {
-        if (val === oldValue) return
-        setPosition(props.position)
-    }, {deep: true, immediate: true})
-    watch(() => props.rotation, (val, oldValue) => {
-        if (val === oldValue) return
-        setRotation(props.rotation)
-    }, {deep: true, immediate: true})
-    watch(() => props.scale, (val, oldValue) => {
-        if (val === oldValue) return
-        setScale(props.scale)
-    }, {deep: true, immediate: true})
-
-    watch([() => object3d.position.x, () => object3d.position.y, () => object3d.position.z], ([x, y, z]) => {
-        emits('update:position', {x, y, z})
-        console.log(x, y, z)
-    }, {deep: true})
-    watch(() => object3d.quaternion, (val) => {
-        let x = euler2angle(object3d.rotation.x)
-        let y = euler2angle(object3d.rotation.y)
-        let z = euler2angle(object3d.rotation.z)
-        emits('update:rotation', {x, y, z})
-    }, {deep: true})
-    watch([() => object3d.scale.x, () => object3d.scale.y, () => object3d.scale.z], ([x, y, z]) => {
-        emits('update:scale', {x, y, z})
+    })
+    const scale = computed({
+        get() {
+            return object3d.scale
+        },
+        set(val) {
+            val = Object.assign(object3d.scale, val)
+            object3d.scale.set(val.x, val.y, val.z)
+            emits('update:scale', val)
+            stage.render();
+        }
+    })
+    const angle = computed({
+        get() {
+            euler.setFromQuaternion(object3d.quaternion);
+            eAngle.set(euler2angle(euler.x), euler2angle(euler.y), euler2angle(euler.z))
+            return eAngle
+        },
+        set(val) {
+            if (object3d.constructor.name === "CubeGeom") {
+                Object.assign(eAngle, val)
+                euler.x = angle2euler(eAngle.x)
+                euler.y = angle2euler(eAngle.y)
+                euler.z = angle2euler(eAngle.z)
+                object3d.quaternion.setFromEuler(euler)
+                emits('update:angle', eAngle)
+            }
+            stage.render();
+        }
     })
 
-    return {setPosition, setRotation, setScale}
+    ///// 监听props
+    watch(() => props.position, () => {
+        position.value = props.position
+    }, {deep: false, immediate: true})
+    watch(() => props.scale, () => {
+        scale.value = props.scale
+    }, {deep: true, immediate: true})
+    watch(() => props.angle, () => {
+        angle.value = props.angle
+    }, {deep: true, immediate: true})
+
+    ///// 监听object3dwe
+    watch(() => position.value, (val) => {
+        emits('update:position', val)
+        stage.render()
+    }, {deep: true})
+    watch(() => scale.value, (val) => {
+        emits('update:scale', val)
+        stage.render()
+    }, {deep: true})
+    watch(() => angle.value, (val) => {
+        emits('update:angle', val)
+        stage.render()
+    }, {deep: true})
+
+    return {position, scale, angle}
 }
 
-export const transformEmits = ['update:position', 'update:scale', 'update:rotation']
+export const transformEmits = ['update:position', 'update:scale', 'update:angle']
 export const transformProps = {
     position: {
         type: Object,
@@ -94,30 +83,18 @@ export const transformProps = {
             return new Vector3()
         }
     },
-    rotation: {
-        type: Object,
-        default() {
-            return new Quaternion()
-        },
-    },
     scale: {
         type: [Number, Object],
         default() {
             return new Vector3(1, 1, 1)
         }
     },
-}
-
-export const setObjectRotation = (obj, angle, callback) => {
-    if (!obj) return
-    if (angle && angle.hasOwnProperty('x') && angle.hasOwnProperty('y') && angle.hasOwnProperty('z')) {
-        const x = angle2euler(angle.x);
-        const y = angle2euler(angle.y);
-        const z = angle2euler(angle.z);
-        let euler = new Euler(x, y, z);
-        obj.setRotationFromEuler(euler);
-    }
-    callback && callback()
+    angle: {
+        type: Object,
+        default() {
+            return new Vector3()
+        },
+    },
 }
 
 /**
@@ -130,6 +107,11 @@ export const angle2euler = (angle) => {
     return euler * Math.PI
 }
 
+/**
+ * 欧拉角转夹角
+ * @param euler
+ * @returns {number}
+ */
 export const euler2angle = (euler) => {
     let angle = euler / Math.PI
     return angle * 180;

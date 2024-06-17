@@ -3,7 +3,7 @@ import {Mesh, SphereGeometry} from 'three'
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
 import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 import {materialEmits, materialProps, useMaterial} from "../../../use"
-import {inject, reactive} from "vue";
+import {reactive} from "vue";
 import {SphereGeom, SphereName} from "./index";
 
 const props = defineProps({
@@ -53,7 +53,7 @@ const {} = useMaterial(mesh, props, emits)
 object3d.add(mesh)
 
 /** EXPOSE **/
-defineExpose({node: node})
+defineExpose({...node})
 </script>
 
 <template>

@@ -39,7 +39,7 @@ if (props.withHelper) {
   light.add(helper)
 }
 
-defineExpose({node: node})
+defineExpose({...node})
 </script>
 
 <template>

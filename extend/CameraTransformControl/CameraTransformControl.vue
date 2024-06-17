@@ -4,7 +4,6 @@ import {transformControlEmits, transformControlProps, useTransformControl} from 
 import {TransformControlName} from "./";
 import {inject, onMounted} from "vue";
 
-
 const props = defineProps({
   ...extendProps,
   ...transformControlProps
@@ -19,16 +18,20 @@ const parent = inject("parent")
 const scene = inject("scene")
 
 if (parent.obj3.isCamera) {
-  const {tfControl} = useTransformControl(parent.obj3, props, emits)
-  const {extend} = useExtend(tfControl, props, emits, TransformControlName)
+  const {control, onChange} = useTransformControl(parent.obj3, props, emits)
+  const {extend} = useExtend(control, props, emits, TransformControlName)
+
+  onChange.callback = (e) => {
+    emits("change", e)
+  }
 
   onMounted(() => {
-    scene.add(tfControl)
+    scene.add(control)
     // 兼容Orbit组件
     const orbitNode = extend.parent.getByType("V3dCameraOrbitControl")
     if (orbitNode) {
       const orbit = orbitNode.obj3
-      tfControl.addEventListener('dragging-changed', function (event) {
+      control.addEventListener('dragging-changed', function (event) {
         orbit.enabled = !event.value;
       });
     }

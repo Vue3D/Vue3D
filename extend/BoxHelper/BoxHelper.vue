@@ -1,5 +1,5 @@
 <script setup>
-import {inject, onMounted, toRaw, watch} from "vue";
+import {inject, onMounted, watch} from "vue";
 import {Box3, Box3Helper, Color} from 'three'
 import {noop} from "@unjuanable/jokes";
 import {extendProps, useExtend} from "../../mixins/useExtend";
@@ -25,6 +25,10 @@ const stage = inject('stage')
 const box = new Box3();
 const helper = new Box3Helper(box, new Color(props.color).getHex())
 
+const update = (callback) => {
+  setTarget(props.target, callback)
+}
+
 const {extend} = useExtend(helper, props, emits, BoxHelperName)
 
 helper.visible = false
@@ -38,6 +42,7 @@ const setTarget = (target, callback = noop) => {
   if (target && target.hasOwnProperty("isVue3d") && target.isVue3d) {
     helper.visible = true
     box.setFromObject(target)
+    helper.updateMatrixWorld(true)
     stage.render(callback);
   } else {
     setTarget(target.parent)
@@ -54,10 +59,10 @@ watch(() => props.target, (val, oldVal) => {
   if (oldVal) {
     // oldVal.remove(box)
   }
-  setTarget(toRaw(val))
+  setTarget(val)
 }, {deep: true})
 
-defineExpose({setTarget})
+defineExpose({setTarget, update})
 </script>
 
 <template></template>

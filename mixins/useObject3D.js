@@ -1,6 +1,5 @@
 import {inject, watch} from "vue";
-import {layerEmits, layerProps, useLayer} from "../use/useLayer";
-import {transformEmits, transformProps, useTransform} from "../use/useTransform";
+import {layerEmits, layerProps, transformEmits, transformProps, useLayer, useTransform} from "../use";
 
 export const object3dEmits = [
     ...layerEmits,
@@ -26,7 +25,7 @@ export function useObject3d(object3d, props, emits) {
     object3d.name = props.name
 
     const {setLayer, setChildLayer} = useLayer(object3d, props, emits)
-    const {setPosition, setRotation, setScale} = useTransform(object3d, props, emits)
+    const {position, scale, angle} = useTransform(object3d, props, emits)
 
     /**
      * 设置是否可见
@@ -45,6 +44,6 @@ export function useObject3d(object3d, props, emits) {
     return {
         setVisible,
         setLayer, setChildLayer, //layer
-        setPosition, setRotation, setScale  // transform
+        position, scale, angle // transform
     }
 }

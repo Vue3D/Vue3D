@@ -29,7 +29,7 @@ const stage = inject("stage")
 const parent = inject("parent")
 
 const object3d = reactive(new LatheGeom())
-const {status} = useNode(object3d, props, emits, LatheName)
+const {status, node} = useNode(object3d, props, emits, LatheName)
 const {setScale} = useObject3d(object3d, props, emits)
 let mesh = null
 
@@ -58,6 +58,7 @@ watch(() => props.points, (val) => {
 
 }, {deep: true})
 
+defineExpose({...node})
 </script>
 
 <template>

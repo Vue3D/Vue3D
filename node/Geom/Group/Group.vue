@@ -17,9 +17,10 @@ const emits = defineEmits([
 
 const group = reactive(new Group())
 
-const {status} = useNode(group, props, emits, GroupName)
+const {status, node} = useNode(group, props, emits, GroupName)
 const {} = useObject3d(group, props, emits)
 
+defineExpose({...node})
 </script>
 <template>
   <slot v-if="status.mounted"></slot>

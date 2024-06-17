@@ -11,7 +11,7 @@ const props = defineProps({
   ...nodeProps,
 })
 
-const {status} = useSceneNode(undefined, props, emits)
+const {status, node} = useSceneNode(undefined, props, emits)
 /** start **/
 // const {scene, node} = root.addScene(scene, ComponentName, props.uuid)
 // const {status} = useObject3d(scene, props, emits)
@@ -21,7 +21,7 @@ const {status} = useSceneNode(undefined, props, emits)
 // provide('parent', node)
 
 /** Expose **/
-// defineExpose({scene})
+defineExpose({...node})
 </script>
 
 <template>

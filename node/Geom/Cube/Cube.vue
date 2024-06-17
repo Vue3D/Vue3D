@@ -36,7 +36,7 @@ const {} = useMaterial(mesh, props, emits)
 object3d.add(mesh)
 
 /** EXPOSE **/
-defineExpose({node: node})
+defineExpose({...node})
 </script>
 
 <template>

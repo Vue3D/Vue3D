@@ -66,7 +66,7 @@ updateCamera()
 // 初始化
 props.main && (stage.mainCamera = toRaw(camera))
 
-defineExpose({node: node})
+defineExpose({...node})
 </script>
 
 <template>
