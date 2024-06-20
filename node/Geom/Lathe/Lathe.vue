@@ -1,8 +1,7 @@
 <script setup>
 import {inject, reactive, toRaw, watch} from "vue";
 import {LatheGeometry, Mesh} from 'three'
-import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
-import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
+import {nodeEmits, nodeProps, object3dEmits, object3dProps, useNode, useObject3d} from "../../../mixins";
 import {materialEmits, materialProps, useMaterial} from "../../../use"
 import Box3 from "../../../libs/Box3.class";
 import {LatheGeom, LatheName} from "./index"

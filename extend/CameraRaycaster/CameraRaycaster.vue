@@ -1,6 +1,6 @@
 <script setup>
-import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
-import {raycasterEmits, raycasterProps, useRaycaster} from "../../use/useRaycaster";
+import {extendEmits, extendProps, useExtend} from "../../mixins";
+import {raycasterEmits, raycasterProps, useRaycaster} from "../../use";
 import {inject, onMounted} from "vue";
 import {RaycasterName} from "./index";
 

@@ -1,13 +1,14 @@
 {
   "name": "vue3d",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.4",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "index.js",
   "files": [
-    "extend",
-    "libs",
     "node",
-    "use"
+    "extend",
+    "use",
+    "mixins",
+    "libs"
   ],
   "scripts": {},
   "repository": {

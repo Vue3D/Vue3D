@@ -1,5 +1,4 @@
-import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
-import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
+import {lifecycleEmits, lifecycleProps, pluginEmits, pluginProps, useLifecycle, usePlugin} from "../use";
 import {nanoid} from "nanoid";
 import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, provide} from "vue";
 import {Scene} from "three";

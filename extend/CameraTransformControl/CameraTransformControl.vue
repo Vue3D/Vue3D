@@ -1,5 +1,5 @@
 <script setup>
-import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
+import {extendEmits, extendProps, useExtend} from "../../mixins";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../../use"
 import {TransformControlName} from "./";
 import {inject, onMounted} from "vue";

@@ -1,6 +1,5 @@
 <script setup>
-import {object3dEmits, object3dProps} from "../../mixins/useObject3D";
-import {nodeEmits, nodeProps, useSceneNode} from "../../mixins/useNode";
+import {nodeEmits, nodeProps, object3dEmits, object3dProps, useObject3d, useSceneNode} from "../../mixins";
 
 const emits = defineEmits([
   ...object3dEmits,
@@ -11,10 +10,9 @@ const props = defineProps({
   ...nodeProps,
 })
 
-const {status, node} = useSceneNode(undefined, props, emits)
+const {status, node, scene} = useSceneNode(undefined, props, emits)
 /** start **/
-// const {scene, node} = root.addScene(scene, ComponentName, props.uuid)
-// const {status} = useObject3d(scene, props, emits)
+const {} = useObject3d(scene, props, emits)
 
 /** Provide */
 // provide('scene', scene)

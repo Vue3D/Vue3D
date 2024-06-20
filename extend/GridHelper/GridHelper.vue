@@ -1,6 +1,6 @@
 <script setup>
 import {GridHelper} from 'three'
-import {extendProps, useExtend} from "../../mixins/useExtend";
+import {extendProps, useExtend} from "../../mixins";
 import {GridHelperName} from "./index";
 import {onMounted} from "vue";
 
