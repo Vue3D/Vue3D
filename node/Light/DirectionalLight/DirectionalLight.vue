@@ -6,8 +6,8 @@ import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObje
 import {DirectionalLightName} from "./index";
 
 const props = defineProps({
-  ...object3dProps,
-  ...nodeProps,
+  ...object3dProps(),
+  ...nodeProps(),
   color: {type: String, default: 'rgb(255,255,255)'},
   intensity: {type: Number, default: 1.0},
   withHelper: {type: Boolean, default: true},
@@ -15,8 +15,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits([
-  ...object3dEmits,
-  ...nodeEmits
+  ...object3dEmits(),
+  ...nodeEmits()
 ])
 
 const light = reactive(new DirectionalLight(props.color, props.intensity))

@@ -1,15 +1,20 @@
 import {inject, watch} from "vue";
-import {layerEmits, layerProps, transformEmits, transformProps, useLayer, useTransform} from "../use";
+import {layerEmits, layerProps, useLayer,} from "../use/useLayer";
+import {transformEmits, transformProps, useTransform} from "../use/useTransform";
 
-const object3dEmits = [
-    ...layerEmits,
-    ...transformEmits
-]
-const object3dProps = {
-    ...layerProps,
-    ...transformProps,
-    name: {type: String, default: ''},
-    visible: {type: Boolean, default: true},
+const object3dEmits = () => {
+    return [
+        ...layerEmits,
+        ...transformEmits
+    ]
+}
+const object3dProps = () => {
+    return {
+        ...layerProps,
+        ...transformProps,
+        name: {type: String, default: ''},
+        visible: {type: Boolean, default: true},
+    }
 }
 
 /**

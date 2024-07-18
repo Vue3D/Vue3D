@@ -5,12 +5,13 @@ import {transformControlEmits, transformControlProps, useTransformControl} from 
 import {TransformControlName} from "./";
 
 const props = defineProps({
-  ...extendProps,
+  ...extendProps(),
   ...transformControlProps
 })
 const emits = defineEmits([
-  ...extendEmits,
-  ...transformControlEmits
+  ...extendEmits(),
+  ...transformControlEmits,
+  "change"
 ])
 
 const stage = inject("stage")

@@ -6,15 +6,15 @@ import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObje
 import {AmbientLightName} from "./index";
 
 const props = defineProps({
-  ...object3dProps,
-  ...nodeProps,
+  ...object3dProps(),
+  ...nodeProps(),
   color: {type: String, default: 'rgb(255,255,255)'},
   intensity: {type: Number, default: 1.0},
 })
 
 const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits
+  ...nodeEmits(),
+  ...object3dEmits()
 ])
 
 //

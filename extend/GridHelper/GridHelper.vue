@@ -7,7 +7,7 @@ import {onMounted} from "vue";
 const props = defineProps({
   size: {type: Number, default: 100},
   divisions: {type: Number, default: 100},
-  ...extendProps,
+  ...extendProps(),
 })
 
 const emits = defineEmits([])

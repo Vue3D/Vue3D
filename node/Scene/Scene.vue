@@ -3,12 +3,12 @@ import {nodeEmits, nodeProps, useSceneNode} from "../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../mixins/useObject3D"
 
 const emits = defineEmits([
-  ...object3dEmits,
-  ...nodeEmits
+  ...object3dEmits(),
+  ...nodeEmits()
 ])
 const props = defineProps({
-  ...object3dProps,
-  ...nodeProps,
+  ...object3dProps(),
+  ...nodeProps(),
 })
 
 const {status, node, scene} = useSceneNode(undefined, props, emits)

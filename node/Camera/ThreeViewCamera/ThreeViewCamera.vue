@@ -9,7 +9,7 @@ const stage = inject('stage')
 const parent = inject('parent')
 
 const props = defineProps({
-  ...object3dProps,
+  ...object3dProps(),
   ...transformControlProps,
   ...orbitControlProps,
   near: {type: Number, default: 0.1},

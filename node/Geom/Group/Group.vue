@@ -6,13 +6,13 @@ import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObje
 import {GroupName} from "./index";
 
 const props = defineProps({
-  ...nodeProps,
-  ...object3dProps,
+  ...nodeProps(),
+  ...object3dProps(),
 })
 
 const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits
+  ...nodeEmits(),
+  ...object3dEmits()
 ])
 
 const group = reactive(new Group())

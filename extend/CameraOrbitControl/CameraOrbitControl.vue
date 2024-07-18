@@ -5,11 +5,11 @@ import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../use/u
 import {OrbitControlName} from './'
 
 const props = defineProps({
-  ...extendProps,
+  ...extendProps(),
   ...orbitControlProps
 })
 const emits = defineEmits([
-  ...extendEmits,
+  ...extendEmits(),
   ...orbitControlEmits
 ])
 

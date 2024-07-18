@@ -7,8 +7,8 @@ import {materialEmits, materialProps, useMaterial} from "../../../use/useMateria
 import {SphereGeom, SphereName} from "./index";
 
 const props = defineProps({
-  ...nodeProps,
-  ...object3dProps,
+  ...nodeProps(),
+  ...object3dProps(),
   ...materialProps,
   radius: {type: Number, default: 1},
   widthSegments: {
@@ -37,8 +37,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits,
+  ...nodeEmits(),
+  ...object3dEmits(),
   ...materialEmits,
 ])
 

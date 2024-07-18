@@ -1,22 +1,27 @@
 import {Scene} from "three";
 import {nanoid} from "nanoid";
 import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, provide} from "vue";
-import {lifecycleEmits, lifecycleProps, pluginEmits, pluginProps, useLifecycle, usePlugin} from "../use";
+import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
+import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
 import {Node, SceneNode, StageNode} from "../libs/Node.Class"
 import {SceneName, StageName} from "../node";
 
-const nodeEmits = [
-    ...lifecycleEmits,
-    ...pluginEmits
-]
-const nodeProps = {
-    ...lifecycleProps,
-    ...pluginProps,
-    uuid: {
-        type: [String, Number], default() {
-            return nanoid(8)
-        }
-    },
+const nodeEmits = () => {
+    return [
+        ...lifecycleEmits(),
+        ...pluginEmits
+    ]
+}
+const nodeProps = () => {
+    return {
+        ...lifecycleProps,
+        ...pluginProps,
+        uuid: {
+            type: [String, Number], default() {
+                return nanoid(8)
+            }
+        },
+    }
 }
 
 /**

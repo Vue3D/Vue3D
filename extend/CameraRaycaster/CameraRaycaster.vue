@@ -6,12 +6,12 @@ import {RaycasterName} from "./index";
 
 const props = defineProps({
   ...raycasterProps,
-  ...extendProps
+  ...extendProps()
 })
 
 const emits = defineEmits([
   ...raycasterEmits,
-  ...extendEmits
+  ...extendEmits()
 ])
 
 const stage = inject("stage")
