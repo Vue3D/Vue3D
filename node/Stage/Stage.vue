@@ -2,6 +2,7 @@
 import {onMounted, provide, ref, watch} from "vue";
 import {rendererEmits, rendererProps, useRenderer} from "../../use/useRenderer"
 import {nodeEmits, nodeProps, useStageNode} from "../../mixins/useNode"
+import {StageName} from "./index";
 
 const emits = defineEmits([...rendererEmits, ...nodeEmits,])
 const props = defineProps({
@@ -15,7 +16,7 @@ const props = defineProps({
 const canvas = ref(null)
 
 const renderer = useRenderer(canvas, props, emits)
-const {status, stage} = useStageNode(undefined, props, emits)
+const {status, stage} = useStageNode(undefined, props, emits, StageName)
 
 const setActive = (scene) => {
   stage.setActive(scene)

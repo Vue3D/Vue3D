@@ -5,7 +5,6 @@ import {nanoid} from "nanoid";
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
 import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
 import {Node, SceneNode, StageNode} from "../libs/Node.Class"
-import {SceneName, StageName} from "../node";
 
 export const nodeEmits = [
     ...lifecycleEmits,
@@ -100,13 +99,14 @@ export function useMNode(obj3, props, emits, componentName = "V3dComponent") {
  * @param obj3 三维对象
  * @param props 参数
  * @param emits 事件
+ * @param componentName
  * @returns
  */
-export function useStageNode(obj3 = new Scene(), props, emits) {
+export function useStageNode(obj3 = new Scene(), props, emits, componentName = "V3dStage") {
     const {status} = useLifecycle(obj3, props, emits);
     const {} = usePlugin(obj3, props, emits);
 
-    const node = markRaw(new StageNode(obj3, props.uuid, StageName))
+    const node = markRaw(new StageNode(obj3, props.uuid, componentName))
 
     node.width = computed(() => {
         return props.width
@@ -126,13 +126,14 @@ export function useStageNode(obj3 = new Scene(), props, emits) {
  * @param scene
  * @param props
  * @param emits
+ * @param componentName
  * @returns
  */
-export function useSceneNode(scene = new Scene(), props, emits) {
+export function useSceneNode(scene = new Scene(), props, emits, componentName = "V3dScene") {
     const {status} = useLifecycle(scene, props, emits);
     const {} = usePlugin(scene, props, emits);
 
-    const node = markRaw(new SceneNode(scene, props.uuid, SceneName))
+    const node = markRaw(new SceneNode(scene, props.uuid, componentName))
 
     provide("parent", node)
 
