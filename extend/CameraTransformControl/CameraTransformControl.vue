@@ -4,14 +4,11 @@ import {transformControlEmits, transformControlProps, useTransformControl} from 
 import {TransformControlName} from "./";
 import {inject, onMounted} from "vue";
 
+const emits = defineEmits([...extendEmits, ...transformControlEmits, "change"])
 const props = defineProps({
   ...extendProps,
   ...transformControlProps
 })
-const emits = defineEmits([
-  ...extendEmits,
-  ...transformControlEmits
-])
 
 const stage = inject("stage")
 const parent = inject("parent")
