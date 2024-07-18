@@ -1,16 +1,16 @@
 <script setup>
 import {onMounted, provide, ref, watch} from "vue";
-import {nodeEmits, nodeProps, useStageNode} from "../../mixins/useNode"
 import {rendererEmits, rendererProps, useRenderer} from "../../use/useRenderer"
+import {nodeEmits, nodeProps, useStageNode} from "../../mixins/useNode"
 
 const emits = defineEmits([
   ...rendererEmits,
-  ...nodeEmits(),
+  ...nodeEmits,
 ])
 
 const props = defineProps({
   ...rendererProps,
-  ...nodeProps(),
+  ...nodeProps,
   dataEngine: {type: String, default: null}, // Canvas Dom data-engine attribute
   play: {type: String, default: null}, // Play with scene
 })

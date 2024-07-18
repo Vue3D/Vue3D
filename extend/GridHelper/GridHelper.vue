@@ -1,8 +1,8 @@
 <script setup>
+import {onMounted} from "vue";
 import {GridHelper} from 'three'
 import {extendProps, useExtend} from "../../mixins/useExtend";
 import {GridHelperName} from "./index";
-import {onMounted} from "vue";
 
 const props = defineProps({
   size: {type: Number, default: 100},

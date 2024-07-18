@@ -2,14 +2,14 @@
 import {reactive} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {materialEmits, materialProps, useMaterial,} from "../../../use/useMaterial";
-import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 
 import {CubeGeom, CubeName} from "./index";
 
 const props = defineProps({
-  ...nodeProps(),
-  ...object3dProps(),
+  ...nodeProps,
+  ...object3dProps,
   ...materialProps,
   x: {type: Number, default: 1},
   y: {type: Number, default: 1},
@@ -20,8 +20,8 @@ const props = defineProps({
   withHelper: {type: Boolean, default: false},
 })
 const emits = defineEmits([
-  ...nodeEmits(),
-  ...object3dEmits(),
+  ...nodeEmits,
+  ...object3dEmits,
   ...materialEmits,
 ])
 

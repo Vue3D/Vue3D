@@ -1,14 +1,14 @@
 {
   "name": "vue3d",
-  "version": "1.0.0-rc.10",
+  "version": "1.0.0-rc.20",
   "description": "基于Vue3的Three.js组件化项目",
   "main": "index.js",
   "files": [
-    "node",
-    "extend",
+    "libs",
     "use",
     "mixins",
-    "libs"
+    "extend",
+    "node"
   ],
   "scripts": {},
   "repository": {
@@ -28,15 +28,15 @@
   "dependencies": {
     "@unjuanable/jokes": "^0.3.1",
     "nanoid": "^5.0.7",
-    "three": "^0.166.1",
-    "vue": "^3.4.31"
+    "three": "^0.164.1",
+    "vue": "^3.4.32"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "vite": "^5.3.3"
+    "vite": "^5.3.4"
   },
   "peerDependencies": {
-    "vue": ">=3.4.0",
-    "three": ">=0.150.0"
+    "three": ">=0.150.0",
+    "vue": ">=3.4.0"
   }
 }

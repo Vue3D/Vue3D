@@ -1,27 +1,24 @@
+import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, provide} from "vue";
 import {Scene} from "three";
 import {nanoid} from "nanoid";
-import {computed, inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, provide} from "vue";
+
 import {lifecycleEmits, lifecycleProps, useLifecycle} from "../use/useLifecycle";
 import {pluginEmits, pluginProps, usePlugin} from "../use/usePlugin";
 import {Node, SceneNode, StageNode} from "../libs/Node.Class"
 import {SceneName, StageName} from "../node";
 
-const nodeEmits = () => {
-    return [
-        ...lifecycleEmits(),
-        ...pluginEmits
-    ]
-}
-const nodeProps = () => {
-    return {
-        ...lifecycleProps,
-        ...pluginProps,
-        uuid: {
-            type: [String, Number], default() {
-                return nanoid(8)
-            }
-        },
-    }
+export const nodeEmits = [
+    ...lifecycleEmits,
+    ...pluginEmits
+]
+export const nodeProps = {
+    ...lifecycleProps,
+    ...pluginProps,
+    uuid: {
+        type: [String, Number], default() {
+            return nanoid(8)
+        }
+    },
 }
 
 /**
@@ -32,7 +29,7 @@ const nodeProps = () => {
  * @param componentName
  * @returns
  */
-function useNode(obj3, props, emits, componentName = "V3dComponent") {
+export function useNode(obj3, props, emits, componentName = "V3dComponent") {
     const {status} = useLifecycle(obj3, props, emits);
     const {} = usePlugin(obj3, props, emits);
 
@@ -72,7 +69,7 @@ function useNode(obj3, props, emits, componentName = "V3dComponent") {
  * @param componentName
  * @returns
  */
-function useMNode(obj3, props, emits, componentName = "V3dComponent") {
+export function useMNode(obj3, props, emits, componentName = "V3dComponent") {
     const {status} = useLifecycle(obj3, props, emits);
     const {} = usePlugin(obj3, props, emits);
 
@@ -105,7 +102,7 @@ function useMNode(obj3, props, emits, componentName = "V3dComponent") {
  * @param emits 事件
  * @returns
  */
-function useStageNode(obj3 = new Scene(), props, emits) {
+export function useStageNode(obj3 = new Scene(), props, emits) {
     const {status} = useLifecycle(obj3, props, emits);
     const {} = usePlugin(obj3, props, emits);
 
@@ -131,7 +128,7 @@ function useStageNode(obj3 = new Scene(), props, emits) {
  * @param emits
  * @returns
  */
-function useSceneNode(scene = new Scene(), props, emits) {
+export function useSceneNode(scene = new Scene(), props, emits) {
     const {status} = useLifecycle(scene, props, emits);
     const {} = usePlugin(scene, props, emits);
 
@@ -143,4 +140,4 @@ function useSceneNode(scene = new Scene(), props, emits) {
 }
 
 
-export {nodeEmits, nodeProps, useNode, useMNode, useStageNode, useSceneNode}
+

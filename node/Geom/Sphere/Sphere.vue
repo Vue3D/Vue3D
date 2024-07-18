@@ -1,14 +1,14 @@
 <script setup>
 import {Mesh, SphereGeometry} from 'three'
-import {reactive} from "vue";
-import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
-import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 import {materialEmits, materialProps, useMaterial} from "../../../use/useMaterial"
+import {reactive} from "vue";
 import {SphereGeom, SphereName} from "./index";
 
 const props = defineProps({
-  ...nodeProps(),
-  ...object3dProps(),
+  ...nodeProps,
+  ...object3dProps,
   ...materialProps,
   radius: {type: Number, default: 1},
   widthSegments: {
@@ -37,8 +37,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits([
-  ...nodeEmits(),
-  ...object3dEmits(),
+  ...nodeEmits,
+  ...object3dEmits,
   ...materialEmits,
 ])
 

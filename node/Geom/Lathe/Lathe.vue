@@ -1,15 +1,15 @@
 <script setup>
 import {inject, reactive, toRaw, watch} from "vue";
 import {LatheGeometry, Mesh} from 'three'
-import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
-import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 import {materialEmits, materialProps, useMaterial} from "../../../use/useMaterial"
 import Box3 from "../../../libs/Box3.class";
 import {LatheGeom, LatheName} from "./index"
 
 const props = defineProps({
-  ...nodeProps(),
-  ...object3dProps(),
+  ...nodeProps,
+  ...object3dProps,
   ...materialProps,
   points: {type: Array},// Vector2 对象数组
   segments: {type: Number, default: 12}, // 要生成的车削几何体圆周分段的数量，默认值是12。
@@ -20,8 +20,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits([
-  ...nodeEmits(),
-  ...object3dEmits(),
+  ...nodeEmits,
+  ...object3dEmits,
   ...materialEmits
 ])
 

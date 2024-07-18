@@ -1,17 +1,16 @@
 <script setup>
-import {inject, onMounted} from "vue";
 import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../../use/useTransformControl"
 import {TransformControlName} from "./";
+import {inject, onMounted} from "vue";
 
 const props = defineProps({
-  ...extendProps(),
+  ...extendProps,
   ...transformControlProps
 })
 const emits = defineEmits([
-  ...extendEmits(),
-  ...transformControlEmits,
-  "change"
+  ...extendEmits,
+  ...transformControlEmits
 ])
 
 const stage = inject("stage")
