@@ -1,7 +1,29 @@
 import {computed, inject, reactive, watch} from "vue";
 import {Euler, Vector3} from "three";
 
-export function useTransform(object3d, props, emits) {
+const transformEmits = ['update:position', 'update:scale', 'update:angle']
+const transformProps = {
+    position: {
+        type: Object,
+        default() {
+            return new Vector3()
+        }
+    },
+    scale: {
+        type: [Number, Object],
+        default() {
+            return new Vector3(1, 1, 1)
+        }
+    },
+    angle: {
+        type: Object,
+        default() {
+            return new Vector3()
+        },
+    },
+}
+
+function useTransform(object3d, props, emits) {
     const stage = inject('stage')
     const euler = new Euler(0, 0, 0, "XYZ")
     const eAngle = reactive(new Vector3())
@@ -75,34 +97,14 @@ export function useTransform(object3d, props, emits) {
     return {position, scale, angle}
 }
 
-export const transformEmits = ['update:position', 'update:scale', 'update:angle']
-export const transformProps = {
-    position: {
-        type: Object,
-        default() {
-            return new Vector3()
-        }
-    },
-    scale: {
-        type: [Number, Object],
-        default() {
-            return new Vector3(1, 1, 1)
-        }
-    },
-    angle: {
-        type: Object,
-        default() {
-            return new Vector3()
-        },
-    },
-}
+export {transformProps, transformEmits, useTransform}
 
 /**
  * 夹角转欧拉角
  * @param angle
  * @returns {number}
  */
-export const angle2euler = (angle) => {
+export function angle2euler(angle) {
     const euler = (angle % 360) / 180;
     return euler * Math.PI
 }
@@ -112,7 +114,7 @@ export const angle2euler = (angle) => {
  * @param euler
  * @returns {number}
  */
-export const euler2angle = (euler) => {
+export function euler2angle(euler) {
     let angle = euler / Math.PI
     return angle * 180;
 }

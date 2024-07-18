@@ -1,14 +1,14 @@
 import {inject, watch} from "vue";
 import {Raycaster, Vector2} from "three";
 
-export const raycasterEmits = ["cast", "pick"]
-export const raycasterProps = {
+const raycasterEmits = ["cast", "pick"]
+const raycasterProps = {
     inLayers: {type: [Boolean, Array], default: true},
     rayFar: {type: Number},
     rayNear: {type: Number}
 }
 
-export function useRaycaster(camera, props, emits) {
+function useRaycaster(camera, props, emits) {
     if (!props.inLayers) return
     const stage = inject("stage")
 
@@ -86,3 +86,6 @@ export function useRaycaster(camera, props, emits) {
 
     return {raycaster}
 }
+
+
+export {raycasterEmits, raycasterProps, useRaycaster}

@@ -2,7 +2,29 @@ import {inject, reactive, toRaw, watch} from "vue";
 import {TransformControls} from "three/addons/controls/TransformControls.js";
 import {noop} from "@unjuanable/jokes";
 
-export function useTransformControl(camera, props, emits) {
+const modeRange = ["translate", "rotate", "scale"]
+const spaceRange = ["world", "local"]
+
+const transformControlEmits = ["update:mode", "update:space"]
+const transformControlProps = {
+    mode: {
+        type: String, validator(val) {
+            return modeRange.includes(val)
+        }
+    },
+    space: {
+        type: String, validator(val) {
+            return spaceRange.includes(val)
+        }
+    },
+    target: {
+        type: [Object, null], validator(val) {
+            return (val && val.isObject3D)
+        }
+    }
+}
+
+function useTransformControl(camera, props, emits) {
     const stage = inject("stage")
 
     let mode = "translate", space = "world" // default value
@@ -40,24 +62,6 @@ export function useTransformControl(camera, props, emits) {
     return {control, onChange}
 }
 
-export const modeRange = ["translate", "rotate", "scale"]
-export const spaceRange = ["world", "local"]
+export {transformControlProps, transformControlEmits, useTransformControl, modeRange, spaceRange}
 
-export const transformControlEmits = ["update:mode", "update:space"]
-export const transformControlProps = {
-    mode: {
-        type: String, validator(val) {
-            return modeRange.includes(val)
-        }
-    },
-    space: {
-        type: String, validator(val) {
-            return spaceRange.includes(val)
-        }
-    },
-    target: {
-        type: [Object, null], validator(val) {
-            return (val && val.isObject3D)
-        }
-    }
-}
+

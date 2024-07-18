@@ -1,7 +1,27 @@
 import {watch} from "vue";
 import {DoubleSide, MeshPhongMaterial, SRGBColorSpace, TextureLoader} from "three";
 
-export function useMaterial(object3d, props, emits) {
+const materialEmits = ['render']
+const materialProps = {
+    material: {
+        type: Object, default() {
+            return defaultMaterial()
+        }
+    },
+    map: {type: [Object, String]},
+}
+
+const defaultMaterial = () => {
+    return new MeshPhongMaterial({
+        specular: 0x333333,
+        emissive: 0x000000,
+        reflectivity: 1,
+        shininess: 4096,
+        side: DoubleSide,
+    })
+}
+
+function useMaterial(object3d, props, emits) {
     const setMaterial = (material) => {
         if (object3d && material) {
             object3d.material = material;
@@ -35,22 +55,4 @@ export function useMaterial(object3d, props, emits) {
     return {setMaterial}
 }
 
-export const materialEmits = ['render']
-export const materialProps = {
-    material: {
-        type: Object, default() {
-            return defaultMaterial()
-        }
-    },
-    map: {type: [Object, String]},
-}
-
-export const defaultMaterial = () => {
-    return new MeshPhongMaterial({
-        specular: 0x333333,
-        emissive: 0x000000,
-        reflectivity: 1,
-        shininess: 4096,
-        side: DoubleSide,
-    })
-}
+export {materialEmits, materialProps, useMaterial, defaultMaterial}

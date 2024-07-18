@@ -1,7 +1,8 @@
 <script setup>
 import {CameraHelper, PerspectiveCamera, Vector4} from 'three'
 import {inject, reactive, toRaw, watch} from "vue";
-import {nodeEmits, nodeProps, object3dEmits, object3dProps, useNode, useObject3d} from "../../../mixins";
+import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
+import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
 import {PerspectiveCameraName} from "./";
 
 const props = defineProps({

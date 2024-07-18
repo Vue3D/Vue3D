@@ -2,7 +2,7 @@ import {inject, markRaw, onBeforeMount, onBeforeUnmount, onMounted, onUpdated} f
 import {ExtendNode} from "../libs/Node.Class";
 import {nanoid} from "nanoid";
 
-export const extendProps = {
+const extendProps = {
     uuid: {
         type: [String, Number], default() {
             return nanoid(8)
@@ -10,9 +10,9 @@ export const extendProps = {
     },
 }
 
-export const extendEmits = []
+const extendEmits = []
 
-export function useExtend(extObj, props, emits, componentName = "V3dHelper") {
+function useExtend(extObj, props, emits, componentName = "V3dHelper") {
     const stage = inject("stage")
     const parent = inject("parent")
 
@@ -36,3 +36,5 @@ export function useExtend(extObj, props, emits, componentName = "V3dHelper") {
 
     return {extend}
 }
+
+export {extendProps, extendEmits, useExtend}

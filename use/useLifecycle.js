@@ -1,13 +1,16 @@
 import {nextTick, onBeforeUnmount, onMounted, reactive} from "vue";
 import {compose} from "@unjuanable/jokes"
 
+const lifecycleEmits = ["onLoading", "onLoaded", "onMounted", "onBeforeUpdate", "onAfterUpdated", "onUnmount"]
+const lifecycleProps = {}
+
 /**
  * 对象生命周期
  * @param node
  * @param props
  * @param emits
  */
-export function useLifecycle(node, props, emits) {
+function useLifecycle(node, props, emits) {
     const status = reactive({
         loading: false,
         mounted: false,
@@ -85,5 +88,4 @@ export function useLifecycle(node, props, emits) {
     return {status, onLoading, onUpdate}
 }
 
-export const lifecycleEmits = ["onLoading", "onLoaded", "onMounted", "onBeforeUpdate", "onAfterUpdated", "onUnmount"]
-export const lifecycleProps = {}
+export {lifecycleProps, lifecycleEmits, useLifecycle}

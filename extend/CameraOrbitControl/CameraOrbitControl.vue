@@ -1,7 +1,7 @@
 <script setup>
 import {inject} from "vue";
-import {extendEmits, extendProps, useExtend} from "../../mixins";
-import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../use/";
+import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
+import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../use/useOrbitControl";
 import {OrbitControlName} from './'
 
 const props = defineProps({

@@ -2,8 +2,8 @@ import {nextTick, onMounted, ref, watch} from "vue";
 import {ACESFilmicToneMapping, Color, WebGLRenderer} from "three";
 import {compose, noop} from "@unjuanable/jokes";
 
-export const rendererEmits = ["rendering", "rendered"]
-export const rendererProps = {
+const rendererEmits = ["rendering", "rendered"]
+const rendererProps = {
     // 渲染模式
     mode: {
         type: String, default: 'webgl', validator(value) {
@@ -37,7 +37,7 @@ export const rendererProps = {
  * @param emits
  * @returns
  */
-export function useRenderer(canvas, props, emits) {
+function useRenderer(canvas, props, emits) {
     let renderer = null // 渲染器
     let node = null
     let rendering = ref(0)
@@ -118,4 +118,4 @@ export function useRenderer(canvas, props, emits) {
     return {renderer, bindNode, renderCall, render}
 }
 
-
+export {rendererEmits, rendererProps, useRenderer}

@@ -1,4 +1,14 @@
-export function usePlugin(node, props, emits) {
+const pluginEmits = ["onPlugin"]
+const pluginProps = {
+    plugins: {
+        type: Array,
+        default() {
+            return []
+        }
+    }
+}
+
+function usePlugin(node, props, emits) {
     if (props && Array.isArray(props)) {
         props.plugins.forEach(plugin => {
             if (typeof plugin === 'function') {
@@ -9,14 +19,4 @@ export function usePlugin(node, props, emits) {
     return {}
 }
 
-export const pluginEmits = [
-    "onPlugin"
-]
-export const pluginProps = {
-    plugins: {
-        type: Array,
-        default() {
-            return []
-        }
-    }
-}
+export {pluginProps, pluginEmits, usePlugin}

@@ -1,6 +1,27 @@
 import {watch} from "vue";
 
-export function useLayer(object3d, props, emits) {
+const layerProps = {
+    layer: {
+        type: [Number, Array], validator(value) {
+            if (Array.isArray(value)) {
+                for (let item of value) {
+                    if (!test(item)) return false
+                }
+                return true
+            } else {
+                return test(value)
+            }
+
+            function test(val) {
+                return val >= 0 || val < 32
+            }
+        }
+    },
+}
+
+const layerEmits = []
+
+function useLayer(object3d, props, emits) {
     /**
      * 设置图层3
      * @param layer
@@ -47,22 +68,4 @@ export function useLayer(object3d, props, emits) {
     return {setLayer, setChildLayer}
 }
 
-export const layerEmits = []
-export const layerProps = {
-    layer: {
-        type: [Number, Array], validator(value) {
-            if (Array.isArray(value)) {
-                for (let item of value) {
-                    if (!test(item)) return false
-                }
-                return true
-            } else {
-                return test(value)
-            }
-
-            function test(val) {
-                return val >= 0 || val < 32
-            }
-        }
-    },
-}
+export {layerProps, layerEmits, useLayer}

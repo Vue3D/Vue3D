@@ -1,10 +1,10 @@
 import {inject, toRaw, watch} from "vue";
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
-export const orbitControlProps = {
+const orbitControlEmits = []
+const orbitControlProps = {
     autoRotate: {type: Number, default: 0}, // stage的属性auto必须为true
 }
-export const orbitControlEmits = []
 
 /**
  * Orbit Control
@@ -13,7 +13,7 @@ export const orbitControlEmits = []
  * @param emits
  * @returns {{orbit: OrbitControls}}
  */
-export function useOrbitControl(camera, props, emits) {
+function useOrbitControl(camera, props, emits) {
     const stage = inject("stage")
 
     const orbit = new OrbitControls(toRaw(camera), stage.dom)
@@ -35,3 +35,4 @@ export function useOrbitControl(camera, props, emits) {
     return {orbit}
 }
 
+export {orbitControlProps, orbitControlEmits, useOrbitControl}

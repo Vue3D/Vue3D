@@ -1,26 +1,27 @@
 import {inject, watch} from "vue";
 import {layerEmits, layerProps, transformEmits, transformProps, useLayer, useTransform} from "../use";
 
-export const object3dEmits = [
+const object3dEmits = [
     ...layerEmits,
     ...transformEmits
 ]
-export const object3dProps = {
+const object3dProps = {
     ...layerProps,
     ...transformProps,
     name: {type: String, default: ''},
     visible: {type: Boolean, default: true},
 }
 
-export function useObject3d(object3d, props, emits) {
+/**
+ * 初始化对象节点设置
+ * @param object3d
+ * @param props
+ * @param emits
+ */
+function useObject3d(object3d, props, emits) {
     const stage = inject('stage')
     const parent = inject('parent')
 
-    /**
-     * 初始化对象节点设置
-     * @param object3d
-     * @param props
-     */
     object3d.isVue3d ??= true
     object3d.name = props.name
 
@@ -47,3 +48,5 @@ export function useObject3d(object3d, props, emits) {
         position, scale, angle // transform
     }
 }
+
+export {object3dProps, object3dEmits, useObject3d}
