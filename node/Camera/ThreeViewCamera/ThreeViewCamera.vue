@@ -8,8 +8,9 @@ import {orbitControlEmits, orbitControlProps, useOrbitControl,} from "../../../u
 const stage = inject('stage')
 const parent = inject('parent')
 
+const emits = defineEmits([...object3dEmits, ...transformControlEmits, ...orbitControlEmits])
 const props = defineProps({
-  ...object3dProps(),
+  ...object3dProps,
   ...transformControlProps,
   ...orbitControlProps,
   near: {type: Number, default: 0.1},
@@ -18,8 +19,6 @@ const props = defineProps({
   frustum: {type: Number, default: 2},
   main: {type: Boolean, default: false}
 })
-
-const emits = defineEmits([...object3dEmits, ...transformControlEmits, ...orbitControlEmits])
 
 const aspect = computed(() => {
   return stage.width.value / stage.height.value

@@ -5,15 +5,11 @@ import {Group} from "three";
 import {reactive} from "vue";
 import {GroupName} from "./index";
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits])
 const props = defineProps({
   ...nodeProps,
   ...object3dProps,
 })
-
-const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits
-])
 
 const group = reactive(new Group())
 

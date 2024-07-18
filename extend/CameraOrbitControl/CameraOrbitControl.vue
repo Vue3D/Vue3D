@@ -4,14 +4,14 @@ import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
 import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../use/useOrbitControl";
 import {OrbitControlName} from './'
 
-const props = defineProps({
-  ...extendProps(),
-  ...orbitControlProps
-})
 const emits = defineEmits([
-  ...extendEmits(),
+  ...extendEmits,
   ...orbitControlEmits
 ])
+const props = defineProps({
+  ...extendProps,
+  ...orbitControlProps
+})
 
 const stage = inject("stage")
 const parent = inject("parent")

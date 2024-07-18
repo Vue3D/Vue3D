@@ -6,6 +6,7 @@ import {materialEmits, materialProps, useMaterial} from "../../../use/useMateria
 import {reactive} from "vue";
 import {SphereGeom, SphereName} from "./index";
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits,])
 const props = defineProps({
   ...nodeProps,
   ...object3dProps,
@@ -35,12 +36,6 @@ const props = defineProps({
   },
   withHelper: {type: Boolean, default: false},
 })
-
-const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits,
-  ...materialEmits,
-])
 
 const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);
 const object3d = reactive(new SphereGeom());

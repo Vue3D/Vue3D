@@ -5,9 +5,10 @@ import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
 import {PerspectiveCameraName} from "./";
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits])
 const props = defineProps({
-  ...nodeProps(),
-  ...object3dProps(),
+  ...nodeProps,
+  ...object3dProps,
   x: {type: Number, default: 0}, // viewport x 原点（x=0）：左
   y: {type: Number, default: 0}, // viewport y 原点（y=0）：下
   width: {type: Number}, // viewport width
@@ -21,10 +22,6 @@ const props = defineProps({
   main: {type: Boolean, default: false}
 })
 
-const emits = defineEmits([
-  ...nodeEmits(),
-  ...object3dEmits()
-])
 
 const stage = inject('stage')
 const vWidth = stage.width

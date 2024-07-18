@@ -4,15 +4,14 @@ import {raycasterEmits, raycasterProps, useRaycaster} from "../../use/useRaycast
 import {inject, onMounted} from "vue";
 import {RaycasterName} from "./index";
 
-const props = defineProps({
-  ...raycasterProps,
-  ...extendProps()
-})
-
 const emits = defineEmits([
   ...raycasterEmits,
-  ...extendEmits()
+  ...extendEmits
 ])
+const props = defineProps({
+  ...raycasterProps,
+  ...extendProps
+})
 
 const stage = inject("stage")
 const parent = inject("parent")

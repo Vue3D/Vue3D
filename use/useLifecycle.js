@@ -1,9 +1,7 @@
 import {nextTick, onBeforeUnmount, onMounted, reactive} from "vue";
 import {compose} from "@unjuanable/jokes"
 
-const lifecycleEmits = () => {
-    return ["onLoading", "onLoaded", "onMounted", "onBeforeUpdate", "onAfterUpdated", "onUnmount"]
-}
+const lifecycleEmits = ["onLoading", "onLoaded", "onMounted", "onBeforeUpdate", "onAfterUpdated", "onUnmount"]
 const lifecycleProps = {}
 
 /**

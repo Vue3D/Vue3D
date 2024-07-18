@@ -5,17 +5,13 @@ import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
 import {AmbientLightName} from "./index";
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits])
 const props = defineProps({
-  ...object3dProps(),
-  ...nodeProps(),
+  ...object3dProps,
+  ...nodeProps,
   color: {type: String, default: 'rgb(255,255,255)'},
   intensity: {type: Number, default: 1.0},
 })
-
-const emits = defineEmits([
-  ...nodeEmits(),
-  ...object3dEmits()
-])
 
 //
 const light = reactive(new AmbientLight(props.color, props.intensity))

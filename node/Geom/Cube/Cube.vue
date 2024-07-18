@@ -7,6 +7,7 @@ import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 
 import {CubeGeom, CubeName} from "./index";
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits,])
 const props = defineProps({
   ...nodeProps,
   ...object3dProps,
@@ -19,11 +20,6 @@ const props = defineProps({
   zSegments: {type: Number, default: 1},
   withHelper: {type: Boolean, default: false},
 })
-const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits,
-  ...materialEmits,
-])
 
 const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
 const object3d = reactive(new CubeGeom())

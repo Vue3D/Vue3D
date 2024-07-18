@@ -1,5 +1,6 @@
 import {watch} from "vue";
 
+const layerEmits = []
 const layerProps = {
     layer: {
         type: [Number, Array], validator(value) {
@@ -18,8 +19,6 @@ const layerProps = {
         }
     },
 }
-
-const layerEmits = []
 
 function useLayer(object3d, props, emits) {
     /**

@@ -7,6 +7,7 @@ import {materialEmits, materialProps, useMaterial} from "../../../use/useMateria
 import Box3 from "../../../libs/Box3.class";
 import {LatheGeom, LatheName} from "./index"
 
+const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits])
 const props = defineProps({
   ...nodeProps,
   ...object3dProps,
@@ -18,12 +19,6 @@ const props = defineProps({
   withHelper: {type: Boolean, default: false},
   adapted: {type: Boolean, default: false},
 })
-
-const emits = defineEmits([
-  ...nodeEmits,
-  ...object3dEmits,
-  ...materialEmits
-])
 
 const stage = inject("stage")
 const parent = inject("parent")

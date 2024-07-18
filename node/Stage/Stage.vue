@@ -3,11 +3,7 @@ import {onMounted, provide, ref, watch} from "vue";
 import {rendererEmits, rendererProps, useRenderer} from "../../use/useRenderer"
 import {nodeEmits, nodeProps, useStageNode} from "../../mixins/useNode"
 
-const emits = defineEmits([
-  ...rendererEmits,
-  ...nodeEmits,
-])
-
+const emits = defineEmits([...rendererEmits, ...nodeEmits,])
 const props = defineProps({
   ...rendererProps,
   ...nodeProps,

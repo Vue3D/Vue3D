@@ -4,13 +4,12 @@ import {GridHelper} from 'three'
 import {extendProps, useExtend} from "../../mixins/useExtend";
 import {GridHelperName} from "./index";
 
+const emits = defineEmits([])
 const props = defineProps({
   size: {type: Number, default: 100},
   divisions: {type: Number, default: 100},
-  ...extendProps(),
+  ...extendProps,
 })
-
-const emits = defineEmits([])
 
 const helper = new GridHelper(props.size, props.divisions)
 
