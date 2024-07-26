@@ -34,7 +34,6 @@ const props = defineProps({
       return Math.PI
     }
   },
-  withHelper: {type: Boolean, default: false},
 })
 
 const geometry = new SphereGeometry(props.radius, props.widthSegments, props.heightSegments, props.phiStart, props.phiLength, props.thetaStart, props.thetaLength);

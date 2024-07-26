@@ -18,7 +18,6 @@ const props = defineProps({
   xSegments: {type: Number, default: 1},
   ySegments: {type: Number, default: 1},
   zSegments: {type: Number, default: 1},
-  withHelper: {type: Boolean, default: false},
 })
 
 const geometry = new BoxGeometry(props.x, props.y, props.z, props.xSegments, props.ySegments, props.zSegments)
