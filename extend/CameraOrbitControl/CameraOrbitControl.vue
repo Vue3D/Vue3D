@@ -4,6 +4,9 @@ import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
 import {orbitControlEmits, orbitControlProps, useOrbitControl} from "../../use/useOrbitControl";
 import {OrbitControlName} from './'
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([
   ...extendEmits,
   ...orbitControlEmits

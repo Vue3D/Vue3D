@@ -4,6 +4,9 @@ import {rendererEmits, rendererProps, useRenderer} from "../../use/useRenderer"
 import {nodeEmits, nodeProps, useStageNode} from "../../mixins/useNode"
 import {StageName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...rendererEmits, ...nodeEmits,])
 const props = defineProps({
   ...rendererProps,

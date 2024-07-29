@@ -4,6 +4,9 @@ import {raycasterEmits, raycasterProps, useRaycaster} from "../../use/useRaycast
 import {inject, onMounted} from "vue";
 import {RaycasterName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([
   ...raycasterEmits,
   ...extendEmits

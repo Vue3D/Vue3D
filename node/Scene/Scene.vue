@@ -3,6 +3,9 @@ import {nodeEmits, nodeProps, useSceneNode} from "../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../mixins/useObject3D"
 import {SceneName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...object3dEmits, ...nodeEmits])
 const props = defineProps({
   ...object3dProps,

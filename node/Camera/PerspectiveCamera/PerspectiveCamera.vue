@@ -5,6 +5,9 @@ import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode"
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
 import {PerspectiveCameraName} from "./";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...nodeEmits, ...object3dEmits])
 const props = defineProps({
   ...nodeProps,

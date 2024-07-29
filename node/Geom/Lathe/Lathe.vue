@@ -7,6 +7,9 @@ import {materialEmits, materialProps, useMaterial} from "../../../use/useMateria
 import Box3 from "../../../libs/Box3.class";
 import {LatheGeom, LatheName} from "./index"
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits])
 const props = defineProps({
   ...nodeProps,

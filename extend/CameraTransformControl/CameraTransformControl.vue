@@ -1,9 +1,12 @@
 <script setup>
+import {inject, onMounted} from "vue";
 import {extendEmits, extendProps, useExtend} from "../../mixins/useExtend";
 import {transformControlEmits, transformControlProps, useTransformControl} from "../../use/useTransformControl"
 import {TransformControlName} from "./";
-import {inject, onMounted} from "vue";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...extendEmits, ...transformControlEmits, "change"])
 const props = defineProps({
   ...extendProps,

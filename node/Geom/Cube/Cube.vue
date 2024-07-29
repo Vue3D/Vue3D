@@ -1,5 +1,5 @@
 <script setup>
-import {reactive} from "vue";
+import {inject, reactive} from "vue";
 import {BoxGeometry, Mesh} from 'three'
 import {materialEmits, materialProps, useMaterial,} from "../../../use/useMaterial";
 import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObject3D"
@@ -7,6 +7,11 @@ import {nodeEmits, nodeProps, useNode} from "../../../mixins/useNode";
 
 import {CubeGeom, CubeName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
+const stage = inject('stage')
+const parent = inject('parent')
 const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits,])
 const props = defineProps({
   ...nodeProps,

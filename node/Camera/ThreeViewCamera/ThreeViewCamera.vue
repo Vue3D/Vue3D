@@ -5,9 +5,9 @@ import {object3dEmits, object3dProps, useObject3d} from "../../../mixins/useObje
 import {transformControlEmits, transformControlProps, useTransformControl} from "../../../use/useTransformControl";
 import {orbitControlEmits, orbitControlProps, useOrbitControl,} from "../../../use/useOrbitControl";
 
-const stage = inject('stage')
-const parent = inject('parent')
-
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...object3dEmits, ...transformControlEmits, ...orbitControlEmits])
 const props = defineProps({
   ...object3dProps,
@@ -19,6 +19,9 @@ const props = defineProps({
   frustum: {type: Number, default: 2},
   main: {type: Boolean, default: false}
 })
+
+const stage = inject('stage')
+const parent = inject('parent')
 
 const aspect = computed(() => {
   return stage.width.value / stage.height.value

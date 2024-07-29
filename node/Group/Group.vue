@@ -5,6 +5,9 @@ import {Group} from "three";
 import {reactive} from "vue";
 import {GroupName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...nodeEmits, ...object3dEmits])
 const props = defineProps({
   ...nodeProps,

@@ -6,6 +6,9 @@ import {materialEmits, materialProps, useMaterial} from "../../../use/useMateria
 import {reactive} from "vue";
 import {SphereGeom, SphereName} from "./index";
 
+defineOptions({
+  inheritAttrs: false
+})
 const emits = defineEmits([...nodeEmits, ...object3dEmits, ...materialEmits,])
 const props = defineProps({
   ...nodeProps,
