@@ -25,7 +25,7 @@ const stage = inject("stage")
 const object3d = reactive(new Object3D());
 
 const {status, node} = useNode(object3d, props, emits, ObjLoaderName);
-const {setChildLayer} = useObject3d(object3d, props, emits)
+const {setChildLayer, setSize} = useObject3d(object3d, props, emits)
 const {setMaterial} = useMaterial(object3d, props, emits)
 
 const loader = new OBJLoader(props.manager)
@@ -40,6 +40,7 @@ loader.load(props.path,
         object3d.add(child)
       });
       setMaterial(props.material)
+      setSize(props.size)
       stage.render()
       emits("load:complete", group)
     },

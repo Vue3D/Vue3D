@@ -50,6 +50,7 @@ function useTransform(object3d, props, emits) {
             stage.render();
         }
     })
+
     const angle = computed({
         get() {
             euler.setFromQuaternion(object3d.quaternion);
@@ -94,7 +95,17 @@ function useTransform(object3d, props, emits) {
         stage.render()
     }, {deep: true})
 
-    return {position, scale, angle}
+    const setPosition = (vec3) => {
+        position.value = vec3
+    }
+    const setScale = (vec3) => {
+        scale.value = vec3
+    }
+    const setAngle = (vec3) => {
+        angle.value = vec3
+    }
+
+    return {position, scale, angle, setPosition, setScale, setAngle}
 }
 
 export {transformProps, transformEmits, useTransform}
