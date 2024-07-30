@@ -44,6 +44,7 @@ export function useObject3d(object3d, props, emits) {
      * @param size
      */
     const setSize = (size) => {
+        if (!size) return
         let box3 = new Box3(object3d)
         let nScale = box3.getContainedScale(size)
         setScale({x: nScale, y: nScale, z: nScale})
