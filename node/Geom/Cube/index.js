@@ -8,9 +8,7 @@ class CubeGeom extends Object3D {
 const CubeName = "V3dCube"
 const V3dCube = Object.assign(Cube, {
     install: function (app) {
-        app.component(CubeName, defineAsyncComponent(() => {
-            import('./Cube.vue')
-        }));
+        app.component(CubeName, Cube);
     }
 })
 
