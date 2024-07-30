@@ -29,24 +29,27 @@ const {setChildLayer} = useObject3d(object3d, props, emits)
 const {setMaterial} = useMaterial(object3d, props, emits)
 
 const loader = new OBJLoader(props.manager)
+
 emits("load:start")
-
-loader.load(props.path, (group) => {
-  group.name = props.name;
-  group.traverse((child) => {
-    child.name = object3d.uuid
-    setChildLayer(child, props.layer)
-    object3d.add(child)
-  });
-
-  setMaterial(props.material)
-  stage.render()
-  emits("load:complete", group)
-}, xhr => {
-  emits("load:progress", xhr)
-}, err => {
-  emits("load:error", err)
-})
+loader.load(props.path,
+    (group) => {
+      group.name = props.name;
+      group.traverse((child) => {
+        child.name = object3d.uuid
+        setChildLayer(child, props.layer)
+        object3d.add(child)
+      });
+      setMaterial(props.material)
+      stage.render()
+      emits("load:complete", group)
+    },
+    xhr => {
+      emits("load:progress", xhr)
+    },
+    err => {
+      emits("load:error", err)
+    }
+)
 
 </script>
 
