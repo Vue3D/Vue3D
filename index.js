@@ -12,8 +12,12 @@ import {V3dGroup, GroupName} from "./node/Group"
 // export {V3dThreeViewCamera} from "./Camera/ThreeViewCamera"
 import {V3dPerspectiveCamera, PerspectiveCameraName} from "./node/Camera/PerspectiveCamera"
 /** Light **/
-import {V3dAmbientLight} from "./node/Light/AmbientLight"
-import {V3dDirectionalLight} from "./node/Light/DirectionalLight"
+import {V3dAmbientLight, AmbientLightName} from "./node/Light/AmbientLight"
+import {V3dDirectionalLight, DirectionalLightName} from "./node/Light/DirectionalLight"
+/** Loader **/
+import {V3dLoader, LoaderName} from "./node/Loader";
+import {V3dObjLoader, ObjLoaderName} from "./node/Loader"
+import {V3dErrLoaded, ErrLoadedName} from "./node/Loader";
 /** Geom **/
 import {V3dCube, CubeName, CubeGeom} from "./node/Geom/Cube"
 import {V3dLathe, LatheName, LatheGeom} from "./node/Geom/Lathe"
@@ -35,6 +39,7 @@ export default {
         App.use(V3dPerspectiveCamera)
         App.use(V3dAmbientLight)
         App.use(V3dDirectionalLight)
+        App.use(V3dLoader)
         App.use(V3dCube)
         App.use(V3dLathe)
         App.use(V3dSphere)
@@ -51,6 +56,7 @@ export {
     V3dGroup,
     V3dPerspectiveCamera,
     V3dAmbientLight, V3dDirectionalLight,
+    V3dLoader, V3dObjLoader,
     V3dCube, V3dSphere, V3dLathe,
     V3dCameraOrbitControl,
     V3dCameraRaycaster,

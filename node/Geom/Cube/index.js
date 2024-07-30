@@ -1,14 +1,17 @@
-import Cube from "./Cube.vue"
+import {defineAsyncComponent} from "vue";
 import {Object3D} from "three";
+import Cube from "./Cube.vue"
+
+class CubeGeom extends Object3D {
+}
 
 const CubeName = "V3dCube"
 const V3dCube = Object.assign(Cube, {
     install: function (app) {
-        app.component(CubeName, Cube);
+        app.component(CubeName, defineAsyncComponent(() => {
+            import('./Cube.vue')
+        }));
     }
 })
-
-class CubeGeom extends Object3D {
-}
 
 export {V3dCube, CubeName, CubeGeom}
