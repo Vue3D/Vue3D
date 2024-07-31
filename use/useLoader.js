@@ -1,6 +1,5 @@
 import {DefaultLoadingManager} from "three";
 import {noop} from "@unjuanable/jokes";
-import {computed} from "vue";
 
 const loaderEmits = ["load:start", "load:progress", "load:complete", "load:error"]
 const loaderProps = {
@@ -18,13 +17,12 @@ function useLoader(object3d, props, emits) {
         onError: noop,
     }
 
-    const path = computed(() => {
-        return props.baseurl ? props.baseurl + props.path : props.path
-    })
-
-    const onLoad = (loader) => {
+    const onLoad = (loader, url = null) => {
         emits("load:start")
-        loader.load(path.value,
+        if (url === null) {
+            url = props.baseurl ? props.baseurl + props.path : props.path
+        }
+        loader.load(url,
             res => {
                 res.name = props.name;
                 callback.onComplete && callback.onComplete(res)
