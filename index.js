@@ -1,24 +1,22 @@
 export * from "three"
-/**
- * node folder
- */
-/** Stage 舞台 **/
+
+/** node:Stage 舞台 **/
 import {V3dStage, StageName} from "./node/Stage"
-/** Scene 子场景 **/
+/** node:Scene 子场景 **/
 import {V3dScene, SceneName} from "./node/Scene"
-/** Group **/
+/** node:Group **/
 import {V3dGroup, GroupName} from "./node/Group"
-/** Camera **/
+/** node:Camera **/
 // export {V3dThreeViewCamera} from "./Camera/ThreeViewCamera"
 import {V3dPerspectiveCamera, PerspectiveCameraName} from "./node/Camera/PerspectiveCamera"
-/** Light **/
+/** node:Light **/
 import {V3dAmbientLight, AmbientLightName} from "./node/Light/AmbientLight"
 import {V3dDirectionalLight, DirectionalLightName} from "./node/Light/DirectionalLight"
-/** Loader **/
-import {V3dLoader, LoaderName} from "./node/Loader";
-import {V3dObjLoader, ObjLoaderName} from "./node/Loader"
-import {V3dErrLoaded, ErrLoadedName} from "./node/Loader";
-/** Geom **/
+/** node:Loader **/
+import {V3dAdaptLoader, AdaptLoaderName} from "./node/Loader/AdaptLoader" // 加载器适配器：异步调用已适配格式的加载器
+import {V3dObjLoader, ObjLoaderName} from "./node/Loader/ObjLoader" // OBJ格式
+import {V3dErrLoaded, ErrLoadedName} from "./node/Loader/ErrLoaded" // 错误加载
+/** node:Geom **/
 import {V3dCube, CubeName, CubeGeom} from "./node/Geom/Cube"
 import {V3dLathe, LatheName, LatheGeom} from "./node/Geom/Lathe"
 import {V3dSphere, SphereName, SphereGeom} from "./node/Geom/Sphere"
@@ -39,7 +37,7 @@ export default {
         App.use(V3dPerspectiveCamera)
         App.use(V3dAmbientLight)
         App.use(V3dDirectionalLight)
-        App.use(V3dLoader)
+        App.use(V3dAdaptLoader)
         App.use(V3dCube)
         App.use(V3dLathe)
         App.use(V3dSphere)
@@ -56,7 +54,7 @@ export {
     V3dGroup,
     V3dPerspectiveCamera,
     V3dAmbientLight, V3dDirectionalLight,
-    V3dLoader, V3dObjLoader,
+    V3dAdaptLoader, V3dObjLoader, V3dErrLoaded,
     V3dCube, V3dSphere, V3dLathe,
     V3dCameraOrbitControl,
     V3dCameraRaycaster,
